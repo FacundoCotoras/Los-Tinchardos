@@ -18,6 +18,7 @@ id_vuelo int primary key auto_increment not null,
 fecha date,
 origen varchar(25),
 destino varchar(25),
+id_avion int,
 foreign key(id_avion) references Aviones(id_avion)
 );
 create table Aviones(
