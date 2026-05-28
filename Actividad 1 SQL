@@ -1,0 +1,78 @@
+create database empresa;
+-- drop database empresa;
+use empresa;
+
+create table Empleados(
+IDEmpleado int auto_increment primary key not null,
+Nombre varchar(18),
+Apellido varchar(20) not null,
+Sector enum("Adm","Ventas", "Compras", "RRHH") ,
+Edad int(2) default 35 not null,
+Sexo enum("F","M"),
+Barrio_Vivienda varchar(25) default "Belgrano",
+CodPostal int(4),
+Ingreso year not null,
+Sueldo float not null,
+Antiguedad float not null default 250,
+Celular varchar(25)
+);
+
+insert into Empleados(Nombre, Apellido, Sector, Edad, Sexo, Barrio_Vivienda, CodPostal, Ingreso, Sueldo, Antiguedad, Celular)
+ values ("Agustin", "Barrionuevo", "Adm", 16, "M", "Caseros", 1678, 2011, 1500.47, 250000, 1167418011),
+("Sharon", "Gimenez", "Adm", 14, "F", "Caseros", 1651, 2011, 9999999999, 9991919, 1141567454),
+("Santiago", "Fidani", "Ventas", 16, "M", "Almagro", 1893, 2011, 1698.47, 0, 1123587015),
+("Alexis", "Billiet", "Adm", 16, "M", "Saenz Peña", 1678, 2011, 1200.47, 5000000, 1167089209),
+("Elena", "Martinez", "RRHH", 15, "F", "Villa 31",1916, 2011, 1300.47, 10101010, 1144132788),
+("Diana", "Guzman", "Ventas", 16, "F", "Belgrano", 1678, 2011, 1500.47, 250, 1167418011),
+("Benjamin", "Sala", "Adm", 16, "M", "La Matanza", 1618, 1900, 2000.47, 801010, 1130762451),
+("Luciana", "Alegre", "Compras", 16, "F", "Belgrano", 1428, 21015, 1809.47, 1717, 1134982010),
+("Bianca", "Ducasse", "Ventas", 16, "M", "Villa Pueyrredon", 1425, 2024, 1500.47, 250, 1167418011),
+("Roberto", "Villareal", "Compras", 28, "M", "Almagro", 1893, 1999, 3000.47, 8000, 1156718944),
+("Jeremias", "Gimenez", "RRHH", 16, "M", "Flores", 1578, 2025, 600.47, 300, 1165374605),
+("Enzo", "Barrios", "Ventas", 16, "M", "Flores", 1578, 2012, 1584.47, 252620, 1165602633),
+("Federico", "Bouzon", "Adm",22, "M", "Villa Lynch", 1672, 2025,99999999999, 999999,1144145677),
+("Alma", "Zabaleta", "RRHH", 15, "F", "Devoto", 1417, 2018, 19999.47, 8000, 1118552767),
+("Camila", "Sayed", "RRHH", 15, "F", "Devoto", 1417, 2008, 100.47, 50, 1162213396);
+
+select *
+from Empleados;
+
+select Nombre, Apellido, Barrio_Vivienda
+from Empleados
+Where Barrio_Vivienda = "Belgrano";
+
+select Apellido, Edad, Ingreso
+from Empleados
+Where Ingreso > 2009 && Ingreso < 2013;
+
+select Sexo, Sector
+from Empleados
+Where Sexo = "F" && Sector = "RRHH";
+
+select Apellido, Sector, Celular
+from Empleados;
+
+select Nombre, Apellido, Sueldo
+from Empleados
+Where Barrio_Vivienda = "Almagro" or Barrio_Vivienda = "Flores" 
+order by Apellido desc;
+
+select count(IDEmpleado)
+from Empleados;
+
+select Nombre, Apellido 
+from Empleados
+order by Edad desc
+limit 1;
+
+select Nombre, Apellido
+from Empleados
+order by Edad asc
+limit 1;
+
+select avg(Edad)
+from Empleados;
+
+select avg(Edad)
+from Empleados
+where Sector = "RRHH"
