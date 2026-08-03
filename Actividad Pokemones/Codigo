@@ -73,7 +73,7 @@ Create table Gimnasios
 );
 Create table Equipos
 (
-	IDEquipo int primary key not null auto_increment,
+	IDEquipo int primary key not null,
     ObjetoEquipado Varchar(25), 
     IDPokemon int,
     foreign key (IDPokemon) references Pokemones(IDPokemon)
@@ -119,12 +119,19 @@ insert into Especies(Nombre, NumPokeDex, TipoElemento, IDRegion) values
 
 insert into Pokemones(Nombre, Nivel, IDEntrenador, IDEspecie) values
 ("Pepe", 4, 1, 1),
-("Pepe", 14, 2, 2);
+("Pepe", 20, 2, 2);
 
 insert into Evoluciones(IDFaseNueva, IDFasePrevia) values
-(6, 5),;
+(2, 1);
 
 insert into HistorialEvoluciones(Fecha, MetodoEvolucion, IDPokemon, IDEvolucion) values
-("2026-08-03", "Nivel", 1, 1),
-("2026-07-11", "Intercambio", 2, 2);
+("2026-08-03", "Nivel", 2, 1);
+
+insert into Gimnasios(Nombre, TipoElemento, IDLider, IDCiudad) values
+("Gimnasio de Isla Canela", "Fuego", 1, 1),
+("Gimnasio de Ciudad Malva", "Volador", 2, 2);
+
+insert into Equipos(IDEquipo, ObjetoEquipado, IDPokemon) values
+(1, "Restos", 2);
+
 
