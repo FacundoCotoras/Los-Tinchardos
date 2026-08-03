@@ -114,15 +114,17 @@ insert into Entrenadores(Nombre, Edad, IDCIudad) values
 ("Gold", 11, 2);
 
 insert into Especies(Nombre, NumPokeDex, TipoElemento, IDRegion) values
-("Charizard", 6, "Fuego-Volador", 1),
-("Celebi", 251, "Planta-Hada", 2);
+("Charmander", 4, "Fuego", 1),
+("Charmeleon", 5, "Fuego", 2);
 
 insert into Pokemones(Nombre, Nivel, IDEntrenador, IDEspecie) values
-("Pepe", 69, 1, 1),
-("Ajo", 99, 2, 2);
+("Pepe", 4, 1, 1),
+("Pepe", 14, 2, 2);
 
 insert into Evoluciones(IDFaseNueva, IDFasePrevia) values
-(6, 5),
-(2, 1);
+(6, 5),;
 
-insert into HistorialEvoluciones
+insert into HistorialEvoluciones(Fecha, MetodoEvolucion, IDPokemon, IDEvolucion) values
+("2026-08-03", "Nivel", 1, 1),
+("2026-07-11", "Intercambio", 2, 2);
+
