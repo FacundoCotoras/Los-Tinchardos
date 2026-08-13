@@ -11,6 +11,8 @@ body {
     text-align: center;
 }
 
+
+
 #Titulo {
     font-size: 60px;
     border: 2px solid white;
@@ -24,6 +26,14 @@ body {
     margin: 40px 0;
 }
 
+
+#FelizJueves{
+
+    width: 250px;
+}
+
+
+
 #text {
     font-size: 40px;
     color: white;
@@ -33,7 +43,7 @@ body {
     display: flex;
     justify-content: space-around;
     margin: 20px;
-    flex-wrap: wrap; /* permite que los bloques se acomoden */
+    flex-wrap: wrap; 
 }
 
 .card {
@@ -47,11 +57,10 @@ body {
     margin-bottom: 20px;
 }
 
-/* Bloque especial para Datos Extra */
 .card.extra {
-    width: 95%;          /* ocupa casi todo el ancho */
-    background-color: #f0f8ff; /* celeste suave */
+    width: 95%;          
+    background-color: #f0f8ff; 
     border: 2px solid #333;
     color: #222;
-    margin: 20px auto;   /* centrado */
+    margin: 20px auto;   
 }
