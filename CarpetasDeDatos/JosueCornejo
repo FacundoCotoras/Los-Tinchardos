@@ -1,4 +1,4 @@
-CREATE DATABASE TowerDefense;
+CREATE DATABASE IF NOT EXISTS TowerDefense;
 
 USE TowerDefense;
 
@@ -50,7 +50,6 @@ CREATE TABLE Waves (
     EnemigosSpawneados INT NOT NULL,
     FOREIGN KEY (IDSession) REFERENCES Sessions(IDSession)
 );
-
 
 CREATE TABLE DefenseTypes (
     IDDefenseType INT AUTO_INCREMENT PRIMARY KEY,
@@ -149,5 +148,4 @@ CREATE TABLE CombatLogs (
     ValorImpacto INT,
     Coordenadas VARCHAR(100),
     FOREIGN KEY (IDSession) REFERENCES Sessions(IDSession)
-
-
+    );
