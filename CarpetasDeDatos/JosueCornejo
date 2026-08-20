@@ -1,1 +1,302 @@
+CREATE DATABASE IF NOT EXISTS TowerDefense;
+USE TowerDefense;
+
+
+CREATE TABLE Players (
+    IDPlayer INT AUTO_INCREMENT PRIMARY KEY,
+    Usuario VARCHAR(50) NOT NULL UNIQUE,
+    Correo VARCHAR(100) NOT NULL UNIQUE,
+    FechaRegistro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    NivelActual INT NOT NULL DEFAULT 1,
+
+    CONSTRAINT CK_Player_Nivel
+        CHECK (NivelActual >= 1)
+);
+
+
+CREATE TABLE Sessions (
+    IDSession INT AUTO_INCREMENT PRIMARY KEY,
+    IDPlayer INT NOT NULL,
+    FechaInicio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FechaFin DATETIME NULL,
+    TiempoDefendido INT NOT NULL DEFAULT 0,
+    DificultadInicial VARCHAR(30) NOT NULL,
+
+    CONSTRAINT FK_Session_Player
+        FOREIGN KEY (IDPlayer)
+        REFERENCES Players(IDPlayer)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_Session_Tiempo
+        CHECK (TiempoDefendido >= 0),
+
+    CONSTRAINT CK_Session_Fechas
+        CHECK (FechaFin IS NULL OR FechaFin >= FechaInicio)
+);
+
+CREATE TABLE PowerUps (
+    IDPowerUp INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE,
+    Efecto VARCHAR(100) NOT NULL,
+    Duracion INT NOT NULL,
+    Descripcion VARCHAR(255),
+
+    CONSTRAINT CK_PowerUp_Duracion
+        CHECK (Duracion > 0)
+);
+
+
+CREATE TABLE Inventory (
+    IDInventory INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    IDPowerUp INT NOT NULL,
+    Cantidad INT NOT NULL DEFAULT 0,
+    Estado VARCHAR(30) NOT NULL,
+
+    CONSTRAINT FK_Inventory_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT FK_Inventory_PowerUp
+        FOREIGN KEY (IDPowerUp)
+        REFERENCES PowerUps(IDPowerUp)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT UQ_Inventory_Session_PowerUp
+        UNIQUE (IDSession, IDPowerUp),
+
+    CONSTRAINT CK_Inventory_Cantidad
+        CHECK (Cantidad >= 0)
+);
+
+
+CREATE TABLE Waves (
+    IDWave INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    NumeroWave INT NOT NULL,
+    Dificultad VARCHAR(30) NOT NULL,
+    EnemigosSpawneados INT NOT NULL DEFAULT 0,
+
+    CONSTRAINT FK_Wave_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT UQ_Wave_Session_Number
+        UNIQUE (IDSession, NumeroWave),
+
+    CONSTRAINT CK_Wave_Number
+        CHECK (NumeroWave > 0),
+
+    CONSTRAINT CK_Wave_Enemies
+        CHECK (EnemigosSpawneados >= 0)
+);
+
+
+CREATE TABLE DefenseTypes (
+    IDDefenseType INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE,
+    Costo DECIMAL(10,2) NOT NULL,
+    DañoBase DECIMAL(10,2) NOT NULL,
+    VidaBase DECIMAL(10,2) NOT NULL,
+    Rango DECIMAL(10,2) NOT NULL,
+
+    CONSTRAINT CK_Defense_Costo
+        CHECK (Costo >= 0),
+
+    CONSTRAINT CK_Defense_Danio
+        CHECK (DañoBase >= 0),
+
+    CONSTRAINT CK_Defense_Vida
+        CHECK (VidaBase > 0),
+
+    CONSTRAINT CK_Defense_Rango
+        CHECK (Rango > 0)
+);
+
+
+CREATE TABLE DefenseInstances (
+    IDDefenseInstance INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    IDDefenseType INT NOT NULL,
+    x DECIMAL(10,2) NOT NULL,
+    y DECIMAL(10,2) NOT NULL,
+    VidaActual DECIMAL(10,2) NOT NULL,
+    EstadoActual VARCHAR(30) NOT NULL,
+
+    CONSTRAINT FK_DefenseInstance_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT FK_DefenseInstance_Type
+        FOREIGN KEY (IDDefenseType)
+        REFERENCES DefenseTypes(IDDefenseType)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_DefenseInstance_Vida
+        CHECK (VidaActual >= 0)
+);
+
+
+CREATE TABLE EnemyTypes (
+    IDEEnemyType INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE,
+    VidaBase DECIMAL(10,2) NOT NULL,
+    Daño DECIMAL(10,2) NOT NULL,
+    Velocidad DECIMAL(10,2) NOT NULL,
+    Resistencia DECIMAL(10,2) NOT NULL,
+    TipoAtaque VARCHAR(30) NOT NULL,
+
+    CONSTRAINT CK_Enemy_Vida
+        CHECK (VidaBase > 0),
+
+    CONSTRAINT CK_Enemy_Danio
+        CHECK (Daño >= 0),
+
+    CONSTRAINT CK_Enemy_Velocidad
+        CHECK (Velocidad >= 0),
+
+    CONSTRAINT CK_Enemy_Resistencia
+        CHECK (Resistencia >= 0)
+);
+
+
+CREATE TABLE Bosses (
+    IDBoss INT AUTO_INCREMENT PRIMARY KEY,
+    IDEEnemyType INT NOT NULL UNIQUE,
+    HabilidadEspecial VARCHAR(255) NOT NULL,
+
+    CONSTRAINT FK_Boss_EnemyType
+        FOREIGN KEY (IDEEnemyType)
+        REFERENCES EnemyTypes(IDEEnemyType)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE EnemyInstances (
+    IDEEnemyInstance INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    IDEEnemyType INT NOT NULL,
+    IDWave INT NOT NULL,
+    x DECIMAL(10,2) NOT NULL,
+    y DECIMAL(10,2) NOT NULL,
+    VidaActual DECIMAL(10,2) NOT NULL,
+
+    CONSTRAINT FK_EnemyInstance_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT FK_EnemyInstance_Type
+        FOREIGN KEY (IDEEnemyType)
+        REFERENCES EnemyTypes(IDEEnemyType)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT FK_EnemyInstance_Wave
+        FOREIGN KEY (IDWave)
+        REFERENCES Waves(IDWave)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_EnemyInstance_Vida
+        CHECK (VidaActual >= 0)
+);
+
+
+CREATE TABLE Resources (
+    IDResource INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    Tipo VARCHAR(30) NOT NULL,
+    Cantidad DECIMAL(10,2) NOT NULL DEFAULT 0,
+
+    CONSTRAINT FK_Resource_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_Resource_Cantidad
+        CHECK (Cantidad >= 0)
+);
+
+
+CREATE TABLE SessionResults (
+    IDResult INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL UNIQUE,
+    MotivoFin VARCHAR(100) NOT NULL,
+    VidaTorre INT NOT NULL,
+    DefensasDestruidas INT NOT NULL DEFAULT 0,
+    EnemigosEliminados INT NOT NULL DEFAULT 0,
+
+    CONSTRAINT FK_Result_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_Result_Vida
+        CHECK (VidaTorre >= 0),
+
+    CONSTRAINT CK_Result_Defensas
+        CHECK (DefensasDestruidas >= 0),
+
+    CONSTRAINT CK_Result_Enemigos
+        CHECK (EnemigosEliminados >= 0)
+);
+
+
+CREATE TABLE LeaderBoards (
+    IDLeaderBoard INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL UNIQUE,
+    MotivoFin VARCHAR(100) NOT NULL,
+    VidaTorre INT NOT NULL,
+    DefensasDestruidas INT NOT NULL DEFAULT 0,
+    EnemigosEliminados INT NOT NULL DEFAULT 0,
+
+    CONSTRAINT FK_Leaderboard_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_Leaderboard_Vida
+        CHECK (VidaTorre >= 0),
+
+    CONSTRAINT CK_Leaderboard_Defensas
+        CHECK (DefensasDestruidas >= 0),
+
+    CONSTRAINT CK_Leaderboard_Enemigos
+        CHECK (EnemigosEliminados >= 0)
+);
+
+
+CREATE TABLE CombatLogs (
+    IDCombatLog INT AUTO_INCREMENT PRIMARY KEY,
+    IDSession INT NOT NULL,
+    TimeStamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    TipoAccion VARCHAR(50) NOT NULL,
+    Origen VARCHAR(100),
+    Destino VARCHAR(100),
+    ValorImpacto DECIMAL(10,2),
+    Coordenadas VARCHAR(100),
+
+    CONSTRAINT FK_CombatLog_Session
+        FOREIGN KEY (IDSession)
+        REFERENCES Sessions(IDSession)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT CK_CombatLog_Impacto
+        CHECK (ValorImpacto IS NULL OR ValorImpacto >= 0)
+);
 
