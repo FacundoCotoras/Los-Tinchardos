@@ -15,7 +15,7 @@ create table Sessions (
     IDPlayer int,
     FechaInicio date,
     FechaFin date,
-    TiempoDefendido int,
+    TiempoDefendido time,
     DificultadInicial varchar(30),
     foreign key (IDPlayer) references Players(IDPlayer)
 );
