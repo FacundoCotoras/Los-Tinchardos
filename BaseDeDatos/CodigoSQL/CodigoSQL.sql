@@ -25,7 +25,7 @@ create table PowerUps (
     Nombre varchar(50),
     Efecto varchar(100),
     Duracion double,
-    Descripcion varchar(200)
+    Descripcion text
 );
 
 create table Inventory (
