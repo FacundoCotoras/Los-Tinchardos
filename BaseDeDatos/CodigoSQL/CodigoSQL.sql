@@ -24,7 +24,7 @@ create table PowerUps (
     IDPowerUp int not null auto_increment primary key,
     Nombre varchar(50),
     Efecto varchar(100),
-    Duracion double,
+    Duracion float,
     Descripcion text
 );
 
@@ -50,10 +50,10 @@ create table Waves (
 create table DefenseTypes (
     IDDefenseType int not null auto_increment primary key,
     Nombre varchar(50),
-    Costo double,
-    DañoBase double,
-    VidaBase double,
-    Rango double
+    Costo float,
+    DañoBase float,
+    VidaBase float,
+    Rango float
 );
 
 create table DefenseInstances (
@@ -62,7 +62,7 @@ create table DefenseInstances (
     IDDefenseType int,
     X int,
     Y int,
-    VidaActual double,
+    VidaActual float,
     EstadoActual varchar(30),
     foreign key (IDSession) references Sessions(IDSession),
     foreign key (IDDefenseType) references DefenseTypes(IDDefenseType)
@@ -71,10 +71,10 @@ create table DefenseInstances (
 create table EnemyTypes (
     IDEnemyType int not null auto_increment primary key,
     Nombre varchar(50),
-    VidaBase double,
-    Daño double,
-    Velocidad double,
-    Resistencia double,
+    VidaBase float,
+    Daño float,
+    Velocidad float,
+    Resistencia float,
     TipoAtaque varchar(30)
 );
 
@@ -92,7 +92,7 @@ create table EnemyInstances (
     IDWave int,
     X int,
     Y int,
-    VidaActual double,
+    VidaActual float,
     foreign key (IDSession) references Sessions(IDSession),
     foreign key (IDEnemyType) references EnemyTypes(IDEnemyType),
     foreign key (IDWave) references Waves(IDWave)
@@ -110,7 +110,7 @@ create table SessionResults (
     IDResult int not null auto_increment primary key,
     IDSession int,
     MotivoFin text,
-    VidaTorre double,
+    VidaTorre float,
     DefensasDestruidas int,
     EnemigosEliminados int,
     foreign key (IDSession) references Sessions(IDSession)
@@ -120,7 +120,7 @@ create table LeaderBoards (
     IDLeaderBoard int not null auto_increment primary key,
     IDSession int,
     MotivoFin text,
-    VidaTorre double,
+    VidaTorre float,
     DefensasDestruidas int,
     EnemigosEliminados int,
     foreign key (IDSession) references Sessions(IDSession)
@@ -133,7 +133,7 @@ create table CombatLogs (
     TipoAccion varchar(50),
     Origen varchar(100),
     Destino varchar(100),
-    ValorImpacto double,
+    ValorImpacto float,
     Coordenadas varchar(100),
     foreign key (IDSession) references Sessions(IDSession)
 );
