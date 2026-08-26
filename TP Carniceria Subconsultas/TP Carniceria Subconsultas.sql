@@ -1,108 +1,124 @@
 CREATE DATABASE carniceria;
--- drop database carniceria;
+-- DROP DATABASE carniceria;
 USE carniceria;
 
 CREATE TABLE Clientes (
-    IDCliente INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_c VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20)
+    IDCliente int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nombre varchar(100),
+    telefono varchar(20)
 );
 
-CREATE TABLE Cortes_de_carnes (
-    ID_CC INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    precio_kg DECIMAL(10, 2) NOT NULL
+CREATE TABLE Cortes_de_Carne (
+    IDcc int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nombre varchar(100),
+    precio_kg decimal(10, 2)
 );
 
 CREATE TABLE Carniceros (
-    ID_Carnicero INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_c VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20),
-    DNI VARCHAR(20) UNIQUE NOT NULL
+    IDcarnicero int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    nombre varchar(100),
+    telefono varchar(20),
+    DNI varchar(20)
 );
 
-CREATE TABLE Pedidos (
-    IDPedido INT PRIMARY KEY AUTO_INCREMENT,
-    ID_CC INT,
-    IDCliente INT,
-    FOREIGN KEY (ID_CC) REFERENCES Cortes_de_carnes(ID_CC),
-    FOREIGN KEY (IDCliente) REFERENCES Clientes(IDCliente)
+CREATE TABLE Pedido (
+    IDpedido int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    IDcc int,
+    cantidad int,
+    FOREIGN KEY (IDcc) REFERENCES Cortes_de_Carne(IDcc)
 );
 
 CREATE TABLE Ventas (
-    IDVenta INT PRIMARY KEY AUTO_INCREMENT,
-    IDPedido INT,
-    telefono VARCHAR(20),
-    DNI VARCHAR(20),
-    ID_Carnicero INT,
-    precioT DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (IDPedido) REFERENCES Pedidos(IDPedido),
-    FOREIGN KEY (ID_Carnicero) REFERENCES Carniceros(ID_Carnicero)
+    IDventa int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    IDcarnicero int,
+    IDcliente int,
+    IDpedido int,
+    precioT decimal(10, 2),
+    FOREIGN KEY (IDcarnicero) REFERENCES Carniceros(IDcarnicero),
+    FOREIGN KEY (IDcliente) REFERENCES Clientes(IDCliente),
+    FOREIGN KEY (IDpedido) REFERENCES Pedido(IDpedido)
 );
 
-INSERT INTO Clientes (nombre_c, telefono) VALUES 
+
+INSERT INTO Clientes (nombre, telefono) VALUES 
 ('Juan Pérez', '1122334455'),
 ('María López', '1155667788'),
 ('Carlos Gómez', '1199001122');
 
-INSERT INTO Cortes_de_carnes (nombre, precio_kg) VALUES 
+INSERT INTO Cortes_de_Carne (nombre, precio_kg) VALUES 
 ('Asado', 8500.00),
 ('Vacío', 9200.00),
 ('Bife de Lomo', 11000.00);
 
-INSERT INTO Carniceros (nombre_c, telefono, DNI) VALUES 
+INSERT INTO Carniceros (nombre, telefono, DNI) VALUES 
 ('Ricardo Díaz', '1133445566', '20123456'),
 ('José Martínez', '1177889900', '23987654'),
 ('Luis Rodríguez', '1144556677', '27456123');
 
-INSERT INTO Pedidos (ID_CC, IDCliente) VALUES 
-(1, 1),
-(2, 2),
+INSERT INTO Pedido (IDcc, cantidad) VALUES 
+(1, 2),
+(2, 1),
 (3, 3);
 
-INSERT INTO Ventas (IDPedido, telefono, DNI, ID_Carnicero, precioT) VALUES 
-(1, '1122334455', '20123456', 1, 17000.00),
-(2, '1155667788', '23987654', 2, 27600.00),
-(3, '1199001122', '27456123', 3, 11000.00);
+INSERT INTO Ventas (IDcarnicero, IDcliente, IDpedido, precioT) VALUES 
+(1, 1, 1, 17000.00),
+(2, 2, 2, 9200.00),
+(3, 3, 3, 33000.00);
 
-SELECT Cortes_de_carnes.nombre
-FROM Cortes_de_carnes
-JOIN Pedidos ON Cortes_de_carnes.ID_CC = Pedidos.ID_CC
-JOIN Ventas ON Pedidos.IDPedido = Ventas.IDPedido
-GROUP BY Cortes_de_carnes.ID_CC, Cortes_de_carnes.nombre
-ORDER BY COUNT(Ventas.IDVenta) DESC
+
+SELECT c.nombre
+FROM Cortes_de_Carne c
+WHERE c.IDcc = (
+    SELECT p.IDcc
+    FROM Pedido p
+    JOIN Ventas v ON p.IDpedido = v.IDpedido
+    GROUP BY p.IDcc
+    ORDER BY COUNT(v.IDventa) DESC
+    LIMIT 1
+);
+
+
+SELECT cl.nombre
+FROM Clientes cl
+WHERE cl.IDCliente = (
+    SELECT v.IDcliente
+    FROM Ventas v
+    GROUP BY v.IDcliente
+    ORDER BY COUNT(v.IDventa) DESC
+    LIMIT 1
+);
+
+
+SELECT ca.nombre
+FROM Carniceros ca
+WHERE ca.IDcarnicero = (
+    SELECT v.IDcarnicero
+    FROM Ventas v
+    GROUP BY v.IDcarnicero
+    ORDER BY COUNT(v.IDventa) DESC
+    LIMIT 1
+);
+
+
+SELECT 
+    (SELECT cl.nombre FROM Clientes cl WHERE cl.IDCliente = v.IDcliente) AS cliente,
+    (SELECT c.nombre FROM Cortes_de_Carne c WHERE c.IDcc = (
+        SELECT p.IDcc FROM Pedido p WHERE p.IDpedido = v.IDpedido
+    )) AS corte,
+    (SELECT ca.nombre FROM Carniceros ca WHERE ca.IDcarnicero = v.IDcarnicero) AS carnicero
+FROM Ventas v
+ORDER BY v.precioT DESC
 LIMIT 1;
 
-SELECT Clientes.nombre_c
-FROM Clientes
-JOIN Pedidos ON Clientes.IDCliente = Pedidos.IDCliente
-JOIN Ventas ON Pedidos.IDPedido = Ventas.IDPedido
-GROUP BY Clientes.IDCliente, Clientes.nombre_c
-ORDER BY COUNT(Ventas.IDVenta) DESC
-LIMIT 1;
 
+SELECT 
+    c.nombre,
+    (
+        SELECT COUNT(v.IDventa)
+        FROM Pedido p
+        JOIN Ventas v ON p.IDpedido = v.IDpedido
+        WHERE p.IDcc = c.IDcc
+    ) AS total_ventas
+FROM Cortes_de_Carne c;
 
-SELECT Carniceros.nombre_c
-FROM Carniceros
-JOIN Ventas ON Carniceros.ID_Carnicero = Ventas.ID_Carnicero
-GROUP BY Carniceros.ID_Carnicero, Carniceros.nombre_c
-ORDER BY COUNT(DISTINCT Ventas.DNI) DESC
-LIMIT 1;
-
-
-SELECT Clientes.nombre_c, Cortes_de_carnes.nombre, Carniceros.nombre_c
-FROM Ventas
-JOIN Pedidos ON Ventas.IDPedido = Pedidos.IDPedido
-JOIN Clientes ON Pedidos.IDCliente = Clientes.IDCliente
-JOIN Cortes_de_carnes ON Pedidos.ID_CC = Cortes_de_carnes.ID_CC
-JOIN Carniceros ON Ventas.ID_Carnicero = Carniceros.ID_Carnicero
-ORDER BY Ventas.precioT DESC
-LIMIT 1;
-
-
-SELECT Cortes_de_carnes.nombre, COUNT(Ventas.IDVenta)
-FROM Cortes_de_carnes
-LEFT JOIN Pedidos ON Cortes_de_carnes.ID_CC = Pedidos.ID_CC
-LEFT JOIN Ventas ON Pedidos.IDPedido = Ventas.IDPedido
-GROUP BY Cortes_de_carnes.ID_CC, Cortes_de_carnes.nombre;
 
