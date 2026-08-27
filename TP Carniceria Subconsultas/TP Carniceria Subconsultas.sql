@@ -102,13 +102,12 @@ WHERE ca.IDcarnicero = (
 
 SELECT 
     (SELECT cl.nombre FROM Clientes cl WHERE cl.IDCliente = v.IDcliente) AS cliente,
-    (SELECT c.nombre FROM Cortes_de_Carne c WHERE c.IDcc = (
-        SELECT p.IDcc FROM Pedido p WHERE p.IDpedido = v.IDpedido
-    )) AS corte,
+    (SELECT c.nombre FROM Pedido p JOIN Cortes_de_Carne c ON p.IDcc = c.IDcc WHERE p.IDpedido = v.IDpedido) AS corte,
     (SELECT ca.nombre FROM Carniceros ca WHERE ca.IDcarnicero = v.IDcarnicero) AS carnicero
 FROM Ventas v
 ORDER BY v.precioT DESC
 LIMIT 1;
+
 
 
 SELECT 
