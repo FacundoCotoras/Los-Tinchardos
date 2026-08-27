@@ -1,0 +1,93 @@
+create database Carniceria;
+-- drop database Carniceria
+use Carniceria;
+
+create table Carniceros
+(
+ID_Carnicero int primary key auto_increment not null,
+Nombre varchar(25),
+Apellido varchar(25),
+DNI int
+);
+
+create table Clientes
+(
+ID_Cliente int primary key auto_increment not null,
+Nombre varchar(25),
+Telefono int
+);
+
+create table Productos
+(
+ID_Producto int primary key auto_increment not null,
+Nombre varchar(25),
+Tipo varchar(25),
+Corte varchar(25),
+Precio float
+);
+
+create table Ventas
+(
+ID_Venta int primary key auto_increment not null,
+Fecha date,
+Mediosdepago enum ("Billetera virtual","Efectivo","Tarjeta"),
+ID_Carnicero int,
+foreign key (ID_carnicero) references Carniceros (ID_Carnicero),
+ID_Producto int,
+foreign key (ID_Producto) references Productos (ID_Producto),
+ID_Cliente int,
+foreign key (ID_Cliente) references Clientes(ID_Cliente)
+);
+
+create table Productosventas
+(
+ID_Productoventa int primary key not null,
+Cantidad int,
+ID_Venta int,
+foreign key (ID_Venta) references Ventas(ID_Venta),
+ID_Producto int,
+foreign key (ID_Producto) references Productos(ID_Producto)
+);
+
+insert into Carniceros(Nombre, Apellido, DNI) values
+("Santiago", "Fidani", 50257628),
+("Agustin", "Barrionuevo", 49624223),
+("Alexis", "Billiet", 50259264);
+
+insert into Clientes(Nombre, Telefono) values
+("Diana", 1154821780),
+("Luciana", 1144678258),
+("Elena", 1151632478);
+
+insert into Productos(Nombre, Corte, Precio) values
+("Pechuga de pollo", "Magro", 8000),
+("Milanesa de carne", "Nalga", 6000),
+("Bife de chorizo", "Bife ancho", 20000 );
+
+insert into ventas(Fecha,Mediosdepago, ID_Carnicero, ID_Producto, ID_Cliente) values
+("2026-09-14", "Billetera virtual", 1, 1, 3 ),
+("2026-08-30", "Tarjeta", 1, 2, 3 ),
+("2026-10-05", "Efectivo", 2, 3,2 );
+
+select Clientes.Nombre, count(Ventas.ID_Venta) as cantidadventas
+from Clientes
+inner join Ventas
+on Clientes.ID_Cliente = Ventas.ID_Cliente
+group by Clientes.Nombre, Clientes.ID_Cliente
+order by cantidadventas desc
+limit 1;
+
+select Productos.Nombre, count(ProductosVentas.Cantidad) as cantidadproductos
+from Productos
+inner join ProductosVentas
+on Productos.ID_Producto = ProductosVentas.ID_Producto
+group by Productos.Nombre
+order by cantidadproductos desc
+limit 1;
+
+
+select Carniceros.Nombre as Carnicero_mas_exitoso
+from carniceros
+where Carniceros.ID_Carnicero = (select ventas.ID_Carnicero from ventas group by ventas.ID_Carnicero order by count(ventas.ID_Carnicero) limit 1);
+
+
