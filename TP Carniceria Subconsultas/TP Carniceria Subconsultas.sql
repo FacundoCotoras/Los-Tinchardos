@@ -1,123 +1,123 @@
-CREATE DATABASE carniceria;
--- DROP DATABASE carniceria;
-USE carniceria;
+create database carniceria;
+-- drop database carniceria;
+use carniceria;
 
-CREATE TABLE Clientes (
-    IDCliente int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+create table clientes (
+    idcliente int primary key auto_increment not null,
     nombre varchar(100),
     telefono varchar(20)
 );
 
-CREATE TABLE Cortes_de_Carne (
-    IDcc int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+create table cortes_de_carne (
+    idcc int primary key auto_increment not null,
     nombre varchar(100),
     precio_kg decimal(10, 2)
 );
 
-CREATE TABLE Carniceros (
-    IDcarnicero int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+create table carniceros (
+    idcarnicero int primary key auto_increment not null,
     nombre varchar(100),
     telefono varchar(20),
-    DNI varchar(20)
+    dni varchar(20)
 );
 
-CREATE TABLE Pedido (
-    IDpedido int PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    IDcc int,
+create table pedido (
+    idpedido int primary key auto_increment not null,
+    idcc int,
     cantidad int,
-    FOREIGN KEY (IDcc) REFERENCES Cortes_de_Carne(IDcc)
+    foreign key (idcc) references cortes_de_carne(idcc)
 );
 
-CREATE TABLE Ventas (
-    IDventa int PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    IDcarnicero int,
-    IDcliente int,
-    IDpedido int,
-    precioT decimal(10, 2),
-    FOREIGN KEY (IDcarnicero) REFERENCES Carniceros(IDcarnicero),
-    FOREIGN KEY (IDcliente) REFERENCES Clientes(IDCliente),
-    FOREIGN KEY (IDpedido) REFERENCES Pedido(IDpedido)
+create table ventas (
+    idventa int primary key auto_increment not null,
+    idcarnicero int,
+    idcliente int,
+    idpedido int,
+    preciot decimal(10, 2),
+    foreign key (idcarnicero) references carniceros(idcarnicero),
+    foreign key (idcliente) references clientes(idcliente),
+    foreign key (idpedido) references pedido(idpedido)
 );
 
 
-INSERT INTO Clientes (nombre, telefono) VALUES 
-('Juan Pérez', '1122334455'),
-('María López', '1155667788'),
-('Carlos Gómez', '1199001122');
+insert into clientes (nombre, telefono) values 
+('juan pérez', '1122334455'),
+('maría lópez', '1155667788'),
+('carlos gómez', '1199001122');
 
-INSERT INTO Cortes_de_Carne (nombre, precio_kg) VALUES 
-('Asado', 8500.00),
-('Vacío', 9200.00),
-('Bife de Lomo', 11000.00);
+insert into cortes_de_carne (nombre, precio_kg) values 
+('asado', 8500.00),
+('vacío', 9200.00),
+('bife de lomo', 11000.00);
 
-INSERT INTO Carniceros (nombre, telefono, DNI) VALUES 
-('Ricardo Díaz', '1133445566', '20123456'),
-('José Martínez', '1177889900', '23987654'),
-('Luis Rodríguez', '1144556677', '27456123');
+insert into carniceros (nombre, telefono, dni) values 
+('ricardo díaz', '1133445566', '20123456'),
+('josé martínez', '1177889900', '23987654'),
+('luis rodríguez', '1144556677', '27456123');
 
-INSERT INTO Pedido (IDcc, cantidad) VALUES 
+insert into pedido (idcc, cantidad) values 
 (1, 2),
 (2, 1),
 (3, 3);
 
-INSERT INTO Ventas (IDcarnicero, IDcliente, IDpedido, precioT) VALUES 
+insert into ventas (idcarnicero, idcliente, idpedido, preciot) values 
 (1, 1, 1, 17000.00),
 (2, 2, 2, 9200.00),
 (3, 3, 3, 33000.00);
 
 
-SELECT c.nombre
-FROM Cortes_de_Carne c
-WHERE c.IDcc = (
-    SELECT p.IDcc
-    FROM Pedido p
-    JOIN Ventas v ON p.IDpedido = v.IDpedido
-    GROUP BY p.IDcc
-    ORDER BY COUNT(v.IDventa) DESC
-    LIMIT 1
+select c.nombre
+from cortes_de_carne c
+where c.idcc = (
+    select p.idcc
+    from pedido p
+    join ventas v on p.idpedido = v.idpedido
+    group by p.idcc
+    order by count(v.idventa) desc
+    limit 1
 );
 
 
-SELECT cl.nombre
-FROM Clientes cl
-WHERE cl.IDCliente = (
-    SELECT v.IDcliente
-    FROM Ventas v
-    GROUP BY v.IDcliente
-    ORDER BY COUNT(v.IDventa) DESC
-    LIMIT 1
+select cl.nombre
+from clientes cl
+where cl.idcliente = (
+    select v.idcliente
+    from ventas v
+    group by v.idcliente
+    order by count(v.idventa) desc
+    limit 1
 );
 
 
-SELECT ca.nombre
-FROM Carniceros ca
-WHERE ca.IDcarnicero = (
-    SELECT v.IDcarnicero
-    FROM Ventas v
-    GROUP BY v.IDcarnicero
-    ORDER BY COUNT(v.IDventa) DESC
-    LIMIT 1
+select ca.nombre
+from carniceros ca
+where ca.idcarnicero = (
+    select v.idcarnicero
+    from ventas v
+    group by v.idcarnicero
+    order by count(v.idventa) desc
+    limit 1
 );
 
 
-SELECT 
-    (SELECT cl.nombre FROM Clientes cl WHERE cl.IDCliente = v.IDcliente) AS cliente,
-    (SELECT c.nombre FROM Pedido p JOIN Cortes_de_Carne c ON p.IDcc = c.IDcc WHERE p.IDpedido = v.IDpedido) AS corte,
-    (SELECT ca.nombre FROM Carniceros ca WHERE ca.IDcarnicero = v.IDcarnicero) AS carnicero
-FROM Ventas v
-ORDER BY v.precioT DESC
-LIMIT 1;
+select 
+    (select cl.nombre from clientes cl where cl.idcliente = v.idcliente) as cliente,
+    (select c.nombre from pedido p join cortes_de_carne c on p.idcc = c.idcc where p.idpedido = v.idpedido) as corte,
+    (select ca.nombre from carniceros ca where ca.idcarnicero = v.idcarnicero) as carnicero
+from ventas v
+order by v.preciot desc
+limit 1;
 
 
 
-SELECT 
+select 
     c.nombre,
     (
-        SELECT COUNT(v.IDventa)
-        FROM Pedido p
-        JOIN Ventas v ON p.IDpedido = v.IDpedido
-        WHERE p.IDcc = c.IDcc
-    ) AS total_ventas
-FROM Cortes_de_Carne c;
+        select count(v.idventa)
+        from pedido p
+        join ventas v on p.idpedido = v.idpedido
+        where p.idcc = c.idcc
+    ) as total_ventas
+from cortes_de_carne c;
 
 
