@@ -163,3 +163,25 @@ insert into Batallas(Fecha, Ganador, IDAtacante, IDDefensor) values
 
 insert into BatallasGimnasios(IDBatalla, IDGimnasio) values
 (3, 2), (4, 1);
+
+
+
+select e.nombre, e.edad, c.nombre as ciudad
+from entrenadores e
+inner join ciudades c on e.IDCiudad = c.IDCiudad;
+
+
+select nombre, tipoelemento
+from especies;
+
+select p.nombre, p.Nivel, e.Nombre as Especie
+from pokemones p
+inner join especies e on e.IDEspecie = p.IDEspecie
+where p.nivel > 50;
+
+select p.nombre, p.Nivel, e.Nombre as Especie, en.nombre
+from pokemones p
+inner join entrenadores en on en.IDEntrenador = p.IDEntrenador 
+inner join especies e on e.IDEspecie = p.IDEspecie
+where e.tipoelemento like "%fuego%"
+order by p.nivel desc
