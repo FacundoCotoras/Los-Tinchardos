@@ -4,38 +4,38 @@ use PKM;
 
 Create table Regiones
 (
-IDRegion int primary key not null auto_increment,
+	IDRegion int primary key not null auto_increment,
     Nombre varchar(25),
     Clima varchar(25)
 );
 Create table Ciudades
 (
-IDCiudad int primary key not null auto_increment,
+	IDCiudad int primary key not null auto_increment,
     Nombre varchar(25),
-    Poblacion int,
+    Poblacion int, 
     IDRegion int,
     foreign key (IDRegion) references Regiones(IDRegion)
 );
 Create table Entrenadores
 (
-IDEntrenador int primary key not null auto_increment,
+	IDEntrenador int primary key not null auto_increment,
     Nombre varchar(25),
-    Edad int,
+    Edad int, 
     IDCiudad int,
     foreign key (IDCiudad) references Ciudades(IDCiudad)
 );
 Create table Especies
 (
-IDEspecie int primary key not null auto_increment,
+	IDEspecie int primary key not null auto_increment,
     Nombre varchar(25),
-    NumPokeDex int,
+    NumPokeDex int, 
     TipoElemento varchar(25),
     IDRegion int,
     foreign key (IDRegion) references Regiones(IDRegion)
 );
 Create table Pokemones
 (
-IDPokemon int primary key not null auto_increment,
+	IDPokemon int primary key not null auto_increment,
     Nombre varchar(25),
     Nivel int,
     IDEntrenador int,
@@ -45,7 +45,7 @@ IDPokemon int primary key not null auto_increment,
 );
 Create table Evoluciones
 (
-IDEvolucion int primary key not null auto_increment,
+	IDEvolucion int primary key not null auto_increment,
     IDFaseNueva int,
     foreign key (IDFaseNueva) references Especies(IDEspecie),
     IDFasePrevia int,
@@ -53,8 +53,8 @@ IDEvolucion int primary key not null auto_increment,
 );
 Create table HistorialEvoluciones
 (
-IDHistorial int primary key not null auto_increment,
-    Fecha date,
+	IDHistorial int primary key not null auto_increment,
+    Fecha date, 
     MetodoEvolucion text,
     IDPokemon int,
     foreign key (IDPokemon) references Pokemones(IDPokemon),
@@ -63,8 +63,8 @@ IDHistorial int primary key not null auto_increment,
 );
 Create table Gimnasios
 (
-IDGimnasio int primary key not null auto_increment,
-    Nombre Varchar(50),
+	IDGimnasio int primary key not null auto_increment,
+    Nombre Varchar(50), 
     TipoElemento varchar(25),
     IDLider int,
     foreign key (IDLider) references Entrenadores(IDEntrenador),
@@ -73,24 +73,24 @@ IDGimnasio int primary key not null auto_increment,
 );
 Create table Objetos
 (
-IDObjeto int primary key not null auto_increment,
+	IDObjeto int primary key not null auto_increment,
     Nombre varchar(25),
     descripcion text
 );
 Create table Equipos
 (
-IDRegistro int primary key not null,
+	IDRegistro int primary key not null auto_increment,
     IDEntrenador int,
     foreign key (IDEntrenador) references Entrenadores(IDEntrenador),
     IDPokemon int,
     foreign key (IDPokemon) references Pokemones(IDPokemon),
-    IDObjeto int,
+    IDObjeto int, 
     foreign key (IDObjeto) references Objetos(IDObjeto)
 );
 Create table Batallas
 (
-IDBatalla int primary key not null auto_increment,
-    Fecha date,
+	IDBatalla int primary key not null auto_increment,
+    Fecha date, 
     Ganador enum("Atacante", "Defensor"),
     IDAtacante int,
     foreign key (IDAtacante) references Entrenadores(IDEntrenador),
@@ -99,12 +99,13 @@ IDBatalla int primary key not null auto_increment,
 );
 Create table BatallasGimnasios
 (
-IDBatallaGimnasio int primary key not null auto_increment,
+	IDBatallaGimnasio int primary key not null auto_increment,
     IDBatalla int,
     foreign key (IDBatalla) references Batallas(IDBatalla),
     IDGimnasio int,
     foreign key (IDGimnasio) references Gimnasios(IDGimnasio)
 );
+
 
 insert into Regiones(Nombre, Clima) values
 ( "Kanto", "Templado"),
@@ -153,3 +154,12 @@ insert into Objetos(Nombre, Descripcion) values
 
 insert into Equipos(IDEntrenador, IDPokemon, IDObjeto) values
 (1, 1, 1), (1, 3, null), (2, 2, 2), (3, 4, null), (4, 5, 1);
+
+insert into Batallas(Fecha, Ganador, IDAtacante, IDDefensor) values
+("2026-09-14", "Atacante", 1, 2),
+("2026-09-16", "Defensor", 4, 3),
+("2026-09-19", "Atacante", 2, 4),
+("2026-09-20", "Defensor", 2, 3);
+
+insert into BatallasGimnasios(IDBatalla, IDGimnasio) values
+(3, 2), (4, 1);
