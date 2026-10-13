@@ -1,0 +1,116 @@
+using System.Runtime.Intrinsics.X86;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        struct Turno
+        {
+            public int Numero;
+            public string Nombre;
+            public string Motivo;
+        }
+        static void Main(string[] args)
+        {
+            Turno[] cola = new Turno[5];
+
+            int frente = 0;
+            int final = -1;
+            int cantidad = 0;
+            int opcion;
+            Turno aux;
+
+            do
+            {
+                Console.WriteLine("\n--- Menu ---");
+                Console.WriteLine("1. Solicitar turno");
+                Console.WriteLine("2. Atender siguiente turno");
+                Console.WriteLine("3. Mostrar turnos pendientes");
+                Console.WriteLine("4. Mostrar próximo turno");
+                Console.WriteLine("5. Mostrar cantidad de personas esperando");
+                Console.WriteLine("6. Salir");
+                Console.Write("Opción: ");
+                opcion = int.Parse(Console.ReadLine());
+                switch (opcion)
+                {
+                    case 1:
+                        Console.Clear();
+                        if (cantidad == cola.Length)
+                            Console.WriteLine("No hay mas espacio.");
+                        else
+                        {
+                            Console.Clear();
+                            aux.Numero = cantidad;
+                            Console.WriteLine("Ingrese el Nombre del Paciente: ");
+                            aux.Nombre = Console.ReadLine();
+                            Console.WriteLine("Ingrese el Motivo de la Visita: ");
+                            aux.Motivo = Console.ReadLine();
+                            final = (final + 1) % cola.Length; 
+                            cola[final] = aux;
+                            cantidad++;
+                            Console.WriteLine("Número encolado.");
+
+                        }
+                        break;
+                    case 2:
+                        Console.Clear();
+                        if (cantidad == 0)
+                            Console.WriteLine("La cola está vacía.");
+                        else
+                        {
+                            Console.WriteLine("Sale: " + cola[frente].Nombre);
+                            frente = (frente + 1) % cola.Length; 
+                            cantidad--; 
+                        }
+                        break;
+                    case 3:
+                        Console.Clear();
+                        if (cantidad == 0)
+                            Console.WriteLine("La cola está vacía.");
+                        else
+                        {
+                            Console.WriteLine("Elementos de la cola:");
+                            for (int i = 0; i < cantidad; i++)
+                            {
+                                int posicion = (frente + i) % cola.Length;
+                                Console.WriteLine("------------------------------");
+                                Console.WriteLine("Nombre: "+cola[posicion].Nombre);
+                                Console.WriteLine("Motivo: " + cola[posicion].Motivo);
+                            }
+                            Console.WriteLine("------------------------------");
+                        }
+                        break;
+                    case 4:
+                        Console.Clear();
+                        if (cantidad == 0)
+                            Console.WriteLine("La cola está vacía.");
+                        else
+                        {
+                            Console.WriteLine("El siguiente turno es: ");
+                            Console.WriteLine("------------------------------");
+                            Console.WriteLine("Nombre: " + cola[frente].Nombre);
+                            Console.WriteLine("Motivo: " + cola[frente].Motivo);
+                            Console.WriteLine("------------------------------");
+                        }
+                            
+                        break;
+                    case 5:
+                        Console.Clear();
+                        if (cantidad == 0)
+                            Console.WriteLine("La cola está vacía.");
+                        else
+                        {
+                            Console.WriteLine("La cantidad de Persnoas esperando es de: " + cantidad);
+                        }
+                            
+                        break;
+                    default:
+                        break;
+                }
+            } while (opcion != 6);
+
+        }
+    }
+}
