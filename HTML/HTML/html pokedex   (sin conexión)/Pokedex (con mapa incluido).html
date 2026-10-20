@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi Pokédex · Pokémon Rojo Fuego</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<nav class="topbar">
+  <div class="container-xl d-flex align-items-center gap-3 py-3">
+    <svg class="ball" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#c8372d"/><rect y="18" width="40" height="4" fill="#fff"/><circle cx="20" cy="20" r="6" fill="#fff" stroke="#c8372d" stroke-width="2"/><circle cx="20" cy="20" r="2.5" fill="#1f2630"/></svg>
+    <div><div class="fw-bold">Mi Pokédex</div><p class="sub">Pokémon Rojo Fuego</p></div>
+  </div>
+</nav>
+
+<aside class="offcanvas offcanvas-end" id="panelDer" tabindex="-1" data-bs-backdrop="false" data-bs-scroll="true">
+  <div class="offcanvas-header justify-content-end"><button type="button" class="btn btn-danger rounded-circle cerrar" data-bs-dismiss="offcanvas" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <div class="offcanvas-body pt-0"></div>
+</aside>
+<aside class="offcanvas offcanvas-start" id="panelIzq" tabindex="-1" data-bs-backdrop="false" data-bs-scroll="true">
+  <div class="offcanvas-header justify-content-end"><button type="button" class="btn btn-danger rounded-circle cerrar" data-bs-dismiss="offcanvas" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <div class="offcanvas-body pt-0"></div>
+</aside>
+
+<main class="container-xl py-4">
+  <header class="mb-4">
+    <p class="eyebrow mb-2">Cuaderno de aventura / Kanto</p>
+    <h1>Mi partida · Rojo Fuego</h1>
+    <p class="text-secondary">Lleva el registro de tus capturas y consulta el mapa de Pokémon Rojo Fuego.</p>
+  </header>
+
+  <section class="caja row g-0 mb-3">
+    <div class="col-md-8 p-4 border-end">
+      <p class="eyebrow mb-3">Pokédex completada</p>
+      <div class="d-flex align-items-baseline gap-3"><span class="big" id="pct">0 %</span><span class="small text-secondary" id="pctTxt"></span></div>
+      <div class="progress mt-3"><div class="progress-bar" id="barra"></div></div>
+    </div>
+    <div class="col-md-4 p-4">
+      <p class="eyebrow mb-3">Capturados</p>
+      <div class="big" id="cap">0</div>
+      <div class="small text-secondary mt-2">En tu colección</div>
+    </div>
+  </section>
+
+  <div class="d-flex flex-wrap align-items-center gap-2 mb-5">
+    <span class="eyebrow me-2">Equipo actual</span><div id="equipo" class="d-flex flex-wrap gap-2"></div>
+  </div>
+
+  <section class="mb-5">
+    <h2>Pokédex de Kanto · 151 Pokémon</h2>
+    <p class="text-secondary">Pokédex regional de Rojo Fuego. Cada casilla representa una especie, no una evolución pendiente.</p>
+    <div class="caja p-3 mb-3">
+      <div class="input-group mb-3">
+        <span class="input-group-text bg-white border-end-0"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span>
+        <input type="search" id="busca" class="form-control border-start-0" placeholder="Buscar por nombre o número de Pokédex…" aria-label="Buscar">
+      </div>
+      <div class="d-flex flex-wrap gap-2" id="pills">
+        <button class="pill on" data-f="all"></button><button class="pill" data-f="c"></button>
+        <button class="pill" data-f="v"></button><button class="pill" data-f="u"></button>
+      </div>
+    </div>
+    <div class="leyenda mb-4">
+      <span class="eyebrow">Estados</span>
+      <span class="ok"><span class="chk"></span> Capturado</span>
+      <span><span class="dot"></span> Visto sin capturar</span>
+      <span><span class="dot vacio"></span> No visto</span>
+    </div>
+    <div id="grupos"></div>
+    <p id="vacio" class="text-secondary d-none">Ningún Pokémon coincide con la búsqueda.</p>
+  </section>
+
+  <section>
+    <h2 class="mb-3">Mapa de Kanto</h2>
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="caja mapa">
+          <div class="d-flex justify-content-between mb-2"><p class="eyebrow">Kanto / Rojo Fuego</p><p class="eyebrow">N ↑</p></div>
+          <svg id="mapa" viewBox="0 0 980 595" role="img" aria-label="Mapa esquemático de Kanto"></svg>
+          <div class="leyenda mt-2" style="font-size:11px"><span>☐ Ciudad / lugar</span><span>Ruta terrestre</span><span>Ruta marítima</span><span class="ok">● Ubicación actual</span></div>
+        </div>
+        <p class="small text-secondary mt-3">Mapa esquemático, no a escala. Conexiones simplificadas de Kanto; no incluye interiores, todas las rutas ni las Islas Sete.</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="caja p-4">
+          <p class="eyebrow mb-2">Ubicación actual</p>
+          <h2 id="ciudad"></h2>
+          <p class="text-secondary" id="descCiudad"></p>
+          <hr>
+          <h3 class="h6 fw-bold mb-3" id="tituloGim"></h3>
+          <ul class="gim" id="gim"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const nombres = ["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Caterpie","Metapod","Butterfree","Weedle","Kakuna","Beedrill","Pidgey","Pidgeotto","Pidgeot","Rattata","Raticate","Spearow","Fearow","Ekans","Arbok","Pikachu","Raichu","Sandshrew","Sandslash","Nidoran♀","Nidorina","Nidoqueen","Nidoran♂","Nidorino","Nidoking","Clefairy","Clefable","Vulpix","Ninetales","Jigglypuff","Wigglytuff","Zubat","Golbat","Oddish","Gloom","Vileplume","Paras","Parasect","Venonat","Venomoth","Diglett","Dugtrio","Meowth","Persian","Psyduck","Golduck","Mankey","Primeape","Growlithe","Arcanine","Poliwag","Poliwhirl","Poliwrath","Abra","Kadabra","Alakazam","Machop","Machoke","Machamp","Bellsprout","Weepinbell","Victreebel","Tentacool","Tentacruel","Geodude","Graveler","Golem","Ponyta","Rapidash","Slowpoke","Slowbro","Magnemite","Magneton","Farfetch'd","Doduo","Dodrio","Seel","Dewgong","Grimer","Muk","Shellder","Cloyster","Gastly","Haunter","Gengar","Onix","Drowzee","Hypno","Krabby","Kingler","Voltorb","Electrode","Exeggcute","Exeggutor","Cubone","Marowak","Hitmonlee","Hitmonchan","Lickitung","Koffing","Weezing","Rhyhorn","Rhydon","Chansey","Tangela","Kangaskhan","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Mr. Mime","Scyther","Jynx","Electabuzz","Magmar","Pinsir","Tauros","Magikarp","Gyarados","Lapras","Ditto","Eevee","Vaporeon","Jolteon","Flareon","Porygon","Omanyte","Omastar","Kabuto","Kabutops","Aerodactyl","Snorlax","Articuno","Zapdos","Moltres","Dratini","Dragonair","Dragonite","Mewtwo","Mew"];
+
+const API = "https://pokeapi.co/api/v2/";
+const base = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+const cache = {};
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(3, "0");
+const leer = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
+const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+
+/* ---------- Estado (se guarda en el navegador) ---------- */
+let estado = leer("pk_estado", {});   // n -> "c" capturado | "v" visto
+let equipo = leer("pk_equipo", []);
+let filtro = "all", texto = "";
+const est = n => estado[n] || "u";
+
+/* ---------- Pokédex ---------- */
+const GRUPOS = [[1, 40], [41, 80], [81, 120], [121, 151]];
+const ETIQ = { c: "Capturado", v: "Visto", u: "No visto" };
+const cards = {};
+
+GRUPOS.forEach(([a, b]) => {
+  const sec = document.createElement("div");
+  sec.className = "mb-4";
+  sec.innerHTML = `<p class="eyebrow mb-3" style="font-size:13px">#${pad(a)} — #${pad(b)}</p><div class="grid"></div>`;
+  for (let n = a; n <= b; n++) {
+    const nombre = nombres[n - 1];
+    const el = document.createElement("article");
+    el.className = "pk";
+    el.innerHTML = `
+      <div class="d-flex justify-content-between"><span class="num">#${pad(n)}</span>
+        <button type="button" class="et" title="Cambiar entre visto y no visto"></button></div>
+      <div class="thumb"><img src="${base}${n}.png" alt="${nombre}" loading="lazy"></div>
+      <h3 class="nombre">${nombre}</h3>
+      <div class="d-flex align-items-center gap-2">
+        <button type="button" class="btn rounded-circle lupa" aria-label="Ver información de ${nombre}"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></button>
+        <label class="marcar"><input type="checkbox" class="form-check-input m-0"><span></span></label>
+      </div>`;
+    const chk = el.querySelector("input");
+    chk.addEventListener("change", () => {
+      estado[n] = chk.checked ? "c" : "v";
+      if (!chk.checked) equipo = equipo.filter(x => x !== n);
+      refrescar();
+    });
+    el.querySelector(".et").addEventListener("click", () => {
+      if (est(n) === "c") return;
+      if (est(n) === "v") delete estado[n]; else estado[n] = "v";
+      refrescar();
+    });
+    el.querySelector(".lupa").addEventListener("click", () => {
+      const r = el.getBoundingClientRect();
+      abrirPanel(n, r.left + r.width / 2 > window.innerWidth / 2);
+    });
+    cards[n] = { el, chk, sec };
+    sec.querySelector(".grid").appendChild(el);
+  }
+  $("grupos").appendChild(sec);
+});
+
+function refrescar() {
+  const cuenta = { c: 0, v: 0, u: 0 };
+  const q = texto.trim().toLowerCase().replace("#", "");
+  let visibles = 0;
+  for (let n = 1; n <= 151; n++) {
+    const e = est(n), { el, chk } = cards[n];
+    cuenta[e]++;
+    el.classList.toggle("c", e === "c");
+    chk.checked = e === "c";
+    el.querySelector(".et").textContent = ETIQ[e];
+    el.querySelector(".marcar span").textContent = e === "c" ? "Capturado" : "Marcar captura";
+    const ok = (filtro === "all" || filtro === e) && (!q || (pad(n) + " " + nombres[n - 1].toLowerCase()).includes(q));
+    el.hidden = !ok;
+    if (ok) visibles++;
+  }
+  Object.values(cards).forEach(c => { c.sec.hidden = !c.sec.querySelector(".pk:not([hidden])"); });
+  $("vacio").classList.toggle("d-none", visibles > 0);
+
+  const txt = { all: `Todos · 151`, c: `Capturados · ${cuenta.c}`, v: `Vistos sin capturar · ${cuenta.v}`, u: `No vistos · ${cuenta.u}` };
+  document.querySelectorAll(".pill").forEach(p => { p.textContent = txt[p.dataset.f]; p.classList.toggle("on", p.dataset.f === filtro); });
+
+  const pct = (cuenta.c / 151 * 100).toFixed(1).replace(".", ",");
+  $("pct").textContent = pct + " %";
+  $("pctTxt").textContent = `${cuenta.c} de 151 capturados`;
+  $("barra").style.width = (cuenta.c / 151 * 100) + "%";
+  $("cap").textContent = cuenta.c;
+
+  $("equipo").innerHTML = equipo.length ? "" : `<span class="small text-secondary">Aún sin equipo. Captura un Pokémon y agrégalo desde su lupa.</span>`;
+  equipo.forEach(n => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip";
+    b.innerHTML = `<img src="${base}${n}.png" alt=""> ${nombres[n - 1]}`;
+    b.onclick = () => abrirPanel(n, false);
+    $("equipo").appendChild(b);
+  });
+  guardar("pk_estado", estado); guardar("pk_equipo", equipo);
+}
+
+$("busca").addEventListener("input", e => { texto = e.target.value; refrescar(); });
+$("pills").addEventListener("click", e => { const p = e.target.closest(".pill"); if (p) { filtro = p.dataset.f; refrescar(); } });
+
+/* ---------- Panel de información ---------- */
+const paneles = { der: $("panelDer"), izq: $("panelIzq") };
+
+const getJSON = u => fetch(u).then(r => { if (!r.ok) throw new Error(); return r.json(); });
+const idDe = url => +url.match(/\/(\d+)\/?$/)[1];
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+function condicion(det) {
+  const d = det[0] || {};
+  if (d.min_level) return `nivel ${d.min_level}`;
+  if (d.item) return `usando ${d.item.name.replace(/-/g, " ")}`;
+  if (d.trigger && d.trigger.name === "trade") return "por intercambio";
+  if (d.min_happiness) return "con mucha amistad";
+  return "condición especial";
+}
+
+function buscarNodo(nodo, id, padre) {
+  if (idDe(nodo.species.url) === id) return { nodo, padre };
+  for (const h of nodo.evolves_to) {
+    const r = buscarNodo(h, id, nodo);
+    if (r) return r;
+  }
+  return null;
+}
+
+async function cargar(n) {
+  if (cache[n]) return cache[n];
+  const [poke, enc, sp] = await Promise.all([
+    getJSON(`${API}pokemon/${n}`),
+    getJSON(`${API}pokemon/${n}/encounters`),
+    getJSON(`${API}pokemon-species/${n}`)
+  ]);
+  const cadena = await getJSON(sp.evolution_chain.url);
+
+  const rutas = new Set();
+  enc.forEach(e => {
+    if (e.version_details.some(v => ["red", "blue", "yellow"].includes(v.version.name))) {
+      rutas.add(cap(e.location_area.name.replace(/^kanto-/, "").replace(/-area$/, "").replace(/-/g, " ")));
+    }
+  });
+  const lista = [...rutas];
+  const lugares = lista.length
+    ? lista.slice(0, 6).join(", ") + (lista.length > 6 ? ` y ${lista.length - 6} más` : "")
+    : "No aparece en estado salvaje (se obtiene por evolución, regalo o evento).";
+
+  const { nodo, padre } = buscarNodo(cadena.chain, n, null);
+  const partes = [];
+  if (padre && idDe(padre.species.url) <= 151) {
+    const hijo = padre.evolves_to.find(h => idDe(h.species.url) === n);
+    partes.push(`Evoluciona de ${nombres[idDe(padre.species.url) - 1]} (${condicion(hijo.evolution_details)}).`);
+  }
+  nodo.evolves_to.filter(h => idDe(h.species.url) <= 151).forEach(h =>
+    partes.push(`Evoluciona a ${nombres[idDe(h.species.url) - 1]} (${condicion(h.evolution_details)}).`));
+  if (!partes.length) partes.push("No evoluciona.");
+
+  return cache[n] = {
+    altura: (poke.height / 10).toFixed(1) + " m",
+    peso: (poke.weight / 10).toFixed(1) + " kg",
+    lugares, evo: partes
+  };
+}
+
+
+async function abrirPanel(n, izquierda) {
+  const nombre = nombres[n - 1];
+  const activo = izquierda ? paneles.izq : paneles.der;
+  bootstrap.Offcanvas.getOrCreateInstance(izquierda ? paneles.der : paneles.izq).hide();
+  const cuerpo = activo.querySelector(".offcanvas-body");
+  cuerpo.innerHTML = `<img class="grande" src="${base}${n}.png" alt="${nombre}">
+    <h3 class="text-center my-2">#${pad(n)} ${nombre}</h3>
+    <div class="text-center mb-3"><button type="button" class="btn btn-sm eq"></button></div>
+    <p class="estado">Cargando…</p>`;
+  const btn = cuerpo.querySelector(".eq");
+  const pintar = () => {
+    const dentro = equipo.includes(n), lleno = equipo.length >= 6;
+    btn.textContent = dentro ? "Quitar del equipo" : "Agregar al equipo";
+    btn.className = "btn btn-sm eq " + (dentro ? "btn-outline-danger" : "btn-danger");
+    btn.disabled = !dentro && (est(n) !== "c" || lleno);
+    btn.title = btn.disabled ? (lleno ? "El equipo ya tiene 6 Pokémon" : "Marca este Pokémon como capturado para agregarlo") : "";
+  };
+  btn.onclick = () => { equipo = equipo.includes(n) ? equipo.filter(x => x !== n) : [...equipo, n]; pintar(); refrescar(); };
+  pintar();
+  bootstrap.Offcanvas.getOrCreateInstance(activo).show();
+  try {
+    const d = await cargar(n);
+    cuerpo.querySelector(".estado").outerHTML = `<dl>
+      <dt>Altura</dt><dd>${d.altura}</dd>
+      <dt>Peso</dt><dd>${d.peso}</dd>
+      <dt>Dónde aparece</dt><dd>${d.lugares}</dd>
+      <dt>Evolución</dt><dd>${d.evo.join("<br>")}</dd></dl>`;
+  } catch {
+    cuerpo.querySelector(".estado").textContent = "No se pudo cargar la información. Revisa tu conexión e inténtalo de nuevo.";
+  }
+}
+
+/* ---------- Mapa de Kanto ---------- */
+// id, nombre, x, y, desplazamiento del texto (dx, dy), descripción
+const NODOS = [
+  ["meseta", "Meseta Añil", 82, 95, -50, -26, "Sede de la Liga Pokémon. Aquí termina la aventura."],
+  ["plateada", "Ciudad Plateada", 222, 95, -57, -26],
+  ["moon", "Monte Moon", 422, 95, -45, -26, "Cueva llena de Zubat y Clefairy entre Plateada y Celeste."],
+  ["celeste", "Ciudad Celeste", 592, 95, -53, -26],
+  ["tunel", "Túnel Roca", 807, 132, 19, 4, "Túnel oscuro que conecta con Pueblo Lavanda. Lleva Destello."],
+  ["verde", "Ciudad Verde", 222, 234, -103, 30],
+  ["azulona", "Ciudad Azulona", 422, 234, -45, -29],
+  ["azafran", "Ciudad Azafrán", 592, 234, -53, -29],
+  ["lavanda", "Pueblo Lavanda", 807, 234, 19, 4, "Pueblo tranquilo con la Torre Pokémon."],
+  ["carmin", "Ciudad Carmín", 592, 344, 16, 4],
+  ["fucsia", "Ciudad Fucsia", 722, 405, -46, -26],
+  ["paleta", "Pueblo Paleta", 222, 360, -103, 25, "Pueblo donde empieza tu aventura."],
+  ["canela", "Isla Canela", 222, 460, -42, 30],
+  ["espuma", "Islas Espuma", 462, 460, -46, 30, "Islas heladas, hogar de Articuno."]
+];
+const TIERRA = ["82,95 82,234 222,234", "222,95 222,360", "222,95 592,95", "592,95 807,95 807,402 722,402",
+  "592,95 592,344", "365,234 807,234", "365,234 365,402 722,402"];
+const MAR = ["222,360 222,460 722,460 722,405"];
+const RUTAS = [[297,116,"Ruta 3"],[491,116,"Ruta 4"],[685,116,"Ruta 9"],[236,164,"Ruta 2"],[605,164,"Ruta 5"],
+  [819,178,"Ruta 10"],[103,222,"Ruta 22"],[490,252,"Ruta 7"],[689,252,"Ruta 8"],[543,293,"Ruta 6"],[236,300,"Ruta 1"],
+  [361,337,"Rutas 16–18"],[819,321,"Ruta 12"],[236,419,"Ruta 21"],[322,481,"Ruta 20"],[735,446,"Ruta 19"]];
+const GIM = [["Roca","Brock","plateada"],["Cascada","Misty","celeste"],["Trueno","Lt. Surge","carmin"],["Arcoíris","Erika","azulona"],
+  ["Alma","Koga","fucsia"],["Pantano","Sabrina","azafran"],["Volcán","Blaine","canela"],["Tierra","Giovanni","verde"]];
+const ORD = ["Primera","Segunda","Tercera","Cuarta","Quinta","Sexta","Séptima","Octava"];
+
+let loc = leer("pk_loc", "azulona");
+let medallas = leer("pk_medallas", []);
+
+function dibujarMapa() {
+  let s = `<path d="M12,320 L150,332 L300,385 L420,455 L552,420 L560,365 L610,368 L670,432 L860,428 L946,382 L972,380 L972,595 L12,595Z" fill="#eaf0f5"/>`;
+  s += TIERRA.map(p => `<polyline class="tierra" points="${p}"/>`).join("") + MAR.map(p => `<polyline class="mar" points="${p}"/>`).join("");
+  s += RUTAS.map(([x, y, t]) => `<text class="rt" x="${x}" y="${y}">${t}</text>`).join("");
+  s += NODOS.map(([id, nom, x, y, dx, dy]) => `<g class="nodo${id === loc ? " actual" : ""}" data-id="${id}" tabindex="0" role="button" aria-label="${nom}">
+    <rect class="hit" x="${x - 16}" y="${y - 16}" width="32" height="32"/>${id === loc ? `<circle class="aro" cx="${x}" cy="${y}" r="14"/>` : ""}
+    <rect class="sq" x="${x - 6}" y="${y - 6}" width="12" height="12" rx="2"/><text x="${x + dx}" y="${y + dy}">${nom}</text></g>`).join("");
+  $("mapa").innerHTML = s;
+}
+
+function dibujarLado() {
+  const n = NODOS.find(x => x[0] === loc), g = GIM.findIndex(x => x[2] === loc);
+  $("ciudad").textContent = n[1];
+  $("descCiudad").textContent = g >= 0 ? `${ORD[g]} parada de gimnasio. Líder: ${GIM[g][1]}.` : n[6];
+  $("tituloGim").textContent = `Ruta de gimnasios · ${medallas.length} de 8`;
+  const prox = GIM.findIndex((_, i) => !medallas.includes(i));
+  $("gim").innerHTML = GIM.map(([tipo, lider], i) => `<li><button type="button" data-i="${i}">
+    ${medallas.includes(i) ? `<span class="m">✓</span>` : `<span class="m vacio"></span>`}
+    <span>${tipo} · ${lider}</span>${i === prox ? `<span class="prox">Próxima</span>` : ""}</button></li>`).join("");
+}
+
+function elegirCiudad(el) {
+  const nodo = el.target.closest(".nodo");
+  if (!nodo) return;
+  loc = nodo.dataset.id; guardar("pk_loc", loc); dibujarMapa(); dibujarLado();
+}
+$("mapa").addEventListener("click", elegirCiudad);
+$("mapa").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); elegirCiudad(e); } });
+$("gim").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const i = +b.dataset.i;
+  medallas = medallas.includes(i) ? medallas.filter(x => x !== i) : [...medallas, i];
+  guardar("pk_medallas", medallas); dibujarLado();
+});
+
+refrescar(); dibujarMapa(); dibujarLado();
+</script>
+</body>
+</html>
