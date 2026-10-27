@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex | Crear cuenta</title>
+    <link rel="stylesheet" href="estilo.css">
+    <style>
+        /* Símbolo futurista sin el círculo de fondo */
+        .pokemon-container .pokemon-glow {
+            display: none;
+        }
+
+        .pokemon-container .simbolo-neon {
+            width: 150px;
+            height: 150px;
+            max-height: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #FF5E00;
+            border-radius: 22px;
+            background: linear-gradient(
+                145deg,
+                #211008,
+                #0B0B0E 65%
+            );
+            box-shadow:
+                0 0 12px rgba(255, 94, 0, 0.8),
+                0 0 30px rgba(255, 94, 0, 0.35),
+                inset 0 0 20px rgba(255, 94, 0, 0.12);
+            animation: nucleo-brillante 2s ease-in-out infinite alternate;
+        }
+
+        .pokemon-container .simbolo-neon::before {
+            content: "";
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            border: 1px solid rgba(255, 138, 61, 0.5);
+            border-radius: 14px;
+            transform: rotate(45deg);
+        }
+
+        .pokemon-container .simbolo-centro {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            border: 2px solid #FF8A3D;
+            border-radius: 50%;
+            background: #120A06;
+            box-shadow:
+                0 0 12px #FF5E00,
+                inset 0 0 15px rgba(255, 94, 0, 0.35);
+        }
+
+        .pokemon-container .nucleo-rayo {
+            display: block;
+            width: 30px;
+            height: 42px;
+            background: #FF6A00;
+            clip-path: polygon(
+                58% 0,
+                10% 53%,
+                42% 53%,
+                28% 100%,
+                90% 39%,
+                57% 39%
+            );
+            filter: drop-shadow(0 0 7px #FF5E00);
+        }
+
+        @keyframes nucleo-brillante {
+            from {
+                box-shadow:
+                    0 0 10px rgba(255, 94, 0, 0.65),
+                    0 0 22px rgba(255, 94, 0, 0.25),
+                    inset 0 0 15px rgba(255, 94, 0, 0.08);
+            }
+
+            to {
+                box-shadow:
+                    0 0 16px rgba(255, 94, 0, 0.95),
+                    0 0 35px rgba(255, 94, 0, 0.5),
+                    inset 0 0 22px rgba(255, 94, 0, 0.18);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .pokemon-container .simbolo-neon {
+                width: 130px;
+                height: 130px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pokemon-container .simbolo-neon {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo">
+            <span class="logo-icon"></span>
+            Pokédex
+        </a>
+
+        <span class="nav-text">Tu aventura comienza aquí</span>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+            <span class="tag">NUEVA AVENTURA</span>
+
+            <h1>
+                Convertite en el
+                <span>mejor entrenador</span>
+            </h1>
+
+            <p class="description">
+                Crea tu cuenta y comenza a descubrir el mundo Pokémon.
+                Registra tus criaturas favoritas y hace tu propia colección.
+            </p>
+
+            <div class="pokemon-container">
+
+                <div
+                    class="pokemon-image simbolo-neon"
+                    role="img"
+                    aria-label="Núcleo de energía naranja futurista"
+                >
+                    <span class="simbolo-centro">
+                        <span class="nucleo-rayo"></span>
+                    </span>
+                </div>
+
+                <span class="pokemon-number">POKÉDEX // 001</span>
+
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">01</span>
+                    <div>
+                        <h3>Tu propia Pokédex</h3>
+                        <p>Descubri y registra tus Pokémon favoritos.</p>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">02</span>
+                    <div>
+                        <h3>Tu perfil de entrenador</h3>
+                        <p>Crea tu identidad dentro de la aventura.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="register-card">
+
+            <div class="card-header">
+                <span class="subtitle">CENTRO DE ENTRENADORES</span>
+
+                <h2>Crear cuenta</h2>
+
+                <p>Completa tus datos para comenzar.</p>
+            </div>
+
+            <div class="tabs">
+                <a href="#registro" class="tab active">Registrarse</a>
+                <a href="#login" class="tab">Iniciar sesión</a>
+            </div>
+
+            <form action="#" method="post" id="registro">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Tu nombre"
+                            autocomplete="given-name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input
+                            type="text"
+                            id="apellido"
+                            name="apellido"
+                            placeholder="Tu apellido"
+                            autocomplete="family-name"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="alias">Alias de entrenador</label>
+                    <input
+                        type="text"
+                        id="alias"
+                        name="alias"
+                        placeholder="Elige tu nombre de usuario"
+                        minlength="3"
+                        maxlength="20"
+                        required
+                    >
+                    <small>Este va a ser tu nombre dentro de la Pokédex.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="correo@ejemplo.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Mínimo 8 caracteres"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmar">Confirmar contraseña</label>
+                    <input
+                        type="password"
+                        id="confirmar"
+                        name="confirmar"
+                        placeholder="Repite tu contraseña"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <label class="terms">
+                    <input type="checkbox" name="terminos" required>
+                    <span>Acepto los términos y condiciones.</span>
+                </label>
+
+                <button type="submit" class="submit-button">
+                    Crear mi cuenta
+                    <span class="arrow">&rarr;</span>
+                </button>
+
+            </form>
+
+            <div class="divider">
+                <span>O</span>
+            </div>
+
+            <p class="login-text">
+                ¿Ya tenes una cuenta?
+                <a href="#login">Inicia sesión</a>
+            </p>
+
+            <p class="security">
+                Tus datos deben mantenerse protegidos.
+            </p>
+
+        </section>
+
+        <section class="login-anchor" id="login">
+            <h2>¿Ya eres entrenador?</h2>
+            <p>Para iniciar sesión necesitas una página de acceso conectada a tu sistema de usuarios.</p>
+            <a href="#registro">Volver al registro</a>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Pokédex Project — Proyecto de fans no afiliado oficialmente a Pokémon.</p>
+    </footer>
+
+</body>
+</html>

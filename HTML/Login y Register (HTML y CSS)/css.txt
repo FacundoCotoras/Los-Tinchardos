@@ -1,0 +1,642 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --background: #070709;
+    --card: #111114;
+    --primary: #FF5E00;
+    --orange-light: #FF8A3D;
+    --blue: #00E5FF;
+    --text: #F5F5F7;
+    --muted: #A1A1AA;
+    --border: #39251C;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            ellipse at 12% 30%,
+            rgba(255, 75, 0, 0.18),
+            transparent 38%
+        ),
+        radial-gradient(
+            ellipse at 85% 75%,
+            rgba(255, 94, 0, 0.10),
+            transparent 35%
+        ),
+        #070709;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+.navbar {
+    height: 80px;
+    padding: 0 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 94, 0, 0.20);
+    background: rgba(7, 7, 9, 0.75);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.logo-icon {
+    width: 25px;
+    height: 25px;
+    border: 4px solid var(--primary);
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    box-shadow:
+        0 0 8px var(--primary),
+        0 0 20px rgba(255, 94, 0, 0.65);
+}
+
+.logo-icon::after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    width: 17px;
+    background: var(--primary);
+    left: 0;
+    top: 6px;
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.nav-text {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.container {
+    max-width: 1160px;
+    margin: auto;
+    padding: 55px 25px 65px;
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 75px;
+    align-items: center;
+}
+
+.welcome {
+    padding: 10px 0;
+}
+
+.tag {
+    display: inline-block;
+    padding: 8px 13px;
+    color: #FF8A3D;
+    background: rgba(255, 75, 0, 0.10);
+    border: 1px solid rgba(255, 94, 0, 0.8);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    box-shadow:
+        0 0 8px rgba(255, 94, 0, 0.3),
+        inset 0 0 12px rgba(255, 94, 0, 0.08);
+}
+
+h1 {
+    font-size: clamp(36px, 4.3vw, 54px);
+    line-height: 1.13;
+    font-weight: 900;
+    margin: 23px 0 17px;
+    letter-spacing: -1.5px;
+}
+
+h1 span {
+    display: block;
+    color: var(--primary);
+    text-shadow:
+        0 0 5px #FF5E00,
+        0 0 12px rgba(255, 94, 0, 0.95),
+        0 0 25px rgba(255, 94, 0, 0.75),
+        0 0 50px rgba(255, 69, 0, 0.40);
+}
+
+.description {
+    color: var(--muted);
+    max-width: 430px;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.pokemon-container {
+    height: 250px;
+    margin: 8px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pokemon-glow {
+    width: 205px;
+    height: 205px;
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 94, 0, 0.13);
+    box-shadow:
+        0 0 25px rgba(255, 94, 0, 0.30),
+        0 0 55px rgba(255, 94, 0, 0.24),
+        0 0 90px rgba(255, 69, 0, 0.18),
+        0 0 130px rgba(255, 94, 0, 0.10);
+}
+
+.pokemon-image {
+    width: 225px;
+    max-height: 235px;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    filter:
+        drop-shadow(0 0 12px rgba(255, 94, 0, 0.30))
+        drop-shadow(0 15px 25px rgba(0, 0, 0, 0.4));
+    animation: float 3s ease-in-out infinite;
+}
+
+.pokemon-number {
+    position: absolute;
+    z-index: 2;
+    right: 15%;
+    bottom: 30px;
+    background: #111114;
+    border: 1px solid var(--primary);
+    padding: 7px 13px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--orange-light);
+    box-shadow:
+        0 0 8px rgba(255, 94, 0, 0.4),
+        0 0 18px rgba(255, 94, 0, 0.15);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.features {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 12px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+    background: #1A100C;
+    border: 1px solid rgba(255, 94, 0, 0.45);
+    display: grid;
+    place-items: center;
+    color: var(--orange-light);
+    font-size: 13px;
+    font-weight: 900;
+    box-shadow: inset 0 0 12px rgba(255, 94, 0, 0.06);
+}
+
+.feature h3 {
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.feature p {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.register-card {
+    padding: 34px;
+    background: rgba(17, 17, 20, 0.96);
+    border: 1px solid rgba(255, 94, 0, 0.50);
+    border-radius: 8px;
+    box-shadow:
+        0 0 12px rgba(255, 94, 0, 0.12),
+        0 0 35px rgba(255, 69, 0, 0.08),
+        0 25px 70px rgba(0, 0, 0, 0.45),
+        inset 0 0 25px rgba(255, 94, 0, 0.025);
+}
+
+.card-header {
+    text-align: center;
+}
+
+.subtitle {
+    color: var(--orange-light);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.4px;
+    text-shadow: 0 0 10px rgba(255, 94, 0, 0.4);
+}
+
+.card-header h2 {
+    font-size: 28px;
+    font-weight: 900;
+    margin: 8px 0 5px;
+}
+
+.card-header p {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    padding: 5px;
+    background: #09090B;
+    border: 1px solid #272020;
+    border-radius: 4px;
+    margin: 25px 0;
+}
+
+.tab {
+    text-align: center;
+    text-decoration: none;
+    padding: 11px 5px;
+    border-radius: 3px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+    transition: all 0.25s ease;
+}
+
+.tab.active,
+.tab:hover {
+    color: #090909;
+    background: var(--primary);
+    box-shadow:
+        0 0 8px rgba(255, 94, 0, 0.65),
+        0 0 20px rgba(255, 94, 0, 0.25);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.form-group input {
+    width: 100%;
+    min-width: 0;
+    background: #0B0B0E;
+    border: 1px solid #393035;
+    color: white;
+    padding: 12px 13px;
+    border-radius: 4px;
+    outline: none;
+    font-size: 12px;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.form-group input::placeholder {
+    color: #77717A;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    box-shadow:
+        0 0 8px rgba(255, 94, 0, 0.70),
+        0 0 20px rgba(255, 94, 0, 0.22),
+        inset 0 0 8px rgba(255, 94, 0, 0.04);
+}
+
+.form-group small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #C5C0C0;
+    font-size: 11px;
+    margin: 4px 0 19px;
+    cursor: pointer;
+}
+
+.terms input {
+    accent-color: var(--primary);
+    margin-top: 3px;
+}
+
+.submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #FF9B59;
+    border-radius: 4px;
+    background: var(--primary);
+    color: #090909;
+    font-weight: 900;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+    box-shadow:
+        0 0 8px rgba(255, 94, 0, 0.85),
+        0 0 20px rgba(255, 94, 0, 0.50),
+        0 0 40px rgba(255, 69, 0, 0.20);
+}
+
+.submit-button:hover {
+    background: var(--orange-light);
+    transform: translateY(-3px);
+    box-shadow:
+        0 0 12px #FF6A00,
+        0 0 30px rgba(255, 94, 0, 0.80),
+        0 0 55px rgba(255, 69, 0, 0.40);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+}
+
+.arrow {
+    font-size: 19px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 23px 0 17px;
+    color: #81777A;
+    font-size: 11px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    height: 1px;
+    background: #393035;
+    flex: 1;
+}
+
+.login-text {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.login-text a,
+.login-anchor a {
+    color: var(--orange-light);
+    font-weight: 900;
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(255, 94, 0, 0.30);
+}
+
+.login-text a:hover,
+.login-anchor a:hover {
+    color: #FFC099;
+    text-decoration: underline;
+}
+
+.security {
+    text-align: center;
+    color: #81777A;
+    font-size: 10px;
+    margin-top: 22px;
+}
+
+.login-anchor {
+    grid-column: 1 / -1;
+    background: var(--card);
+    border: 1px solid #493326;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+}
+
+.login-anchor h2 {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.login-anchor p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+footer {
+    text-align: center;
+    padding: 22px 15px;
+    border-top: 1px solid rgba(255, 94, 0, 0.16);
+    color: #81777A;
+    font-size: 11px;
+    line-height: 2;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+::selection {
+    color: #090909;
+    background: var(--primary);
+}
+
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+        max-width: 540px;
+        gap: 30px;
+        padding-top: 35px;
+    }
+
+    .welcome {
+        text-align: center;
+    }
+
+    .description {
+        margin: auto;
+    }
+
+    .pokemon-container {
+        height: 210px;
+    }
+
+    .pokemon-image {
+        width: 185px;
+        max-height: 195px;
+    }
+
+    .pokemon-glow {
+        width: 170px;
+        height: 170px;
+    }
+
+    .features {
+        display: none;
+    }
+
+    .login-anchor {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 68px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .nav-text {
+        font-size: 10px;
+    }
+
+    .container {
+        padding: 28px 15px 40px;
+    }
+
+    h1 {
+        font-size: 35px;
+    }
+
+    .register-card {
+        padding: 23px 18px;
+        border-radius: 6px;
+    }
+
+    .form-row {
+        gap: 9px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+.simbolo-neon {
+    position: relative;
+    overflow: hidden;
+}
+
+.simbolo-centro {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FF8A3D;
+    border-radius: 50%;
+    background: #180B04;
+    box-shadow:
+        0 0 10px #FF5E00,
+        0 0 22px #FF5E00,
+        inset 0 0 15px rgba(255, 94, 0, 0.45);
+}
+
+.nucleo-rayo {
+    width: 27px;
+    height: 40px;
+    background: #FF6A00;
+    clip-path: polygon(
+        58% 0,
+        10% 53%,
+        42% 53%,
+        28% 100%,
+        90% 39%,
+        57% 39%
+    );
+    filter:
+        drop-shadow(0 0 5px #FF5E00);
+    box-shadow: 0 0 15px #FF5E00;
+}
+
+.simbolo-neon::before {
+    content: "";
+    position: absolute;
+    width: 112px;
+    height: 112px;
+    border: 1px dashed rgba(255, 138, 61, 0.85);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.simbolo-neon {
+    box-shadow:
+        0 0 10px #FF5E00,
+        0 0 25px rgba(255, 94, 0, 0.9),
+        0 0 50px rgba(255, 94, 0, 0.55),
+        inset 0 0 20px rgba(255, 94, 0, 0.25);
+}
