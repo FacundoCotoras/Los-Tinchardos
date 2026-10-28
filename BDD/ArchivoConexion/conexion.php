@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "PKDEX"; 
+$db   = "pokemon"; 
 
 $conn = new mysqli($host, $user, $pass, $db);
 
