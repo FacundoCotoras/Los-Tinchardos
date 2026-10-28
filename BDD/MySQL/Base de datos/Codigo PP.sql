@@ -154,4 +154,4 @@ create table pcs (
     foreign key (idguardado) references guardados(idguardado),
     foreign key (idpokemon) references pokemones(idpokemon)
 );
-);
+
