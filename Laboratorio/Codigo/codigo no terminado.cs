@@ -1,7 +1,12 @@
 // CODIGO NO TERMINADO, ES PARA IR GUARDANDO
 /*NOTAS DE COMO VA:
-Hay mapa de tamaño escalado al tamaño de la pantalla, la cual esta agrandada para una mejor visualizacion
-Esta creado el personaje, pero no es dibujado, solo estoy haciendo pruebas
+1ra Modificacion:    Hay mapa de tamaño escalado al tamaño de la pantalla, la cual esta agrandada para una mejor visualizacion
+                     Esta creado el personaje, pero no es dibujado, solo estoy haciendo pruebas
+                     
+2da Modificacion:    Agregué un diseño de torreta que se coloca cuando el jugador hace click izquierdo sobre el cuadrado verde habilitado para "construir".
+                     Ahora habra que replicar esto en cada slot de construcción.
+                     Sistema Debug que permite ver la zona habilitada para colocar defensas. La dejo comentada para tener a mano, y quitar // de comentario en caso
+                     de necesitar comprobar zonas de colocación.
 
 */
 
@@ -20,9 +25,21 @@ namespace TowerDefense
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D mapa;
-        private Texture2D personaje;
+        private Texture2D canion;
+        private Texture2D debugRect;
         private Vector2 posicion;
         private float velocidad = 200f;
+
+        Vector2 slot = new Vector2(235, 160);
+        Rectangle areaSlot = new Rectangle(
+        235,
+        179,
+        90,
+        80
+        );
+
+        private bool torreColocada = false;
+
 
 
         public Game1()
@@ -51,10 +68,13 @@ namespace TowerDefense
 
             mapa = Content.Load<Texture2D>("mapa");
 
-            personaje = Content.Load<Texture2D>("personaje");
+            canion = Content.Load<Texture2D>("canion");
 
             posicion = new Vector2(100, 100);
 
+            debugRect = new Texture2D(GraphicsDevice, 1, 1);
+
+            debugRect.SetData(new[] { Color.White });
             // TODO: use this.Content to load your game content here
         }
 
@@ -66,6 +86,7 @@ namespace TowerDefense
             // TODO: Add your update logic here
 
             KeyboardState teclado = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
 
             float tiempo = (float)gameTime
                 .ElapsedGameTime.TotalSeconds;
@@ -90,15 +111,12 @@ namespace TowerDefense
                 posicion.Y += velocidad * tiempo;
             }
 
-            posicion.X = MathHelper.Clamp(
-            posicion.X, 0,
-            GraphicsDevice.Viewport.Width - personaje.Width
-            );
+            if (mouse.LeftButton == ButtonState.Pressed && areaSlot.Contains(mouse.X, mouse.Y))
+            {
+                torreColocada = true;
+            }
 
-            posicion.Y = MathHelper.Clamp(
-                posicion.Y, 0,
-                GraphicsDevice.Viewport.Height - personaje.Height
-            );
+
 
 
 
@@ -126,6 +144,27 @@ namespace TowerDefense
                 Color.White
             );
 
+            // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
+            /*  _spriteBatch.Draw(
+                  debugRect,
+                  areaSlot,
+                  Color.Green * 0.4f
+              ); */
+
+            if (torreColocada)
+            {
+                _spriteBatch.Draw(
+                    canion,
+                    new Rectangle(
+                        (int)slot.X,
+                        (int)slot.Y,
+                        90,
+                        90
+                    ),
+                    Color.White
+                );
+            }
+
             _spriteBatch.End();
 
 
@@ -135,3 +174,4 @@ namespace TowerDefense
         }
     }
 }
+
