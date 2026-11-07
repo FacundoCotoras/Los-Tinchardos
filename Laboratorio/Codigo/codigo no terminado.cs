@@ -1,12 +1,24 @@
 // CODIGO NO TERMINADO, ES PARA IR GUARDANDO
-/*NOTAS DE COMO VA:
-1ra Modificacion:    Hay mapa de tamaño escalado al tamaño de la pantalla, la cual esta agrandada para una mejor visualizacion
-                     Esta creado el personaje, pero no es dibujado, solo estoy haciendo pruebas
-                     
-2da Modificacion:    Agregué un diseño de torreta que se coloca cuando el jugador hace click izquierdo sobre el cuadrado verde habilitado para "construir".
-                     Ahora habra que replicar esto en cada slot de construcción.
-                     Sistema Debug que permite ver la zona habilitada para colocar defensas. La dejo comentada para tener a mano, y quitar // de comentario en caso
-                     de necesitar comprobar zonas de colocación.
+/*
+
+HISTORIAL DEL PROYECTO
+
+[1]
+- Mapa cargado y escalado a la ventana.
+- Ventana ampliada a 1600x900.
+- Pruebas iniciales con personaje.
+
+[2]
+- Sistema básico de construcción.
+- Torreta colocable mediante click.
+- Primer slot funcional.
+- Sistema debug para visualizar áreas de construcción.
+
+PENDIENTE
+- Agregar más slots.
+- Sistema de listas para slots.
+- Múltiples torres.
+- Enemigos.
 
 */
 
