@@ -3,22 +3,37 @@
 
 HISTORIAL DEL PROYECTO
 
-[1]
-- Mapa cargado y escalado a la ventana.
-- Ventana ampliada a 1600x900.
-- Pruebas iniciales con personaje.
+[1] Base del proyecto
+- Instalación y configuración inicial de MonoGame.
+- Ventana ampliada a 1600x900 para una mejor visualización.
+- Mapa cargado y escalado al tamaño de la ventana.
+- Pruebas iniciales de movimiento con personaje temporal.
 
-[2]
-- Sistema básico de construcción.
-- Torreta colocable mediante click.
-- Primer slot funcional.
-- Sistema debug para visualizar áreas de construcción.
+[2] Sistema de construcción (primera versión)
+- Incorporado sprite de cañón.
+- Creado primer slot de construcción funcional.
+- Detección de click sobre área válida.
+- Colocación de torreta al construir.
+- Sistema debug para visualizar zonas de construcción.
+
+[3] Sistema de construcción mediante listas
+- Reemplazado sistema de slot único por listas.
+- Implementadas listas para:
+    * Posiciones de torretas.
+    * Áreas de construcción.
+    * Estado de ocupación de cada slot.
+- Adaptado sistema debug para múltiples slots.
+- Primeros dos slots funcionales.
+- Cada slot permite construir de forma independiente.
 
 PENDIENTE
-- Agregar más slots.
-- Sistema de listas para slots.
-- Múltiples torres.
-- Enemigos.
+- Completar todos los slots del mapa.
+- Crear clase Torre.
+- Implementar distintos tipos de defensas.
+- Sistema de rango de ataque.
+- Sistema de enemigos.
+- Sistema de proyectiles.
+- Personaje jugable.
 
 */
 
@@ -29,6 +44,7 @@ PENDIENTE
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace TowerDefense
 {
@@ -42,13 +58,11 @@ namespace TowerDefense
         private Vector2 posicion;
         private float velocidad = 200f;
 
-        Vector2 slot = new Vector2(235, 160);
-        Rectangle areaSlot = new Rectangle(
-        235,
-        179,
-        90,
-        80
-        );
+        private List<Vector2> slots = new List<Vector2>();
+
+        private List<Rectangle> areasSlots = new List<Rectangle>();
+
+        private List<bool> torresColocadas = new List<bool>();
 
         private bool torreColocada = false;
 
@@ -68,8 +82,38 @@ namespace TowerDefense
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            slots.Add(
+            new Vector2(235, 160)
+            );
+
+            areasSlots.Add(
+                new Rectangle(
+                    235,
+                    179,
+                    90,
+                    80
+                )
+            );
+
+            torresColocadas.Add(false);
+
+            slots.Add(
+            new Vector2(365, 160)
+            );
+
+            areasSlots.Add(
+                new Rectangle(
+                    365,
+                    179,
+                    90,
+                    80
+                )
+            );
+
+            torresColocadas.Add(false);
 
             _graphics.ApplyChanges();
+
 
             base.Initialize();
         }
@@ -123,9 +167,12 @@ namespace TowerDefense
                 posicion.Y += velocidad * tiempo;
             }
 
-            if (mouse.LeftButton == ButtonState.Pressed && areaSlot.Contains(mouse.X, mouse.Y))
+            for (int i = 0; i < areasSlots.Count; i++)
             {
-                torreColocada = true;
+                if (mouse.LeftButton == ButtonState.Pressed && areasSlots[i].Contains(mouse.X, mouse.Y))
+                {
+                    torresColocadas[i] = true;
+                }
             }
 
 
@@ -157,24 +204,32 @@ namespace TowerDefense
             );
 
             // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
-            /*  _spriteBatch.Draw(
-                  debugRect,
-                  areaSlot,
-                  Color.Green * 0.4f
-              ); */
-
-            if (torreColocada)
+            /*
+            for (int i = 0; i < areasSlots.Count; i++)
             {
                 _spriteBatch.Draw(
-                    canion,
-                    new Rectangle(
-                        (int)slot.X,
-                        (int)slot.Y,
-                        90,
-                        90
-                    ),
-                    Color.White
+                    debugRect,
+                    areasSlots[i],
+                    Color.Green * 0.4f
                 );
+            }
+            */
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                if (torresColocadas[i])
+                {
+                    _spriteBatch.Draw(
+                        canion,
+                        new Rectangle(
+                            (int)slots[i].X,
+                            (int)slots[i].Y,
+                            90,
+                            90
+                        ),
+                        Color.White
+                    );
+                }
             }
 
             _spriteBatch.End();
