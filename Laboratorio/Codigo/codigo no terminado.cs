@@ -83,14 +83,22 @@ HISTORIAL DEL PROYECTO
 - Comprobada la actualización dinámica del juego al modificar registros de DefenseTypes.
 - Validada la utilización de datos de la BD dentro de la lógica de MonoGame.
 
+[11] Sistema económico inicial
+- Implementado dinero inicial de partida.
+- Creada la función ObtenerCosto() utilizando los datos cargados desde la base de datos.
+- Las defensas ahora consumen recursos al construirse.
+- Bloqueada la construcción cuando el jugador no dispone de dinero suficiente.
+- Agregado HUD mostrando dinero disponible en tiempo real.
+- Agregado HUD mostrando la defensa seleccionada.
+- Agregado HUD mostrando el costo de la defensa seleccionada.
+- Configurada la SpriteFont para soportar caracteres especiales y acentos (ñ, á, etc.).
+
 
 PENDIENTE
-- Sistema de dinero y costo de construcción.
-- Leer costos desde DefenseTypes.
-- Impedir construir defensas sin recursos suficientes.
 - Crear clase Torre.
 - Sistema de enemigos.
 - Sistema de proyectiles.
+- Obtener dinero al eliminar enemigos.
 - Mejoras, reparación y venta de defensas.
 - Personaje jugable.
 
@@ -243,6 +251,36 @@ namespace TowerDefense
             return 100f;
         }
 
+        private float ObtenerCosto(TipoTorre tipo)
+        {
+            string nombre = "";
+
+            switch (tipo)
+            {
+                case TipoTorre.Canion:
+                    nombre = "Cañon";
+                    break;
+
+                case TipoTorre.Torreta:
+                    nombre = "Torreta";
+                    break;
+
+                case TipoTorre.Lanzacohetes:
+                    nombre = "Lanzacohetes";
+                    break;
+            }
+
+            foreach (DatosDefensa d in defensas)
+            {
+                if (d.Nombre == nombre)
+                {
+                    return d.Costo;
+                }
+            }
+
+            return 0;
+        }
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D mapa;
@@ -251,9 +289,11 @@ namespace TowerDefense
         private Texture2D lanzacohetes;
         private Texture2D debugRect;
         private Texture2D rango;
+        private SpriteFont fuente;
         private Vector2 posicion;
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
         private int slotSeleccionado = -1;
+        private int dinero = 1000;
         private float velocidad = 200f;
 
         private List<Slot> slots = new List<Slot>();
@@ -947,6 +987,8 @@ namespace TowerDefense
 
             rango = Content.Load<Texture2D>("rango");
 
+            fuente = Content.Load<SpriteFont>("fuente");
+
             posicion = new Vector2(100, 100);
 
             debugRect = new Texture2D(GraphicsDevice, 1, 1);
@@ -1006,16 +1048,28 @@ namespace TowerDefense
             for (int i = 0; i < slots.Count; i++)
             {
                 if (mouse.LeftButton == ButtonState.Pressed && slots[i].AreaConstruccion.Contains(
-                        mouse.X,
-                        mouse.Y))
+                    mouse.X,
+                    mouse.Y))
                 {
-                    Slot temp = slots[i];
+                    float costo =
+                        ObtenerCosto(
+                            torreSeleccionada);
 
-                    temp.TorreColocada = true;
-                    
-                    temp.Tipo = torreSeleccionada;
+                    if (!slots[i].TorreColocada &&
+                        dinero >= costo)
+                    {
+                        dinero -= (int)costo;
 
-                    slots[i] = temp;
+                        Slot temp = slots[i];
+
+                        temp.TorreColocada = true;
+                        temp.Tipo = torreSeleccionada;
+
+                        slots[i] = temp;
+
+                        System.Diagnostics.Debug.WriteLine(
+                            "Dinero: " + dinero);
+                    }
                 }
             }
 
@@ -1062,7 +1116,7 @@ namespace TowerDefense
                 pantalla,
                 Color.White
             );
-            
+
 
             // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
 
@@ -1116,7 +1170,7 @@ namespace TowerDefense
                     );
                 }
             }
-            
+
             if (slotSeleccionado != -1)
             {
                 float radio =
@@ -1138,9 +1192,33 @@ namespace TowerDefense
                     Color.Gray
                 );
             }
-            
+
+            _spriteBatch.DrawString(
+                fuente,
+                "Dinero: $" + dinero,
+                new Vector2(1430, 20),
+                Color.Black
+            );
 
 
+            string nombreDefensa =
+                torreSeleccionada.ToString()
+                .Replace("Canion", "Cañón");
+
+
+            _spriteBatch.DrawString(
+            fuente,
+            "Defensa: " + nombreDefensa,
+            new Vector2(1430, 50),
+            Color.Black
+            );
+
+            _spriteBatch.DrawString(
+            fuente,
+            "Costo: $" + ObtenerCosto(torreSeleccionada),
+            new Vector2(1430, 80),
+            Color.Black
+            );
 
             _spriteBatch.End();
 
