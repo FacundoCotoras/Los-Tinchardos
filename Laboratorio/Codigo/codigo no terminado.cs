@@ -58,10 +58,17 @@ HISTORIAL DEL PROYECTO
 - Adaptado el sistema de construcción para colocar el tipo seleccionado por el jugador.
 - Verificado el funcionamiento correcto de construcción y reemplazo de defensas en cualquier slot.
 
+[8] Sistema de selección e inspección de defensas
+- Implementada selección de defensas mediante click derecho.
+- Incorporado sistema de deselección al hacer click fuera de una defensa.
+- Agregado sistema de alcance visual para la defensa seleccionada.
+- Implementados alcances distintos para cada tipo de defensa.
+- Sustituido sistema temporal de depuración por anillo visual de alcance.
+- Verificado el funcionamiento correcto de selección, deselección y visualización de alcance.
+
 PENDIENTE
 - Crear clase Torre.
 - Sistema de dinero y costo de construcción.
-- Sistema de rango de ataque.
 - Sistema de enemigos.
 - Sistema de proyectiles.
 - Personaje jugable.
@@ -94,8 +101,27 @@ namespace TowerDefense
         Lanzacohetes
     }
 
+    
+
     public class Game1 : Game
     {
+        private float ObtenerRango(TipoTorre tipo)
+        {
+            switch (tipo)
+            {
+                case TipoTorre.Canion:
+                    return 120f;
+
+                case TipoTorre.Torreta:
+                    return 220f;
+
+                case TipoTorre.Lanzacohetes:
+                    return 170f;
+
+                default:
+                    return 100f;
+            }
+        }
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D mapa;
@@ -103,8 +129,10 @@ namespace TowerDefense
         private Texture2D torreta;
         private Texture2D lanzacohetes;
         private Texture2D debugRect;
+        private Texture2D rango;
         private Vector2 posicion;
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
+        private int slotSeleccionado = -1;
         private float velocidad = 200f;
 
         private List<Slot> slots = new List<Slot>();
@@ -794,6 +822,8 @@ namespace TowerDefense
 
             lanzacohetes = Content.Load<Texture2D>("lanzacohetes");
 
+            rango = Content.Load<Texture2D>("rango");
+
             posicion = new Vector2(100, 100);
 
             debugRect = new Texture2D(GraphicsDevice, 1, 1);
@@ -863,6 +893,22 @@ namespace TowerDefense
                     temp.Tipo = torreSeleccionada;
 
                     slots[i] = temp;
+                }
+            }
+
+            if (mouse.RightButton == ButtonState.Pressed)
+            {
+                slotSeleccionado = -1;
+
+                for (int i = 0; i < slots.Count; i++)
+                {
+                    if (slots[i].TorreColocada &&
+                        slots[i].AreaConstruccion.Contains(
+                            mouse.X,
+                            mouse.Y))
+                    {
+                        slotSeleccionado = i;
+                    }
                 }
             }
 
@@ -947,6 +993,31 @@ namespace TowerDefense
                     );
                 }
             }
+            
+            if (slotSeleccionado != -1)
+            {
+                float radio =
+                   ObtenerRango(
+                        slots[slotSeleccionado].Tipo
+                    );
+
+                Rectangle areaRango =
+                    new Rectangle(
+                        (int)(slots[slotSeleccionado].PosicionTorre.X + 45 - radio),
+                        (int)(slots[slotSeleccionado].PosicionTorre.Y + 45 - radio),
+                        (int)(radio * 2),
+                        (int)(radio * 2)
+                    );
+
+                _spriteBatch.Draw(
+                    rango,
+                    areaRango,
+                    Color.Gray
+                );
+            }
+            
+
+
 
             _spriteBatch.End();
 
