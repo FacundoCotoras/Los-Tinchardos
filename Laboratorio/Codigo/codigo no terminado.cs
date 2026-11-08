@@ -66,6 +66,13 @@ HISTORIAL DEL PROYECTO
 - Sustituido sistema temporal de depuración por anillo visual de alcance.
 - Verificado el funcionamiento correcto de selección, deselección y visualización de alcance.
 
+[9] Integración inicial con Base de Datos
+- Instalado MySqlConnector.
+- Implementada conexión entre MonoGame y MySQL.
+- Ejecutada consulta mediante Stored Procedure.
+- Lectura correcta de registros de DefenseTypes.
+- Verificada la comunicación entre el juego y la base de datos.
+
 PENDIENTE
 - Crear clase Torre.
 - Sistema de dinero y costo de construcción.
@@ -82,7 +89,10 @@ PENDIENTE
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MySqlConnector;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace TowerDefense
 {
@@ -105,6 +115,47 @@ namespace TowerDefense
 
     public class Game1 : Game
     {
+        private void ProbarConexion()
+        {
+            string cadena =
+                "Server=127.0.0.1;" +
+                "Database=IronBastion;" +
+                "User ID=root;" +
+                "Password=;";
+
+            try
+            {
+                using var conexion =
+                    new MySqlConnection(cadena);
+
+                conexion.Open();
+
+                System.Diagnostics.Debug.WriteLine("Conectado");
+
+                using var comando =
+                    new MySqlCommand(
+                        "Defensas",
+                        conexion);
+
+                comando.CommandType =
+                    CommandType.StoredProcedure;
+
+                using var lector =
+                    comando.ExecuteReader();
+
+                while (lector.Read())
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        lector["Nombre"] +
+                        " | $" +
+                        lector["Costo"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
         private float ObtenerRango(TipoTorre tipo)
         {
             switch (tipo)
@@ -803,6 +854,8 @@ namespace TowerDefense
             slot38.TorreColocada = false;
 
             slots.Add(slot38);
+
+            ProbarConexion();
 
             _graphics.ApplyChanges();
 
