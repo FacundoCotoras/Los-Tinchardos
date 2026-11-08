@@ -143,38 +143,70 @@ create table CombatLogs (
 -- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
-delimiter  //
-create procedure MiInfo(IN usuario VARCHAR(150), correo VARCHAR(150), nivelactual int, fecharegistro date)
-begin
-SELECT usuario, correo, nivelacutal, fecharegistro FROM players WHERE usuario = xusuario;
-end//
-delimiter  ;
+-- Esta consulta nos da la informacion personal del usuario
+
+DROP PROCEDURE IF EXISTS MiInfo;
+DELIMITER //
+CREATE PROCEDURE MiInfo(
+    IN xusuario VARCHAR(50) -- Solo necesitamos recibir el usuario como filtro desde C#
+)
+BEGIN
+    SELECT Usuario, Correo, NivelActual, FechaRegistro 
+    FROM Players 
+    WHERE Usuario = xusuario;
+END//
+DELIMITER ;
+
+-- Esta consulta nos dice el top 10 de jugadores ordenados por su nivel descendentemente
+
+DROP PROCEDURE IF EXISTS MejoresJugadores;
+DELIMITER //
+CREATE PROCEDURE MejoresJugadores() -- No necesitamos parámetros IN porque es un top global, no necesitamos llevar un dato desde C#
+BEGIN
+    SELECT Usuario, NivelActual 
+    FROM Players 
+    ORDER BY NivelActual DESC 
+    LIMIT 10;
+END//
+DELIMITER ;
+
+-- Catálogo de todos los poderes del juego
+
+DROP PROCEDURE IF EXISTS Poderes;
+DELIMITER //
+CREATE PROCEDURE Poderes() -- No necesitamos parametros, es un catalogo de todos los poderes
+BEGIN
+    SELECT Nombre, Efecto, Duracion, Descripcion 
+    FROM PowerUps 
+    ORDER BY Nombre ASC;
+END//
+DELIMITER ;
+
+-- Catálogo de todas las defensas del juego ordenadas por costo ascendentemente
+
+DROP PROCEDURE IF EXISTS Defensas;
+DELIMITER //
+CREATE PROCEDURE Defensas() 
+BEGIN
+    SELECT Nombre, Costo, DañoBase, VidaBase 
+    FROM DefenseTypes 
+    ORDER BY Costo ASC;
+END//
+DELIMITER ;
+
+-- Muestra el historial de sesiones de un jugador especifico
+
+DROP PROCEDURE IF EXISTS Sesiones;
+DELIMITER //
+CREATE PROCEDURE Sesiones(
+    IN xusuario VARCHAR(50) -- Filtro para recibir desde C# el usuario
+)
+BEGIN
+    SELECT p.Usuario, s.FechaInicio, s.DificultadInicial 
+    FROM Players p
+    INNER JOIN Sessions s ON p.IDPlayer = s.IDPlayer
+    WHERE p.Usuario = xusuario; -- Filtramos para que no traiga las sesiones de todo el mundo
+END//
+DELIMITER ;
 
 
-delimiter  //
-create procedure MejoresJugadores(IN usuario VARCHAR(150), nivelactual int)
-begin
-SELECT usuario, nivelacutal FROM players order by nivelactual desc limit 10;
-end//
-delimiter  
-
-
-select nombre, efecto, duracion, descripcion
-from powerups;
-
-select nombre, costo, dañobase, vidabase
-from defensetypes
-order by costo asc;
-
-select players.usuario, sessions.fechainicio, sessions.dificultadinicial
-from players
-inner join sessions
-on players.idplayer = sessions.idplayer;
-
-
-delimiter  //
-create procedure Poderes(IN  nombre varchar (25), efecto varchar (25), duracion float, descripcion text)
-begin
-SELECT nombre, efecto, duracion, descripcion FROM powerups;
-end//
-delimiter 
