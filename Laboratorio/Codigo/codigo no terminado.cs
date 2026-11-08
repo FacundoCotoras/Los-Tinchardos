@@ -50,9 +50,17 @@ HISTORIAL DEL PROYECTO
 - Sistema de dibujo adaptado para mostrar la textura correspondiente según el tipo de torre.
 - Verificado el funcionamiento correcto de múltiples tipos de defensas dentro del mapa.
 
+[7] Selección de tipo de defensa
+- Implementado sistema de selección mediante teclado.
+- Tecla 1: Cañón.
+- Tecla 2: Torreta.
+- Tecla 3: Lanzacohetes.
+- Adaptado el sistema de construcción para colocar el tipo seleccionado por el jugador.
+- Verificado el funcionamiento correcto de construcción y reemplazo de defensas en cualquier slot.
+
 PENDIENTE
-- Selección de tipo de defensa por parte del jugador.
 - Crear clase Torre.
+- Sistema de dinero y costo de construcción.
 - Sistema de rango de ataque.
 - Sistema de enemigos.
 - Sistema de proyectiles.
@@ -96,6 +104,7 @@ namespace TowerDefense
         private Texture2D lanzacohetes;
         private Texture2D debugRect;
         private Vector2 posicion;
+        private TipoTorre torreSeleccionada = TipoTorre.Canion;
         private float velocidad = 200f;
 
         private List<Slot> slots = new List<Slot>();
@@ -133,9 +142,6 @@ namespace TowerDefense
 
             slot1.TorreColocada = false;
 
-            slot1.Tipo = TipoTorre.Canion;
-
-
             slots.Add(slot1);
 
 
@@ -154,9 +160,6 @@ namespace TowerDefense
 
             slot2.TorreColocada = false;
 
-            slot2.Tipo = TipoTorre.Torreta;
-
-
             slots.Add(slot2);
 
             Slot slot3 = new Slot();
@@ -173,9 +176,6 @@ namespace TowerDefense
                 );
 
             slot3.TorreColocada = false;
-
-            slot3.Tipo = TipoTorre.Lanzacohetes;
-
 
             slots.Add(slot3);
 
@@ -835,6 +835,21 @@ namespace TowerDefense
                 posicion.Y += velocidad * tiempo;
             }
 
+            if (teclado.IsKeyDown(Keys.D1))
+            {
+                torreSeleccionada = TipoTorre.Canion;
+            }
+
+            if (teclado.IsKeyDown(Keys.D2))
+            {
+                torreSeleccionada = TipoTorre.Torreta;
+            }
+
+            if (teclado.IsKeyDown(Keys.D3))
+            {
+                torreSeleccionada = TipoTorre.Lanzacohetes;
+            }
+
             for (int i = 0; i < slots.Count; i++)
             {
                 if (mouse.LeftButton == ButtonState.Pressed && slots[i].AreaConstruccion.Contains(
@@ -844,6 +859,8 @@ namespace TowerDefense
                     Slot temp = slots[i];
 
                     temp.TorreColocada = true;
+                    
+                    temp.Tipo = torreSeleccionada;
 
                     slots[i] = temp;
                 }
@@ -940,4 +957,3 @@ namespace TowerDefense
         }
     }
 }
-
