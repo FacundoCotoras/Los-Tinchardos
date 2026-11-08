@@ -73,11 +73,25 @@ HISTORIAL DEL PROYECTO
 - Lectura correcta de registros de DefenseTypes.
 - Verificada la comunicación entre el juego y la base de datos.
 
+[10] Integración funcional de estadísticas desde Base de Datos
+- Creada la clase DatosDefensa.
+- Implementada una colección en memoria para almacenar las defensas obtenidas desde la BD.
+- Modificada la lectura del Stored Procedure Defensas() para cargar los atributos de cada defensa.
+- Incorporado el campo Rango al procedimiento almacenado.
+- Verificada la carga correcta de Nombre, Costo, Daño, Vida y Rango.
+- Reemplazados los rangos hardcodeados por valores obtenidos desde MySQL.
+- Comprobada la actualización dinámica del juego al modificar registros de DefenseTypes.
+- Validada la utilización de datos de la BD dentro de la lógica de MonoGame.
+
+
 PENDIENTE
-- Crear clase Torre.
 - Sistema de dinero y costo de construcción.
+- Leer costos desde DefenseTypes.
+- Impedir construir defensas sin recursos suficientes.
+- Crear clase Torre.
 - Sistema de enemigos.
 - Sistema de proyectiles.
+- Mejoras, reparación y venta de defensas.
 - Personaje jugable.
 
 */
@@ -111,7 +125,15 @@ namespace TowerDefense
         Lanzacohetes
     }
 
-    
+    class DatosDefensa
+    {
+        public string Nombre;
+        public float Costo;
+        public float Danio;
+        public float Vida;
+        public float Rango;
+    }
+
 
     public class Game1 : Game
     {
@@ -145,10 +167,45 @@ namespace TowerDefense
 
                 while (lector.Read())
                 {
+                    DatosDefensa defensa =
+                        new DatosDefensa();
+
+                    defensa.Nombre =
+                        lector["Nombre"].ToString();
+
+                    defensa.Costo =
+                        Convert.ToSingle(
+                            lector["Costo"]);
+
+                    defensa.Danio =
+                        Convert.ToSingle(
+                            lector["DañoBase"]);
+
+                    defensa.Vida =
+                        Convert.ToSingle(
+                            lector["VidaBase"]);
+
+                    defensa.Rango =
+                        Convert.ToSingle(
+                            lector["Rango"]);
+
+                    defensas.Add(defensa);
+
                     System.Diagnostics.Debug.WriteLine(
-                        lector["Nombre"] +
+                        defensa.Nombre +
                         " | $" +
-                        lector["Costo"]);
+                        defensa.Costo);
+                }
+
+                System.Diagnostics.Debug.WriteLine(
+                    "Cantidad defensas: " + defensas.Count);
+
+                foreach (DatosDefensa d in defensas)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        d.Nombre +
+                        " rango: " +
+                        d.Rango);
                 }
             }
             catch (Exception ex)
@@ -158,21 +215,34 @@ namespace TowerDefense
         }
         private float ObtenerRango(TipoTorre tipo)
         {
+            string nombre = "";
+
             switch (tipo)
             {
                 case TipoTorre.Canion:
-                    return 120f;
+                    nombre = "Cañon";
+                    break;
 
                 case TipoTorre.Torreta:
-                    return 220f;
+                    nombre = "Torreta";
+                    break;
 
                 case TipoTorre.Lanzacohetes:
-                    return 170f;
-
-                default:
-                    return 100f;
+                    nombre = "Lanzacohetes";
+                    break;
             }
+
+            foreach (DatosDefensa d in defensas)
+            {
+                if (d.Nombre == nombre)
+                {
+                    return d.Rango;
+                }
+            }
+
+            return 100f;
         }
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D mapa;
@@ -187,7 +257,7 @@ namespace TowerDefense
         private float velocidad = 200f;
 
         private List<Slot> slots = new List<Slot>();
-
+        private List<DatosDefensa> defensas = new List<DatosDefensa>();
 
 
 
