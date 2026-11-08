@@ -42,9 +42,17 @@ HISTORIAL DEL PROYECTO
 - Comprobada la compatibilidad del sistema basado en struct Slot con todas las posiciones del mapa.
 - Finalizado el sistema base de colocación de defensas.
 
+[6] Sistema de tipos de defensa
+- Incorporados nuevos sprites de defensas.
+- Agregados los tipos Cañón, Torreta y Lanzacohetes.
+- Creado enum TipoTorre para representar cada defensa.
+- Modificado struct Slot para almacenar el tipo de defensa colocada.
+- Sistema de dibujo adaptado para mostrar la textura correspondiente según el tipo de torre.
+- Verificado el funcionamiento correcto de múltiples tipos de defensas dentro del mapa.
+
 PENDIENTE
+- Selección de tipo de defensa por parte del jugador.
 - Crear clase Torre.
-- Implementar distintos tipos de defensas.
 - Sistema de rango de ataque.
 - Sistema de enemigos.
 - Sistema de proyectiles.
@@ -66,10 +74,16 @@ namespace TowerDefense
     struct Slot
     {
         public Vector2 PosicionTorre;
-
         public Rectangle AreaConstruccion;
-
         public bool TorreColocada;
+        public TipoTorre Tipo;
+
+    }
+    enum TipoTorre
+    {
+        Canion,
+        Torreta,
+        Lanzacohetes
     }
 
     public class Game1 : Game
@@ -78,6 +92,8 @@ namespace TowerDefense
         private SpriteBatch _spriteBatch;
         private Texture2D mapa;
         private Texture2D canion;
+        private Texture2D torreta;
+        private Texture2D lanzacohetes;
         private Texture2D debugRect;
         private Vector2 posicion;
         private float velocidad = 200f;
@@ -117,6 +133,9 @@ namespace TowerDefense
 
             slot1.TorreColocada = false;
 
+            slot1.Tipo = TipoTorre.Canion;
+
+
             slots.Add(slot1);
 
 
@@ -135,6 +154,9 @@ namespace TowerDefense
 
             slot2.TorreColocada = false;
 
+            slot2.Tipo = TipoTorre.Torreta;
+
+
             slots.Add(slot2);
 
             Slot slot3 = new Slot();
@@ -151,6 +173,9 @@ namespace TowerDefense
                 );
 
             slot3.TorreColocada = false;
+
+            slot3.Tipo = TipoTorre.Lanzacohetes;
+
 
             slots.Add(slot3);
 
@@ -765,6 +790,10 @@ namespace TowerDefense
 
             canion = Content.Load<Texture2D>("canion");
 
+            torreta = Content.Load<Texture2D>("torreta");
+
+            lanzacohetes = Content.Load<Texture2D>("lanzacohetes");
+
             posicion = new Vector2(100, 100);
 
             debugRect = new Texture2D(GraphicsDevice, 1, 1);
@@ -847,9 +876,12 @@ namespace TowerDefense
                 pantalla,
                 Color.White
             );
+            
 
             // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
-/*
+
+            /*
+             
             for (int i = 0; i < slots.Count; i++)
             {
                 _spriteBatch.Draw(
@@ -858,14 +890,36 @@ namespace TowerDefense
                     Color.Green * 0.4f
                 );
             }
-*/
+
+            */
 
             for (int i = 0; i < slots.Count; i++)
             {
                 if (slots[i].TorreColocada)
                 {
+                    Texture2D textura;
+
+                    switch (slots[i].Tipo)
+                    {
+                        case TipoTorre.Canion:
+                            textura = canion;
+                            break;
+
+                        case TipoTorre.Torreta:
+                            textura = torreta;
+                            break;
+
+                        case TipoTorre.Lanzacohetes:
+                            textura = lanzacohetes;
+                            break;
+
+                        default:
+                            textura = canion;
+                            break;
+                    }
+
                     _spriteBatch.Draw(
-                        canion,
+                        textura,
                         new Rectangle(
                             (int)slots[i].PosicionTorre.X,
                             (int)slots[i].PosicionTorre.Y,
