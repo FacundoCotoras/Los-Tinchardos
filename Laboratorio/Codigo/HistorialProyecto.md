@@ -102,6 +102,16 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Verificado el funcionamiento correcto tras la refactorización.
 - Creación de archivo HistorialProyecto.md
 
+[13] Refactorización del sistema de slots
+- Creado archivo Mapa.cs.
+- Movida toda la configuración de slots de construcción a una clase independiente.
+- Implementado método Mapa.CrearSlots().
+- Eliminados los 38 bloques de inicialización de slots de Game1.cs.
+- Simplificado el método Initialize().
+- Separados los datos del mapa de la lógica principal del juego.
+- Reducido significativamente el tamaño de Game1.cs.
+- Verificado el funcionamiento correcto de construcción, selección y visualización de alcance tras la refactorización.
+
 PENDIENTE
 - Crear clase Torre.
 - Sistema de enemigos.
