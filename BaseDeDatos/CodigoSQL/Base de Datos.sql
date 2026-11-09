@@ -191,7 +191,7 @@ values
 insert into DefenseTypes
 (Nombre, Costo, DañoBase, VidaBase, Rango)
 values
-("Cañon", 100, 30, 100, 120),
+("Cañon", 100, 30, 100, 160),
 ("Torreta", 150, 10, 100, 220),
 ("Lanzacohetes", 250, 70, 100, 170);
 
