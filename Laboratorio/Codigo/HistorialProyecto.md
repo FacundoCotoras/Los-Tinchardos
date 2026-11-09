@@ -139,11 +139,21 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Integrada pantalla de Game Over.
 - Adaptado el sistema desarrollado por Benjamín Sala al proyecto principal.
 - Verificado el funcionamiento correcto de vidas, derrota y eliminación de enemigos.
+
+[17] Sistema de objetivos para torres
+- Creado archivo Torre.cs.
+- Implementada lista de torres independientes del sistema de slots.
+- Creada instancia de Torre al construir una defensa.
+- Integrado almacenamiento de posición, tipo y rango en cada torre.
+- Implementado sistema de búsqueda de enemigos dentro del alcance de cada torre.
+- Incorporada propiedad Objetivo para almacenamiento del enemigo detectado.
+- Adaptado el sistema para que múltiples torres puedan detectar enemigos simultáneamente.
+- Implementado sistema debug para ver enemigos detectados.
+- Verificado el funcionamiento correcto de detección de objetivos y asignación de enemigos a torres.
   
 
 PENDIENTE
 - Completar sistema de enemigos (oleadas y atributos de enemigos).
-- Crear clase Torre.
 - Sistema de proyectiles.
 - Sistema de ataque y daño a enemigos.
 - Obtener dinero al eliminar enemigos.
