@@ -24,6 +24,17 @@ namespace TowerDefense
         /// </summary>
         public bool LlegoAlFinal { get; private set; }
 
+        public Vector2 Posicion
+        {
+            get { return posicion; }
+        }
+
+        public bool Seleccionado
+{
+    get;
+    set;
+}
+
         /// <summary>
         /// Constructor del personaje
         /// </summary>
