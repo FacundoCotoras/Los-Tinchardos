@@ -130,14 +130,22 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Adaptada la integración del sistema para utilizar la clase Enemigo.
 - Verificada la generación simultánea de múltiples enemigos sobre el mapa.
 - Comprobado el recorrido correcto de múltiples enemigos utilizando los waypoints adaptados.
+
+  [16] Sistema de vidas de la base
+- Integrado sistema de vidas al proyecto principal.
+- Implementada pérdida de vidas cuando un enemigo alcanza la salida.
+- Eliminación automática de enemigos al finalizar el recorrido.
+- Integrados indicadores visuales mediante corazones.
+- Integrada pantalla de Game Over.
+- Adaptado el sistema desarrollado por Benjamín Sala al proyecto principal.
+- Verificado el funcionamiento correcto de vidas, derrota y eliminación de enemigos.
   
 
 PENDIENTE
-- Completar sistema de enemigos (vidas, eliminación y oleadas).
+- Completar sistema de enemigos (oleadas y atributos de enemigos).
 - Crear clase Torre.
 - Sistema de proyectiles.
 - Sistema de ataque y daño a enemigos.
 - Obtener dinero al eliminar enemigos.
-- Vidas de la base.
 - Mejoras, reparación y venta de defensas.
 - Personaje jugable.
