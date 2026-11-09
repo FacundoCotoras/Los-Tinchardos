@@ -26,8 +26,7 @@ namespace TowerDefense
             new Vector2(1516.12f, 641.946f)
         };
 
-        private List<Enemigo> topos =
-            new List<Enemigo>();
+
 
         private float ObtenerRango(TipoTorre tipo)
         {
@@ -116,7 +115,8 @@ namespace TowerDefense
 
         private List<Slot> slots = new List<Slot>();
         private List<DatosDefensa> defensas = new List<DatosDefensa>();
-
+        private List<Enemigo> topos = new List<Enemigo>();
+        private List<Torre> torres = new List<Torre>();
 
 
         public Game1()
@@ -270,6 +270,15 @@ namespace TowerDefense
 
                         slots[i] = temp;
 
+                        torres.Add(
+                            new Torre
+                            {
+                                Posicion = slots[i].PosicionTorre,
+                                Tipo = torreSeleccionada,
+                                Rango = ObtenerRango(torreSeleccionada)
+                            }
+                        );
+
                         System.Diagnostics.Debug.WriteLine(
                             "Dinero: " + dinero);
                     }
@@ -321,6 +330,69 @@ namespace TowerDefense
                     topos.RemoveAt(i);
                 }
             }
+
+            foreach (Enemigo topo in topos)
+            {
+                topo.Seleccionado = false;
+            }
+
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                if (!slots[i].TorreColocada)
+                    continue;
+
+                float rangoTorre =
+                    ObtenerRango(slots[i].Tipo);
+
+            
+
+                foreach (Enemigo topo in topos)
+                {
+                    float distancia =
+                        Vector2.Distance(
+                            slots[i].PosicionTorre,
+                            topo.Posicion);
+
+                    if (distancia <= rangoTorre)
+                    {
+                        topo.Seleccionado = true;
+                        break;
+                    }
+                }
+            }
+            foreach (Torre torre in torres)
+            {
+                torre.Objetivo = null;
+
+                foreach (Enemigo topo in topos)
+                {
+                    float distancia =
+                        Vector2.Distance(
+                            torre.Posicion,
+                            topo.Posicion);
+
+                    if (distancia <= torre.Rango)
+                    {
+                        torre.Objetivo = topo;
+                        break;
+                    }
+                }
+            }
+
+            int torresConObjetivo = 0;
+
+            foreach (Torre torre in torres)
+            {
+                if (torre.Objetivo != null)
+                {
+                    torresConObjetivo++;
+                }
+            }
+
+            System.Diagnostics.Debug.WriteLine(
+                "Torres apuntando: " + torresConObjetivo);
+
             if (vidas <= 0)
             {
                 vidas = 0;
@@ -361,6 +433,24 @@ namespace TowerDefense
             {
                 topo.draw(_spriteBatch);
             }
+
+            foreach (Enemigo topo in topos)
+            {
+                if (topo.Seleccionado)
+                {
+                    _spriteBatch.Draw(
+                        debugRect,
+                        new Rectangle(
+                            (int)topo.Posicion.X - 15,
+                            (int)topo.Posicion.Y - 15,
+                            30,
+                            30
+                        ),
+                        Color.Red * 0.6f
+                    );
+                }
+            }
+
 
             for (int i = 0; i < vidasMaximas; i++)
             {
