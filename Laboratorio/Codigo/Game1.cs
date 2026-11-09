@@ -12,7 +12,23 @@ namespace TowerDefense
     
     public class Game1 : Game
     {
-        
+        static readonly Vector2[] camino =
+        {
+            new Vector2(91.49f, 130.154f),
+            new Vector2(643.044f, 130.154f),
+            new Vector2(643.044f, 334.209f),
+            new Vector2(1117.485f, 334.209f),
+            new Vector2(1117.485f, 608.856f),
+            new Vector2(437.845f, 608.856f), 
+            new Vector2(437.845f, 775.409f),
+            new Vector2(1352.745f, 775.409f),
+            new Vector2(1352.745f, 641.946f), 
+            new Vector2(1516.12f, 641.946f)
+        };
+
+        private List<Personaje> topos =
+            new List<Personaje>();
+
         private float ObtenerRango(TipoTorre tipo)
         {
             string nombre = "";
@@ -81,6 +97,7 @@ namespace TowerDefense
         private Texture2D lanzacohetes;
         private Texture2D debugRect;
         private Texture2D rango;
+        private Texture2D topo;
         private SpriteFont fuente;
         private Vector2 posicion;
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
@@ -112,6 +129,17 @@ namespace TowerDefense
 
             defensas = BaseDatos.CargarDefensas();
 
+            /*
+            topos.Add(
+            new Personaje(
+                topo,
+                52,
+                60,
+                2.5f,
+                camino
+             ));
+            */
+
             _graphics.ApplyChanges();
 
 
@@ -129,6 +157,17 @@ namespace TowerDefense
             torreta = Content.Load<Texture2D>("torreta");
 
             lanzacohetes = Content.Load<Texture2D>("lanzacohetes");
+
+            topo = Content.Load<Texture2D>("topo");
+
+            topos.Add(
+            new Personaje(
+                topo,
+                52,
+                60,
+                2.5f,
+                camino
+            ));
 
             rango = Content.Load<Texture2D>("rango");
 
@@ -234,6 +273,10 @@ namespace TowerDefense
                 }
             }
 
+            foreach (Personaje topo in topos)
+            {
+                topo.update();
+            }
 
 
 
@@ -262,12 +305,19 @@ namespace TowerDefense
                 Color.White
             );
 
+            
+
+
+            foreach (Personaje topo in topos)
+            {
+                topo.draw(_spriteBatch);
+            }
 
             // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
 
-            
-             /*
-              
+
+            /*
+
             for (int i = 0; i < slots.Count; i++)
             {
                 _spriteBatch.Draw(
@@ -278,7 +328,26 @@ namespace TowerDefense
             }
 
             */
-            
+
+            // SISTEMA DEBUG PARA VERIFICAR WAYPOINTS DEL CAMINO DE LOS ENEMIGOS
+
+
+            /*
+            for (int i = 0; i < camino.Length; i++)
+            {
+                _spriteBatch.Draw(
+                    debugRect,
+                    new Rectangle(
+                        (int)camino[i].X - 10,
+                        (int)camino[i].Y - 10,
+                        20,
+                        20),
+                    Color.Red
+                );
+            }
+
+            */
+
 
             for (int i = 0; i < slots.Count; i++)
             {
