@@ -26,8 +26,8 @@ namespace TowerDefense
             new Vector2(1516.12f, 641.946f)
         };
 
-        private List<Personaje> topos =
-            new List<Personaje>();
+        private List<Enemigo> topos =
+            new List<Enemigo>();
 
         private float ObtenerRango(TipoTorre tipo)
         {
@@ -103,6 +103,8 @@ namespace TowerDefense
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
         private int slotSeleccionado = -1;
         private int dinero = 1000;
+        private int contadorEnemigos = 0;
+        private const int framesEntreEnemigos = 120;
         private float velocidad = 200f;
 
         private List<Slot> slots = new List<Slot>();
@@ -161,7 +163,7 @@ namespace TowerDefense
             topo = Content.Load<Texture2D>("topo");
 
             topos.Add(
-            new Personaje(
+            new Enemigo(
                 topo,
                 52,
                 60,
@@ -273,7 +275,25 @@ namespace TowerDefense
                 }
             }
 
-            foreach (Personaje topo in topos)
+            contadorEnemigos++;
+
+            if (contadorEnemigos >= framesEntreEnemigos)
+            {
+                topos.Add(
+                    new Enemigo(
+                        topo,
+                        52,
+                        60,
+                        2.5f,
+                        camino
+                    )
+                );
+
+                contadorEnemigos = 0;
+            }
+
+
+            foreach (Enemigo topo in topos)
             {
                 topo.update();
             }
@@ -308,7 +328,7 @@ namespace TowerDefense
             
 
 
-            foreach (Personaje topo in topos)
+            foreach (Enemigo topo in topos)
             {
                 topo.draw(_spriteBatch);
             }
