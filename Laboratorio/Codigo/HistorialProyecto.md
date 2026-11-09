@@ -122,10 +122,18 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Corregido error al finalizar el recorrido.
 - Verificado el movimiento completo entre entrada y salida.
 - Hecho sistema debug para ver waypoints del recorrido de enemigos.
+
+[15] Generación continua de enemigos
+- Implementado sistema de generación automática de enemigos.
+- Añadido contador de aparición de enemigos.
+- Configurada frecuencia de generación mediante framesEntreEnemigos.
+- Adaptada la integración del sistema para utilizar la clase Enemigo.
+- Verificada la generación simultánea de múltiples enemigos sobre el mapa.
+- Comprobado el recorrido correcto de múltiples enemigos utilizando los waypoints adaptados.
   
 
 PENDIENTE
-- Completar sistema de enemigos (generación automática, vidas y oleadas).
+- Completar sistema de enemigos (vidas, eliminación y oleadas).
 - Crear clase Torre.
 - Sistema de proyectiles.
 - Sistema de ataque y daño a enemigos.
