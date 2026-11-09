@@ -143,6 +143,130 @@ create table CombatLogs (
 -- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
+-- registros
+
+/*
+insert into Players
+(Usuario, Correo, FechaRegistro, NivelActual)
+values
+("LaChispa", "agustin.barrionuevoet32@gmail.com", "2026-07-05", 20),
+("Vulcan", "facundo.cotoraset32@gmail.com", "2025-01-10", 6),
+("Mono", "Benjamin.Salaet32@gmail.com", "2024-02-13", 12);
+
+
+insert into Sessions
+(IDPlayer, FechaInicio, FechaFin, TiempoDefendido, DificultadInicial)
+values
+(1, "2026-07-05", "2026-07-05", "00:10:35", "Facil"),
+(2, "2025-01-10", "2025-01-10", "00:25:43", "Media"),
+(3, "2024-02-13", "2024-02-13", "00:37:24", "Dificil");
+
+*/
+
+insert into PowerUps
+(Nombre, Efecto, Duracion, Descripcion)
+values
+("Escudo", "Proteccion", 5, "Protege la torre temporalmente"),
+("Doble Daño", "Aumenta el daño", 10, "Duplica el daño de las defensas"),
+("Congelacion", "Congelacion temporal", 3, "congela a los enemigos temporalmente");
+
+/*
+insert into Inventory
+(IDSession, IDPowerUp, Cantidad, Estado)
+values
+(1, 1, 3, "Disponible"),
+(2, 2, 2, "Utilizado"),
+(3, 3, 1, "Disponible");
+
+
+insert into Waves
+(IDSession, NumeroWave, Dificultad, EnemigosSpawneados)
+values
+(1, 1, "Facil", 10),
+(2, 1, "Media", 20),
+(3, 1, "Dificil", 30);
+
+*/
+
+insert into DefenseTypes
+(Nombre, Costo, DañoBase, VidaBase, Rango)
+values
+("Cañon", 100, 30, 100, 120),
+("Torreta", 150, 10, 100, 220),
+("Lanzacohetes", 250, 70, 100, 170);
+
+/*
+
+insert into DefenseInstances
+(IDSession, IDDefenseType, X, Y, VidaActual, EstadoActual)
+values
+(1, 1, 10, 20, 100, "Activa"),
+(2, 2, 15, 25, 80, "Activa"),
+(3, 3, 20, 30, 60, "Dañada");
+
+*/
+
+insert into EnemyTypes
+(Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque)
+values
+("Enemigo Basico", 100, 10, 1, 0, "Normal"),
+("Enemigo Rapido", 60, 8, 2, 0, "Normal"),
+("Tanque", 250, 20, 0.5, 25, "Normal"),
+("Jefe", 1000, 50, 0.8, 50, "Especial");
+
+
+insert into Bosses
+(IDEnemyType, HabilidadEspecial)
+values
+(4, "Invocacion: invoca mas topos");
+
+
+/*
+
+insert into EnemyInstances
+(IDSession, IDEnemyType, IDWave, X, Y, VidaActual)
+values
+(1, 1, 1, 1, 1, 100),
+(2, 2, 2, 1, 1, 60),
+(3, 4, 3, 1, 1, 1000);
+
+
+insert into Resources
+(IDSession, Tipo, Cantidad)
+values
+(1, "Madera", 500),
+(2, "Piedra", 300),
+(3, "Metal", 250);
+
+
+insert into SessionResults
+(IDSession, MotivoFin, VidaTorre, DefensasDestruidas, EnemigosEliminados)
+values
+(1, "Victoria", 100, 0, 30),
+(2, "Derrota", 0, 4, 5),
+(3, "Victoria", 80, 3, 22);
+
+
+insert into LeaderBoards
+(IDSession, MotivoFin, VidaTorre, DefensasDestruidas, EnemigosEliminados)
+values
+(1, "Victoria", 100, 0, 30),
+(2, "Derrota", 0, 4, 5),
+(3, "Victoria", 80, 3, 22);
+
+
+insert into CombatLogs
+(IDSession, MomentoAccion, TipoAccion, Origen, Destino, ValorImpacto, Coordenadas)
+values
+(1, "00:04:15", "Ataque", "Cañon", "Enemigo Basico", 30, "10,20"),
+(2, "00:05:33", "Ataque", "Torreta", "Enemigo Rapido", 10, "15,25"),
+(3, "00:08:25", "Ataque", "Lanzacohetes", "Jefe", 70, "20,30");
+
+*/
+-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 -- Esta consulta nos da la informacion personal del usuario
 
 DROP PROCEDURE IF EXISTS MiInfo;
@@ -188,7 +312,7 @@ DROP PROCEDURE IF EXISTS Defensas;
 DELIMITER //
 CREATE PROCEDURE Defensas() 
 BEGIN
-    SELECT Nombre, Costo, DañoBase, VidaBase 
+    SELECT Nombre, Costo, DañoBase, VidaBase, Rango
     FROM DefenseTypes 
     ORDER BY Costo ASC;
 END//
@@ -208,5 +332,4 @@ BEGIN
     WHERE p.Usuario = xusuario; -- Filtramos para que no traiga las sesiones de todo el mundo
 END//
 DELIMITER ;
-
 
