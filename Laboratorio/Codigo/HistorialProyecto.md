@@ -112,10 +112,24 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Reducido significativamente el tamaño de Game1.cs.
 - Verificado el funcionamiento correcto de construcción, selección y visualización de alcance tras la refactorización.
 
+[14] Integración inicial del sistema de enemigos
+- Integrado el sistema de movimiento del enemigo desarrollado por mi compañero Benjamín Sala.
+- Incorporada la clase Enemigo al proyecto principal.
+- Agregada carga de textura para enemigos.
+- Implementada generación de enemigo de prueba.
+- Integrado sistema de recorrido por waypoints.
+- Adaptada la ruta al mapa escalado de 1600x900.
+- Corregido error al finalizar el recorrido.
+- Verificado el movimiento completo entre entrada y salida.
+- Hecho sistema debug para ver waypoints del recorrido de enemigos.
+  
+
 PENDIENTE
+- Completar sistema de enemigos (generación automática, vidas y oleadas).
 - Crear clase Torre.
-- Sistema de enemigos.
 - Sistema de proyectiles.
+- Sistema de ataque y daño a enemigos.
 - Obtener dinero al eliminar enemigos.
+- Vidas de la base.
 - Mejoras, reparación y venta de defensas.
 - Personaje jugable.
