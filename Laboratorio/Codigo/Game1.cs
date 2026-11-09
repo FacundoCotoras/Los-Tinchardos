@@ -98,6 +98,10 @@ namespace TowerDefense
         private Texture2D debugRect;
         private Texture2D rango;
         private Texture2D topo;
+        Texture2D texCorazon;
+        Texture2D texCorazonVacio;
+        Texture2D texGameOver;
+        Texture2D texPixel;
         private SpriteFont fuente;
         private Vector2 posicion;
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
@@ -105,6 +109,9 @@ namespace TowerDefense
         private int dinero = 1000;
         private int contadorEnemigos = 0;
         private const int framesEntreEnemigos = 120;
+        const int vidasMaximas = 3;
+        int vidas = vidasMaximas;
+        bool gameOver = false;
         private float velocidad = 200f;
 
         private List<Slot> slots = new List<Slot>();
@@ -170,6 +177,16 @@ namespace TowerDefense
                 2.5f,
                 camino
             ));
+
+            texCorazon = Content.Load<Texture2D>("corazon");
+            texCorazonVacio = Content.Load<Texture2D>("corazonVacio");
+            texGameOver = Content.Load<Texture2D>("gameover");
+
+            texPixel = new Texture2D(GraphicsDevice, 1, 1);
+
+            texPixel.SetData(
+                new[] { Color.White }
+            );
 
             rango = Content.Load<Texture2D>("rango");
 
@@ -293,9 +310,21 @@ namespace TowerDefense
             }
 
 
-            foreach (Enemigo topo in topos)
+            for (int i = topos.Count - 1; i >= 0; i--)
             {
-                topo.update();
+                topos[i].update();
+
+                if (topos[i].LlegoAlFinal)
+                {
+                    vidas--;
+
+                    topos.RemoveAt(i);
+                }
+            }
+            if (vidas <= 0)
+            {
+                vidas = 0;
+                gameOver = true;
             }
 
 
@@ -331,6 +360,22 @@ namespace TowerDefense
             foreach (Enemigo topo in topos)
             {
                 topo.draw(_spriteBatch);
+            }
+
+            for (int i = 0; i < vidasMaximas; i++)
+            {
+                Texture2D texCorazonActual =
+                    (i < vidas)
+                    ? texCorazon
+                    : texCorazonVacio;
+
+                _spriteBatch.Draw(
+                    texCorazonActual,
+                    new Vector2(
+                        15 + i * 50,
+                        15),
+                    Color.White
+                );
             }
 
             // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
@@ -438,6 +483,39 @@ namespace TowerDefense
                 nombreDefensa,
                 ObtenerCosto(torreSeleccionada)
             );
+
+            if (gameOver)
+            {
+                _spriteBatch.Draw(
+                    texPixel,
+                    new Rectangle(
+                        0,
+                        0,
+                        GraphicsDevice.Viewport.Width,
+                        GraphicsDevice.Viewport.Height),
+                    Color.Black * 0.6f
+                );
+
+                int anchoCartel =
+                    (int)(texGameOver.Width * 1.5f);
+
+                int altoCartel =
+                    (int)(texGameOver.Height * 1.5f);
+
+                Rectangle cartel =
+                    new Rectangle(
+                        (1600 - anchoCartel) / 2,
+                        (900 - altoCartel) / 2,
+                        anchoCartel,
+                        altoCartel
+                    );
+
+                _spriteBatch.Draw(
+                    texGameOver,
+                    cartel,
+                    Color.White
+                );
+            }
 
             _spriteBatch.End();
 
