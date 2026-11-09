@@ -1,13 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense
 {
 
     /// <summary>
-    /// Personaje grafico 2D que recorre un camino formado por puntos (waypoints).
+    /// Enemigo grafico 2D que recorre un camino formado por puntos (waypoints).
     /// </summary>
-    class Personaje
+    class Enemigo
     {
         private Texture2D textura;
         private Rectangle rectangulo;      // donde se dibuja (hitbox)
@@ -32,7 +32,7 @@ namespace TowerDefense
         /// <param name="alto">Alto con el que se dibuja</param>
         /// <param name="velocidad">Pixeles que avanza por frame</param>
         /// <param name="camino">Lista de puntos (centro del camino) que recorre</param>
-        public Personaje(Texture2D sprite, int ancho, int alto, float velocidad, Vector2[] camino)
+        public Enemigo(Texture2D sprite, int ancho, int alto, float velocidad, Vector2[] camino)
         {
             textura = sprite;
             this.velocidad = velocidad;
