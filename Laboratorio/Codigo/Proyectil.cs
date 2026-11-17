@@ -10,6 +10,7 @@ namespace TowerDefense
 
         public bool Activo { get; set; } = true;
         public float Velocidad { get; set; } = 6f;
+        public float Danio { get; set; }
         public void Update()
         {
             if (!Activo)
@@ -26,7 +27,7 @@ namespace TowerDefense
 
             if (direccion.Length() < 5)
             {
-                Objetivo.Vida -= 25;
+                Objetivo.Vida -= (int)Danio;
                 Activo = false;
                 return;
             }
