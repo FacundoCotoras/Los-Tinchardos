@@ -25,6 +25,7 @@ namespace TowerDefense
         public bool LlegoAlFinal { get; private set; }
         public int Vida { get; set; } = 100;
         public int VidaMaxima { get; set; } = 100;
+        public string Nombre { get; set; }
         public Vector2 Posicion
         {
             get { return posicion; }
