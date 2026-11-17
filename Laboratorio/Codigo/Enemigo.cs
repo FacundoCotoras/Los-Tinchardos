@@ -23,7 +23,8 @@ namespace TowerDefense
         /// Es true cuando el personaje llego al final del camino
         /// </summary>
         public bool LlegoAlFinal { get; private set; }
-
+        public int Vida { get; set; } = 100;
+        public int VidaMaxima { get; set; } = 100;
         public Vector2 Posicion
         {
             get { return posicion; }
