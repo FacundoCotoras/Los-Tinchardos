@@ -183,8 +183,11 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Verificada la integración completa entre enemigos, recompensas y Base de Datos.
 
 PENDIENTE
-- Completar sistema de enemigos (oleadas y atributos de enemigos).
-- Balancear daño, rango y cadencia de las defensas.
+- Completar sistema de enemigos (oleadas y atributos avanzados de enemigos).
+- Integrar vida de enemigos desde Base de Datos.
+- Integrar velocidad de enemigos desde Base de Datos.
+- Integrar daño de defensas desde Base de Datos.
 - Implementar distintos tipos de enemigos.
+- Balancear estadísticas de combate desde SQL.
 - Mejoras, reparación y venta de defensas.
 - Personaje jugable.
