@@ -117,6 +117,7 @@ namespace TowerDefense
         private List<DatosDefensa> defensas = new List<DatosDefensa>();
         private List<Enemigo> topos = new List<Enemigo>();
         private List<Torre> torres = new List<Torre>();
+        private List<Proyectil> proyectiles =  new List<Proyectil>();
 
 
         public Game1()
@@ -275,7 +276,8 @@ namespace TowerDefense
                             {
                                 Posicion = slots[i].PosicionTorre,
                                 Tipo = torreSeleccionada,
-                                Rango = ObtenerRango(torreSeleccionada)
+                                Rango = ObtenerRango(torreSeleccionada),
+                                Cooldown = 0
                             }
                         );
 
@@ -322,6 +324,13 @@ namespace TowerDefense
             for (int i = topos.Count - 1; i >= 0; i--)
             {
                 topos[i].update();
+
+                if (topos[i].Vida <= 0)
+                {
+                    dinero += 25;
+                    topos.RemoveAt(i);
+                    continue;
+                }
 
                 if (topos[i].LlegoAlFinal)
                 {
@@ -380,6 +389,33 @@ namespace TowerDefense
                 }
             }
 
+            foreach (Torre torre in torres)
+            {
+                if (torre.Cooldown > 0)
+                {
+                    torre.Cooldown--;
+                }
+
+                if (
+                    torre.Objetivo != null &&
+                    torre.Cooldown <= 0
+                   )
+                {
+                    proyectiles.Add(
+                        new Proyectil
+                        {
+                            Posicion = torre.Posicion,
+                            Objetivo = torre.Objetivo
+                        }
+                    );
+
+                    torre.Cooldown = 30;
+                }
+            }
+
+
+
+
             int torresConObjetivo = 0;
 
             foreach (Torre torre in torres)
@@ -399,7 +435,15 @@ namespace TowerDefense
                 gameOver = true;
             }
 
+            for (int i = proyectiles.Count - 1; i >= 0; i--)
+            {
+                proyectiles[i].Update();
 
+                if (!proyectiles[i].Activo)
+                {
+                    proyectiles.RemoveAt(i);
+                }
+            }
 
 
             base.Update(gameTime);
@@ -432,6 +476,40 @@ namespace TowerDefense
             foreach (Enemigo topo in topos)
             {
                 topo.draw(_spriteBatch);
+            }
+
+            foreach (Enemigo topo in topos)
+            {
+                float porcentajeVida =
+                    (float)topo.Vida /
+                    topo.VidaMaxima;
+
+                int anchoTotal = 40;
+
+                int anchoActual =
+                    (int)(anchoTotal * porcentajeVida);
+
+                // Fondo rojo
+                _spriteBatch.Draw(
+                    debugRect,
+                    new Rectangle(
+                        (int)topo.Posicion.X - 20,
+                        (int)topo.Posicion.Y - 35,
+                        anchoTotal,
+                        5),
+                    Color.Red
+                );
+
+                // Vida verde
+                _spriteBatch.Draw(
+                    debugRect,
+                    new Rectangle(
+                        (int)topo.Posicion.X - 20,
+                        (int)topo.Posicion.Y - 35,
+                        anchoActual,
+                        5),
+                    Color.LimeGreen
+                );
             }
 
             foreach (Enemigo topo in topos)
@@ -604,6 +682,19 @@ namespace TowerDefense
                     texGameOver,
                     cartel,
                     Color.White
+                );
+            }
+
+            foreach (Proyectil proyectil in proyectiles)
+            {
+                _spriteBatch.Draw(
+                    debugRect,
+                    new Rectangle(
+                        (int)proyectil.Posicion.X - 4,
+                        (int)proyectil.Posicion.Y - 4,
+                        8,
+                        8),
+                    Color.Yellow
                 );
             }
 
