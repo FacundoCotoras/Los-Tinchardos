@@ -182,12 +182,21 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Implementada lectura de recompensas de enemigos desde Base de Datos.
 - Verificada la integración completa entre enemigos, recompensas y Base de Datos.
 
+[20] Integración avanzada de estadísticas de combate con Base de Datos
+
+- Implementada lectura de vida de enemigos desde Base de Datos
+- Implementada lectura de velocidad de enemigos desde Base de Datos
+- Implementada lectura de daño de defensas desde Base de Datos
+- Agregados métodos de configuración de vida y velocidad en Enemigo
+- Agregado atributo de daño configurable en Proyectil
+- Incorporada obtención de daño desde DefenseTypes.DañoBase
+- Verificada la correcta integración de estadísticas mediante pruebas desde MySQL
+
 PENDIENTE
-- Completar sistema de enemigos (oleadas y atributos avanzados de enemigos).
-- Integrar vida de enemigos desde Base de Datos.
-- Integrar velocidad de enemigos desde Base de Datos.
-- Integrar daño de defensas desde Base de Datos.
-- Implementar distintos tipos de enemigos.
-- Balancear estadísticas de combate desde SQL.
-- Mejoras, reparación y venta de defensas.
-- Personaje jugable.
+- Completar sistema de enemigos (oleadas y atributos avanzados de enemigos)
+- Implementar distintos tipos de enemigos
+- Balancear estadísticas de combate desde SQL
+- Integrar sprites específicos para proyectiles
+- Integrar sprites alternativos para enemigos
+- Mejoras, reparación y venta de defensas
+- Personaje jugable
