@@ -26,6 +26,15 @@ namespace TowerDefense
         public int Vida { get; set; } = 100;
         public int VidaMaxima { get; set; } = 100;
         public string Nombre { get; set; }
+        public void ConfigurarVida(int vida)
+        {
+            Vida = vida;
+            VidaMaxima = vida;
+        }
+        public void ConfigurarVelocidad(float velocidad)
+        {
+            this.velocidad = velocidad;
+        }
         public Vector2 Posicion
         {
             get { return posicion; }
