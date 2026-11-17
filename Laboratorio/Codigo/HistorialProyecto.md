@@ -165,6 +165,15 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Agregadas barras de vida visuales para enemigos.
 - Verificada la integración completa entre torres, proyectiles y enemigos.
 
+[19] Refactorización del sistema de combate
+- Creada clase Combate.
+- Externalizada lógica de selección de objetivos.
+- Externalizada lógica de disparo de torres.
+- Externalizada actualización de proyectiles.
+- Creada clase Economia.
+- Externalizadas consultas de costos y recompensas.
+- Simplificado Game1.cs.
+
 PENDIENTE
 - Completar sistema de enemigos (oleadas y atributos de enemigos).
 - Balancear daño, rango y cadencia de las defensas.
