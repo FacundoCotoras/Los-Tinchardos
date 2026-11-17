@@ -166,8 +166,17 @@ namespace TowerDefense
                camino
                );
 
-            enemigo.Nombre =
-                "Enemigo Basico";
+            enemigo.Nombre = "Enemigo Basico";
+
+            enemigo.ConfigurarVida(
+                Economia.ObtenerVida(
+                    enemigo.Nombre,
+                    enemigosBD));
+
+            enemigo.ConfigurarVelocidad(
+                Economia.ObtenerVelocidad(
+                    enemigo.Nombre,
+                    enemigosBD));
 
             topos.Add(enemigo);
 
@@ -311,6 +320,16 @@ namespace TowerDefense
                 enemigo.Nombre =
                     "Enemigo Basico";
 
+                enemigo.ConfigurarVida(
+                    Economia.ObtenerVida(
+                        enemigo.Nombre,
+                        enemigosBD));
+                
+                enemigo.ConfigurarVelocidad(
+                    Economia.ObtenerVelocidad(
+                        enemigo.Nombre,
+                        enemigosBD));
+
                 topos.Add(enemigo);
 
                 contadorEnemigos = 0;
@@ -373,7 +392,8 @@ namespace TowerDefense
 
             Combate.Disparar(
             torres,
-            proyectiles);
+            proyectiles,
+            defensas);
 
 
             /*
