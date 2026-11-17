@@ -165,14 +165,22 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Agregadas barras de vida visuales para enemigos.
 - Verificada la integración completa entre torres, proyectiles y enemigos.
 
-[19] Refactorización del sistema de combate
-- Creada clase Combate.
-- Externalizada lógica de selección de objetivos.
-- Externalizada lógica de disparo de torres.
-- Externalizada actualización de proyectiles.
-- Creada clase Economia.
-- Externalizadas consultas de costos y recompensas.
-- Simplificado Game1.cs.
+[19] Refactorización de combate e integración de enemigos con Base de Datos
+
+- Creada la clase Economia.
+- Trasladada la lógica de obtención de costos de defensas fuera de Game1.
+- Trasladada la lógica de obtención de recompensas fuera de Game1.
+- Creada la clase Combate.
+- Trasladada la selección de objetivos de las torres a Combate.
+- Trasladada la generación de proyectiles a Combate.
+- Trasladada la actualización de proyectiles a Combate.
+- Reducida la cantidad de lógica de combate presente en Game1.
+- Creada la clase DatosEnemigo.
+- Implementada carga de estadísticas de enemigos desde MySQL.
+- Agregado campo Recompensa a la tabla EnemyTypes.
+- Creado procedimiento almacenado Enemigos().
+- Implementada lectura de recompensas de enemigos desde Base de Datos.
+- Verificada la integración completa entre enemigos, recompensas y Base de Datos.
 
 PENDIENTE
 - Completar sistema de enemigos (oleadas y atributos de enemigos).
