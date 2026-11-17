@@ -1,4 +1,4 @@
-﻿using MySqlConnector;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -73,6 +73,75 @@ namespace TowerDefense
             }
 
             return defensas;
+        }
+
+        public static List<DatosEnemigo> CargarEnemigos()
+        {
+            List<DatosEnemigo> enemigos =
+                new List<DatosEnemigo>();
+
+            string cadena =
+                "Server=127.0.0.1;" +
+                "Database=IronBastion;" +
+                "User ID=root;" +
+                "Password=;";
+
+            try
+            {
+                using var conexion =
+                    new MySqlConnection(cadena);
+
+                conexion.Open();
+
+                using var comando =
+                    new MySqlCommand(
+                        "Enemigos",
+                        conexion);
+
+                comando.CommandType =
+                    CommandType.StoredProcedure;
+
+                using var lector =
+                    comando.ExecuteReader();
+
+                while (lector.Read())
+                {
+                    DatosEnemigo enemigo =
+                        new DatosEnemigo();
+
+                    enemigo.Nombre =
+                        lector["Nombre"].ToString();
+
+                    enemigo.Vida =
+                        Convert.ToSingle(
+                            lector["VidaBase"]);
+
+                    enemigo.Danio =
+                        Convert.ToSingle(
+                            lector["Daño"]);
+
+                    enemigo.Velocidad =
+                        Convert.ToSingle(
+                            lector["Velocidad"]);
+
+                    enemigo.Resistencia =
+                        Convert.ToSingle(
+                            lector["Resistencia"]);
+
+                    enemigo.Recompensa =
+                        Convert.ToInt32(
+                            lector["Recompensa"]);
+
+                    enemigos.Add(enemigo);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    ex.Message);
+            }
+
+            return enemigos;
         }
     }
 }
