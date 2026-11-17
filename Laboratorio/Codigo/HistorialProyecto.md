@@ -150,12 +150,24 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Adaptado el sistema para que múltiples torres puedan detectar enemigos simultáneamente.
 - Implementado sistema debug para ver enemigos detectados.
 - Verificado el funcionamiento correcto de detección de objetivos y asignación de enemigos a torres.
-  
+
+
+[18] Sistema de combate inicial
+- Creada la clase Proyectil.
+- Implementado sistema de objetivos para torres mediante Torre.Objetivo.
+- Implementada generación automática de proyectiles al detectar enemigos en rango.
+- Incorporado movimiento de proyectiles hacia el objetivo seleccionado.
+- Implementada cadencia de disparo para evitar disparos continuos.
+- Agregado sistema de vida para enemigos.
+- Implementado daño mediante impacto de proyectiles.
+- Implementada eliminación de enemigos al agotar su vida.
+- Incorporado sistema de recompensas económicas por eliminación.
+- Agregadas barras de vida visuales para enemigos.
+- Verificada la integración completa entre torres, proyectiles y enemigos.
 
 PENDIENTE
 - Completar sistema de enemigos (oleadas y atributos de enemigos).
-- Sistema de proyectiles.
-- Sistema de ataque y daño a enemigos.
-- Obtener dinero al eliminar enemigos.
+- Balancear daño, rango y cadencia de las defensas.
+- Implementar distintos tipos de enemigos.
 - Mejoras, reparación y venta de defensas.
 - Personaje jugable.
