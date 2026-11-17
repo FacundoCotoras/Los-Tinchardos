@@ -31,7 +31,8 @@ namespace TowerDefense
 
         public static void Disparar(
             List<Torre> torres,
-            List<Proyectil> proyectiles)
+            List<Proyectil> proyectiles,
+            List<DatosDefensa> defensas)
         {
             foreach (Torre torre in torres)
             {
@@ -49,7 +50,8 @@ namespace TowerDefense
                         new Proyectil
                         {
                             Posicion = torre.Posicion,
-                            Objetivo = torre.Objetivo
+                            Objetivo = torre.Objetivo,
+                            Danio = Economia.ObtenerDanio(torre.Tipo, defensas)
                         }
                     );
 
