@@ -58,35 +58,6 @@ namespace TowerDefense
             return 100f;
         }
 
-        private float ObtenerCosto(TipoTorre tipo)
-        {
-            string nombre = "";
-
-            switch (tipo)
-            {
-                case TipoTorre.Canion:
-                    nombre = "Cañon";
-                    break;
-
-                case TipoTorre.Torreta:
-                    nombre = "Torreta";
-                    break;
-
-                case TipoTorre.Lanzacohetes:
-                    nombre = "Lanzacohetes";
-                    break;
-            }
-
-            foreach (DatosDefensa d in defensas)
-            {
-                if (d.Nombre == nombre)
-                {
-                    return d.Costo;
-                }
-            }
-
-            return 0;
-        }
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -115,6 +86,8 @@ namespace TowerDefense
 
         private List<Slot> slots = new List<Slot>();
         private List<DatosDefensa> defensas = new List<DatosDefensa>();
+        private List<DatosEnemigo> enemigosBD = new List<DatosEnemigo>();
+
         private List<Enemigo> topos = new List<Enemigo>();
         private List<Torre> torres = new List<Torre>();
         private List<Proyectil> proyectiles =  new List<Proyectil>();
@@ -138,6 +111,20 @@ namespace TowerDefense
             slots = Mapa.CrearSlots();
 
             defensas = BaseDatos.CargarDefensas();
+            enemigosBD = BaseDatos.CargarEnemigos();
+
+            /*
+
+            foreach (DatosEnemigo enemigo in enemigosBD)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    enemigo.Nombre +
+                    " $" +
+                    enemigo.Recompensa
+                );
+            }
+
+            */
 
             /*
             topos.Add(
@@ -170,14 +157,19 @@ namespace TowerDefense
 
             topo = Content.Load<Texture2D>("topo");
 
-            topos.Add(
-            new Enemigo(
-                topo,
-                52,
-                60,
-                2.5f,
-                camino
-            ));
+            Enemigo enemigo =
+               new Enemigo(
+               topo,
+               52,
+               60,
+               2.5f,
+               camino
+               );
+
+            enemigo.Nombre =
+                "Enemigo Basico";
+
+            topos.Add(enemigo);
 
             texCorazon = Content.Load<Texture2D>("corazon");
             texCorazonVacio = Content.Load<Texture2D>("corazonVacio");
@@ -255,9 +247,7 @@ namespace TowerDefense
                     mouse.X,
                     mouse.Y))
                 {
-                    float costo =
-                        ObtenerCosto(
-                            torreSeleccionada);
+                    float costo = Economia.ObtenerCosto(torreSeleccionada, defensas);
 
                     if (!slots[i].TorreColocada &&
                         dinero >= costo)
@@ -281,8 +271,10 @@ namespace TowerDefense
                             }
                         );
 
+                        /*
                         System.Diagnostics.Debug.WriteLine(
                             "Dinero: " + dinero);
+                        */
                     }
                 }
             }
@@ -307,15 +299,19 @@ namespace TowerDefense
 
             if (contadorEnemigos >= framesEntreEnemigos)
             {
-                topos.Add(
+                Enemigo enemigo =
                     new Enemigo(
-                        topo,
-                        52,
-                        60,
-                        2.5f,
-                        camino
-                    )
-                );
+                    topo,
+                    52,
+                    60,
+                    2.5f,
+                    camino
+                    );
+
+                enemigo.Nombre =
+                    "Enemigo Basico";
+
+                topos.Add(enemigo);
 
                 contadorEnemigos = 0;
             }
@@ -327,7 +323,8 @@ namespace TowerDefense
 
                 if (topos[i].Vida <= 0)
                 {
-                    dinero += 25;
+                    // System.Diagnostics.Debug.WriteLine(topos[i].Nombre); 
+                    dinero += Economia.ObtenerRecompensa(topos[i].Nombre, enemigosBD);
                     topos.RemoveAt(i);
                     continue;
                 }
@@ -370,51 +367,16 @@ namespace TowerDefense
                     }
                 }
             }
-            foreach (Torre torre in torres)
-            {
-                torre.Objetivo = null;
+            Combate.ActualizarObjetivos(
+            torres,
+            topos);
 
-                foreach (Enemigo topo in topos)
-                {
-                    float distancia =
-                        Vector2.Distance(
-                            torre.Posicion,
-                            topo.Posicion);
-
-                    if (distancia <= torre.Rango)
-                    {
-                        torre.Objetivo = topo;
-                        break;
-                    }
-                }
-            }
-
-            foreach (Torre torre in torres)
-            {
-                if (torre.Cooldown > 0)
-                {
-                    torre.Cooldown--;
-                }
-
-                if (
-                    torre.Objetivo != null &&
-                    torre.Cooldown <= 0
-                   )
-                {
-                    proyectiles.Add(
-                        new Proyectil
-                        {
-                            Posicion = torre.Posicion,
-                            Objetivo = torre.Objetivo
-                        }
-                    );
-
-                    torre.Cooldown = 30;
-                }
-            }
+            Combate.Disparar(
+            torres,
+            proyectiles);
 
 
-
+            /*
 
             int torresConObjetivo = 0;
 
@@ -429,21 +391,16 @@ namespace TowerDefense
             System.Diagnostics.Debug.WriteLine(
                 "Torres apuntando: " + torresConObjetivo);
 
+            */
+
             if (vidas <= 0)
             {
                 vidas = 0;
                 gameOver = true;
             }
 
-            for (int i = proyectiles.Count - 1; i >= 0; i--)
-            {
-                proyectiles[i].Update();
-
-                if (!proyectiles[i].Activo)
-                {
-                    proyectiles.RemoveAt(i);
-                }
-            }
+            Combate.ActualizarProyectiles(
+                proyectiles);
 
 
             base.Update(gameTime);
@@ -649,8 +606,10 @@ namespace TowerDefense
                 fuente,
                 dinero,
                 nombreDefensa,
-                ObtenerCosto(torreSeleccionada)
-            );
+                Economia.ObtenerCosto(
+                        torreSeleccionada,
+                        defensas)
+                );
 
             if (gameOver)
             {
