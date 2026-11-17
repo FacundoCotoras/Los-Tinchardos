@@ -11,5 +11,7 @@ namespace TowerDefense
         public float Rango { get; set; }
 
         public Enemigo Objetivo { get; set; }
+
+        public int Cooldown { get; set; }
     }
 }
