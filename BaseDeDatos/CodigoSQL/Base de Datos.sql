@@ -75,7 +75,8 @@ create table EnemyTypes (
     Daño float,
     Velocidad float,
     Resistencia float,
-    TipoAtaque varchar(30)
+    TipoAtaque varchar(30),
+    Recompensa int
 );
 
 create table Bosses (
@@ -207,12 +208,12 @@ values
 */
 
 insert into EnemyTypes
-(Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque)
+(Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque, Recompensa)
 values
-("Enemigo Basico", 100, 10, 1, 0, "Normal"),
-("Enemigo Rapido", 60, 8, 2, 0, "Normal"),
-("Tanque", 250, 20, 0.5, 25, "Normal"),
-("Jefe", 1000, 50, 0.8, 50, "Especial");
+("Enemigo Basico", 100, 10, 1, 0, "Normal", 25),
+("Enemigo Rapido", 60, 8, 2, 0, "Normal", 15),
+("Tanque", 250, 20, 0.5, 25, "Normal", 75),
+("Jefe", 1000, 50, 0.8, 50, "Especial", 300);
 
 
 insert into Bosses
@@ -332,4 +333,15 @@ BEGIN
     WHERE p.Usuario = xusuario; -- Filtramos para que no traiga las sesiones de todo el mundo
 END//
 DELIMITER ;
+-- Este Store Procedure es para ver todos los enemigos junto a sus datos
+DROP PROCEDURE IF EXISTS Enemigos;
+DELIMITER //
+CREATE PROCEDURE Enemigos()
+BEGIN
+    SELECT Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque, Recompensa
+    FROM EnemyTypes;
+END//
 
+DELIMITER ;
+
+ 
