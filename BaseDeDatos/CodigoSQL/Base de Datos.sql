@@ -164,14 +164,12 @@ values
 
 */
 
-
 insert into PowerUps
 (Nombre, Efecto, Duracion, Descripcion)
 values
 ("Escudo", "Proteccion", 5, "Protege la torre temporalmente"),
 ("Doble Daño", "Aumenta el daño", 10, "Duplica el daño de las defensas"),
 ("Congelacion", "Congelacion temporal", 3, "congela a los enemigos temporalmente");
-
 
 /*
 insert into Inventory
@@ -208,7 +206,6 @@ values
 (3, 3, 20, 30, 60, "Dañada");
 
 */
-
 
 insert into EnemyTypes
 (Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque, Recompensa)
@@ -276,7 +273,7 @@ values
 DROP PROCEDURE IF EXISTS MiInfo;
 DELIMITER //
 CREATE PROCEDURE MiInfo(
-    IN xusuario VARCHAR(50)   -- Solo necesitamos recibir el usuario como filtro desde C#
+    IN xusuario VARCHAR(50) -- Solo necesitamos recibir el usuario como filtro desde C#
 )
 BEGIN
     SELECT Usuario, Correo, NivelActual, FechaRegistro 
@@ -289,7 +286,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS MejoresJugadores;
 DELIMITER //
-CREATE PROCEDURE MejoresJugadores()   -- No necesitamos parámetros IN porque es un top global, no necesitamos llevar un dato desde C#
+CREATE PROCEDURE MejoresJugadores() -- No necesitamos parámetros IN porque es un top global, no necesitamos llevar un dato desde C#
 BEGIN
     SELECT Usuario, NivelActual 
     FROM Players 
@@ -302,7 +299,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS Poderes;
 DELIMITER //
-CREATE PROCEDURE Poderes()  -- No necesitamos parametros, es un catalogo de todos los poderes
+CREATE PROCEDURE Poderes() -- No necesitamos parametros, es un catalogo de todos los poderes
 BEGIN
     SELECT Nombre, Efecto, Duracion, Descripcion 
     FROM PowerUps 
@@ -327,18 +324,16 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS Sesiones;
 DELIMITER //
 CREATE PROCEDURE Sesiones(
-    IN xusuario VARCHAR(50)    -- Filtro para recibir desde C# el usuario
+    IN xusuario VARCHAR(50) -- Filtro para recibir desde C# el usuario
 )
 BEGIN
     SELECT p.Usuario, s.FechaInicio, s.DificultadInicial 
     FROM Players p
     INNER JOIN Sessions s ON p.IDPlayer = s.IDPlayer
-    WHERE p.Usuario = xusuario;   -- Filtramos para que no traiga las sesiones de todo el mundo
+    WHERE p.Usuario = xusuario; -- Filtramos para que no traiga las sesiones de todo el mundo
 END//
 DELIMITER ;
-
 -- Este Store Procedure es para ver todos los enemigos junto a sus datos
-
 DROP PROCEDURE IF EXISTS Enemigos;
 DELIMITER //
 CREATE PROCEDURE Enemigos()
@@ -348,3 +343,5 @@ BEGIN
 END//
 
 DELIMITER ;
+
+ 
