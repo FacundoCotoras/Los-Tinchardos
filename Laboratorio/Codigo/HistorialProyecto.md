@@ -192,8 +192,20 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Incorporada obtención de daño desde DefenseTypes.DañoBase
 - Verificada la correcta integración de estadísticas mediante pruebas desde MySQL
 
+[21] Sistema de oleadas y victoria
+
+- Integrada la clase Oleadas desarrollada por Benjamín Sala.
+- Implementado sistema de oleadas progresivas.
+- Incorporadas pausas entre oleadas.
+- Implementada transición automática entre oleadas.
+- Integrados indicadores visuales de oleada.
+- Implementada condición de victoria al superar todas las oleadas.
+- Incorporada pantalla de victoria.
+- Verificada la correcta integración con el sistema de combate existente.
+
+
 PENDIENTE
-- Completar sistema de enemigos (oleadas y atributos avanzados de enemigos)
+- Completar sistema de enemigos (integrar distintos enemigos a las oleadas)
 - Implementar distintos tipos de enemigos
 - Balancear estadísticas de combate desde SQL
 - Integrar sprites específicos para proyectiles
