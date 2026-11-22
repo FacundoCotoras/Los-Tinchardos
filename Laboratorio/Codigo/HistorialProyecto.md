@@ -203,12 +203,27 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Incorporada pantalla de victoria.
 - Verificada la correcta integración con el sistema de combate existente.
 
+[22] Sistema de tipos de enemigos
+- Integrados múltiples tipos de enemigos utilizando los registros de EnemyTypes.
+- Incorporados sprites específicos para Enemigo Basico, Enemigo Rapido y Tanque.
+- Implementada selección automática de tipo de enemigo según la oleada actual.
+- Integrada carga dinámica de vida desde Base de Datos para cada tipo de enemigo.
+- Integrada carga dinámica de velocidad desde Base de Datos para cada tipo de enemigo.
+- Integrada carga dinámica de recompensas desde Base de Datos para cada tipo de enemigo.
+- Verificado el comportamiento diferenciado entre enemigos rápidos y enemigos tanque.
+- Comprobada la integración completa entre oleadas, sprites de enemigos y estadísticas obtenidas desde MySQL.
+
 
 PENDIENTE
-- Completar sistema de enemigos (integrar distintos enemigos a las oleadas)
-- Implementar distintos tipos de enemigos
-- Balancear estadísticas de combate desde SQL
-- Integrar sprites específicos para proyectiles
-- Integrar sprites alternativos para enemigos
-- Mejoras, reparación y venta de defensas
-- Personaje jugable
+PENDIENTE
+
+- Balancear estadísticas de combate desde SQL.
+- Integrar sprites específicos para proyectiles.
+- Adaptar proyectiles según el tipo de defensa.
+- Implementar rotación de defensas hacia el objetivo.
+- Mejoras de defensas.
+- Reparación de defensas.
+- Venta de defensas.
+- Implementar daño de enemigos contra defensas.
+- Integrar enemigo tipo Jefe.
+- Personaje jugable.
