@@ -71,18 +71,20 @@ namespace TowerDefense
         Texture2D texCorazon;
         Texture2D texCorazonVacio;
         Texture2D texGameOver;
+        Texture2D texVictoria;
+        Texture2D[] texOleada = new Texture2D[Oleadas.Total];
+        bool victoria = false;
         Texture2D texPixel;
         private SpriteFont fuente;
         private Vector2 posicion;
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
         private int slotSeleccionado = -1;
         private int dinero = 1000;
-        private int contadorEnemigos = 0;
-        private const int framesEntreEnemigos = 120;
         const int vidasMaximas = 3;
         int vidas = vidasMaximas;
         bool gameOver = false;
         private float velocidad = 200f;
+        private Oleadas oleadas = new Oleadas();
 
         private List<Slot> slots = new List<Slot>();
         private List<DatosDefensa> defensas = new List<DatosDefensa>();
@@ -157,6 +159,8 @@ namespace TowerDefense
 
             topo = Content.Load<Texture2D>("topo");
 
+            /*
+
             Enemigo enemigo =
                new Enemigo(
                topo,
@@ -180,9 +184,19 @@ namespace TowerDefense
 
             topos.Add(enemigo);
 
+
+            */
+
             texCorazon = Content.Load<Texture2D>("corazon");
             texCorazonVacio = Content.Load<Texture2D>("corazonVacio");
             texGameOver = Content.Load<Texture2D>("gameover");
+            texVictoria = Content.Load<Texture2D>("victoria");
+            for (int i = 0; i < Oleadas.Total; i++)
+            {
+                texOleada[i] =
+                    Content.Load<Texture2D>(
+                        "oleada" + (i + 1));
+            }
 
             texPixel = new Texture2D(GraphicsDevice, 1, 1);
 
@@ -304,35 +318,28 @@ namespace TowerDefense
                 }
             }
 
-            contadorEnemigos++;
+            Enemigo nuevo =
+        oleadas.GenerarEnemigo(
+            topo,
+            camino);
 
-            if (contadorEnemigos >= framesEntreEnemigos)
+
+            if (nuevo != null)
             {
-                Enemigo enemigo =
-                    new Enemigo(
-                    topo,
-                    52,
-                    60,
-                    2.5f,
-                    camino
-                    );
-
-                enemigo.Nombre =
+                nuevo.Nombre =
                     "Enemigo Basico";
 
-                enemigo.ConfigurarVida(
+                nuevo.ConfigurarVida(
                     Economia.ObtenerVida(
-                        enemigo.Nombre,
+                        nuevo.Nombre,
                         enemigosBD));
-                
-                enemigo.ConfigurarVelocidad(
+
+                nuevo.ConfigurarVelocidad(
                     Economia.ObtenerVelocidad(
-                        enemigo.Nombre,
+                        nuevo.Nombre,
                         enemigosBD));
 
-                topos.Add(enemigo);
-
-                contadorEnemigos = 0;
+                topos.Add(nuevo);
             }
 
 
@@ -355,6 +362,14 @@ namespace TowerDefense
                     topos.RemoveAt(i);
                 }
             }
+
+            oleadas.VerificarFin(topos.Count);
+
+            if (oleadas.Completadas)
+            {
+                victoria = true;
+            }
+
 
             foreach (Enemigo topo in topos)
             {
@@ -523,6 +538,21 @@ namespace TowerDefense
                 );
             }
 
+
+            _spriteBatch.Draw(
+                texOleada[
+                    oleadas.Actual - 1
+                ],
+                new Vector2(
+                    (1600 -
+                    texOleada[
+                        oleadas.Actual - 1
+                    ].Width) / 2,
+                    10),
+                Color.White
+             );
+
+
             // SISTEMA DEBUG PARA VERIFICAR EL AREA DE COLOCACION DE TORRES
 
 
@@ -663,6 +693,34 @@ namespace TowerDefense
                     Color.White
                 );
             }
+
+            if (victoria)
+            {
+                _spriteBatch.Draw(
+                    texPixel,
+                    new Rectangle(
+                        0,
+                        0,
+                        GraphicsDevice.Viewport.Width,
+                        GraphicsDevice.Viewport.Height),
+                    Color.Black * 0.6f
+                );
+
+                Rectangle cartel =
+                    new Rectangle(
+                        (1600 - texVictoria.Width) / 2,
+                        (900 - texVictoria.Height) / 2,
+                        texVictoria.Width,
+                        texVictoria.Height
+                    );
+
+                _spriteBatch.Draw(
+                    texVictoria,
+                    cartel,
+                    Color.White
+                );
+            }
+
 
             foreach (Proyectil proyectil in proyectiles)
             {
