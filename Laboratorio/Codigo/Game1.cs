@@ -300,59 +300,103 @@ namespace TowerDefense
                 torreSeleccionada = TipoTorre.Lanzacohetes;
             }
 
-            for (int i = 0; i < slots.Count; i++)
+            if (
+    slotSeleccionado != -1 &&
+    teclado.IsKeyDown(Keys.V)
+   )
             {
-                if (mouse.LeftButton == ButtonState.Pressed && slots[i].AreaConstruccion.Contains(
-                    mouse.X,
-                    mouse.Y))
+                TipoTorre tipo =
+                    slots[slotSeleccionado].Tipo;
+
+                float costo =
+                    Economia.ObtenerCosto(
+                        tipo,
+                        defensas);
+
+                dinero +=
+                    (int)(costo * 0.5f);
+
+                Vector2 posicion =
+                    slots[slotSeleccionado]
+                    .PosicionTorre;
+
+                for (int i = torres.Count - 1; i >= 0; i--)
                 {
-                    float costo = Economia.ObtenerCosto(torreSeleccionada, defensas);
-
-                    if (!slots[i].TorreColocada &&
-                        dinero >= costo)
+                    if (
+                        torres[i].Posicion ==
+                        posicion
+                       )
                     {
-                        dinero -= (int)costo;
-
-                        Slot temp = slots[i];
-
-                        temp.TorreColocada = true;
-                        temp.Tipo = torreSeleccionada;
-
-                        slots[i] = temp;
-
-                        torres.Add(
-                            new Torre
-                            {
-                                Posicion = slots[i].PosicionTorre,
-                                Tipo = torreSeleccionada,
-                                Rango = ObtenerRango(torreSeleccionada),
-                                Cooldown = 0
-                            }
-                        );
-
-                        /*
-                        System.Diagnostics.Debug.WriteLine(
-                            "Dinero: " + dinero);
-                        */
+                        torres.RemoveAt(i);
+                        break;
                     }
                 }
+
+                Slot temp =
+                    slots[slotSeleccionado];
+
+                temp.TorreColocada = false;
+
+                slots[slotSeleccionado] =
+                    temp;
+
+                slotSeleccionado = -1;
             }
 
-            if (mouse.RightButton == ButtonState.Pressed)
-            {
-                slotSeleccionado = -1;
 
-                for (int i = 0; i < slots.Count; i++)
+
+            if (mouse.LeftButton == ButtonState.Pressed)
                 {
-                    if (slots[i].TorreColocada &&
-                        slots[i].AreaConstruccion.Contains(
+                    slotSeleccionado = -1;
+
+                    for (int i = 0; i < slots.Count; i++)
+                    {
+                        if (!slots[i].AreaConstruccion.Contains(
                             mouse.X,
                             mouse.Y))
-                    {
-                        slotSeleccionado = i;
+                        {
+                            continue;
+                        }
+
+                        if (slots[i].TorreColocada)
+                        {
+                            slotSeleccionado = i;
+                        }
+                        else
+                        {
+                            float costo =
+                                Economia.ObtenerCosto(
+                                    torreSeleccionada,
+                                    defensas);
+
+                            if (dinero >= costo)
+                            {
+                                dinero -= (int)costo;
+
+                                Slot temp = slots[i];
+                                temp.TorreColocada = true;
+                                temp.Tipo = torreSeleccionada;
+                                slots[i] = temp;
+
+                                torres.Add(
+                                    new Torre
+                                    {
+                                        Posicion = slots[i].PosicionTorre,
+                                        Tipo = torreSeleccionada,
+                                        Rango = ObtenerRango(
+                                            torreSeleccionada),
+                                        Cooldown = 0
+                                    }
+                                );
+                            }
+                        }
+
+                        break;
                     }
                 }
-            }
+            
+
+            
             /*
             Enemigo nuevo =
         oleadas.GenerarEnemigo(
