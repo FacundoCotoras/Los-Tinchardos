@@ -5,13 +5,10 @@ namespace TowerDefense
     class Torre
     {
         public Vector2 Posicion { get; set; }
-
         public TipoTorre Tipo { get; set; }
-
         public float Rango { get; set; }
-
         public Enemigo Objetivo { get; set; }
-
         public int Cooldown { get; set; }
+        public int Nivel { get; set; }
     }
 }
