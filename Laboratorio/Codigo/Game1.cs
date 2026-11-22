@@ -58,6 +58,36 @@ namespace TowerDefense
             return 100f;
         }
 
+        private string ObtenerNombreEnemigo()
+        {
+            if (oleadas.Actual >= 5)
+            {
+                return "Tanque";
+            }
+
+            if (oleadas.Actual >= 3)
+            {
+                return "Enemigo Rapido";
+            }
+
+            return "Enemigo Basico";
+        }
+
+        private Texture2D ObtenerSpriteEnemigo(string nombre)
+        {
+            switch (nombre)
+            {
+                case "Enemigo Rapido":
+                    return topoNinja;
+
+                case "Tanque":
+                    return topoBlindado;
+
+                default:
+                    return topo;
+            }
+        }
+
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -68,6 +98,8 @@ namespace TowerDefense
         private Texture2D debugRect;
         private Texture2D rango;
         private Texture2D topo;
+        private Texture2D topoNinja;
+        private Texture2D topoBlindado;
         Texture2D texCorazon;
         Texture2D texCorazonVacio;
         Texture2D texGameOver;
@@ -158,6 +190,10 @@ namespace TowerDefense
             lanzacohetes = Content.Load<Texture2D>("lanzacohetes");
 
             topo = Content.Load<Texture2D>("topo");
+
+            topoNinja = Content.Load<Texture2D>("topoNinja");
+
+            topoBlindado = Content.Load<Texture2D>("topoBlindado");
 
             /*
 
@@ -317,18 +353,26 @@ namespace TowerDefense
                     }
                 }
             }
-
+            /*
             Enemigo nuevo =
         oleadas.GenerarEnemigo(
             topo,
             camino);
+            */
+            string nombreEnemigo = ObtenerNombreEnemigo();
 
+            Texture2D spriteEnemigo =
+                ObtenerSpriteEnemigo(
+                    nombreEnemigo);
+
+            Enemigo nuevo =
+                oleadas.GenerarEnemigo(
+                    spriteEnemigo,
+                    camino);
 
             if (nuevo != null)
             {
-                nuevo.Nombre =
-                    "Enemigo Basico";
-
+                nuevo.Nombre = nombreEnemigo;
                 nuevo.ConfigurarVida(
                     Economia.ObtenerVida(
                         nuevo.Nombre,
