@@ -131,7 +131,7 @@ namespace TowerDefense
         {
             if (activo)
             {
-                // El topo original mira hacia la izquierda: lo damos vuelta al ir a la derecha
+                // Los topos miran a la derecha y se invierten al mirar al otro lado
                 SpriteEffects efecto = mirandoDerecha ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
                 sb.Draw(textura, rectangulo, null, Color.White, 0f, Vector2.Zero, efecto, 0f);
             }
