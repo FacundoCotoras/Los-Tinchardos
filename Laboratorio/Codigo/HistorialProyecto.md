@@ -227,17 +227,41 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Eliminación correcta de la instancia de Torre asociada a la defensa vendida.
 - Verificada la reconstrucción de defensas en slots previamente liberados.
 
+[24] Sistema de mejoras y reinicio de partida
+- Implementado sistema de niveles para defensas.
+- Agregada propiedad Nivel a las torres.
+- Inicialización automática de nuevas defensas en nivel 1.
+- Incorporada mejora de defensas mediante la tecla M.
+- Implementado límite máximo de mejora en nivel 3.
+- Integrado sistema de detección de pulsación única para acciones con teclado.
+- Corregido comportamiento de repetición al mantener presionadas las teclas.
+- Integrados sprites específicos para los niveles 2 y 3 de todas las defensas.
+- Implementado cambio visual automático según el nivel de mejora.
+- Agregado costo de mejora dependiente del tipo de defensa.
+- Implementado costo diferenciado entre nivel 1→2 y nivel 2→3.
+- Integrado descuento automático de dinero al mejorar defensas.
+- Incorporada información de nivel, costo de mejora y valor de venta al HUD.
+- Implementado sistema de reinicio de partida mediante la tecla R del código de Benjamín Sala.
+- Reinicio completo de vidas, dinero, oleadas, enemigos, proyectiles, torres y slots.
+- Integrada pantalla de reinicio visible tras Victoria y Game Over del código de Benjamín Sala.
+
 
 PENDIENTE
 
-- Balancear estadísticas de combate desde SQL.
 - Integrar sprites específicos para proyectiles.
 - Adaptar proyectiles según el tipo de defensa.
 - Implementar rotación de defensas hacia el objetivo.
-- Mejoras de defensas.
+- Aplicar efectos reales de mejora según el nivel de cada defensa.
+- Cañón nivel 2: doble disparo.
+- Cañón nivel 3: disparo pesado.
+- Torreta nivel 2: doble disparo.
+- Torreta nivel 3: alta cadencia de fuego.
+- Lanzacohetes nivel 2: doble misil.
+- Lanzacohetes nivel 3: triple misil.
 - Reparación de defensas.
 - Implementar vida para defensas.
 - Implementar daño de enemigos contra defensas.
 - Integrar enemigo tipo Jefe.
-- Revisar interfaz visual y ubicación definitiva del HUD.
-- Personaje jugable.
+- Mejorar diseño visual del HUD.
+- Revisar tipografía e interfaz final.
+- Personaje jugable (pendiente de definición).
