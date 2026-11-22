@@ -213,8 +213,21 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Verificado el comportamiento diferenciado entre enemigos rápidos y enemigos tanque.
 - Comprobada la integración completa entre oleadas, sprites de enemigos y estadísticas obtenidas desde MySQL.
 
+[23] Mejoras de interacción y venta de defensas
+- Corregida la orientación visual de los enemigos.
+- Unificada la dirección base utilizada por todos los sprites de enemigos.
+- Adaptado el sistema de inversión horizontal para funcionar correctamente con enemigos actuales y futuros.
+- Eliminado el sistema de selección mediante click derecho.
+- Implementada selección de defensas mediante click izquierdo sobre una posición ocupada.
+- Implementada deselección mediante click izquierdo fuera de cualquier slot.
+- Unificados los sistemas de construcción y selección en un único esquema de interacción.
+- Incorporado sistema de venta de defensas mediante la tecla V.
+- Implementada devolución del 50% del costo original de la defensa vendida.
+- Liberación automática del slot al vender una defensa.
+- Eliminación correcta de la instancia de Torre asociada a la defensa vendida.
+- Verificada la reconstrucción de defensas en slots previamente liberados.
 
-PENDIENTE
+
 PENDIENTE
 
 - Balancear estadísticas de combate desde SQL.
@@ -223,7 +236,8 @@ PENDIENTE
 - Implementar rotación de defensas hacia el objetivo.
 - Mejoras de defensas.
 - Reparación de defensas.
-- Venta de defensas.
+- Implementar vida para defensas.
 - Implementar daño de enemigos contra defensas.
 - Integrar enemigo tipo Jefe.
+- Revisar interfaz visual y ubicación definitiva del HUD.
 - Personaje jugable.
