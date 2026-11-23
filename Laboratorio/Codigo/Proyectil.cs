@@ -7,10 +7,11 @@ namespace TowerDefense
         public Vector2 Posicion { get; set; }
 
         public Enemigo Objetivo { get; set; }
-
         public bool Activo { get; set; } = true;
         public float Velocidad { get; set; } = 6f;
         public float Danio { get; set; }
+        public TipoTorre Tipo { get; set; }
+        public float Rotacion { get; set; }
         public void Update()
         {
             if (!Activo)
@@ -24,6 +25,12 @@ namespace TowerDefense
 
             Vector2 direccion =
                 Objetivo.Posicion - Posicion;
+
+            Rotacion =
+                (float)System.Math.Atan2(
+                direccion.Y,
+                direccion.X)
+                +MathHelper.PiOver2;
 
             if (direccion.Length() < 5)
             {
