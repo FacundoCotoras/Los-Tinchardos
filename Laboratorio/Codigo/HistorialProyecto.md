@@ -246,18 +246,26 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Integrada pantalla de reinicio visible tras Victoria y Game Over del código de Benjamín Sala.
 
 
+[25] Efectos funcionales de mejoras nivel 2
+- Integrado disparo múltiple para lanzacohetes mejorados.
+- Implementado doble misil para lanzacohetes nivel 2.
+- Implementado triple misil para lanzacohetes nivel 3.
+- Integrado doble disparo para cañón nivel 2.
+- Aplicado modificador de daño para balancear el doble disparo del cañón.
+- Integrado doble disparo para torreta nivel 2.
+- Aplicado modificador de daño para balancear el doble disparo de la torreta.
+- Diferenciadas mecánicamente las mejoras respecto de sus versiones base.
+- Verificado comportamiento de daño contra enemigos básicos, rápidos y tanque.
+- Corregido comportamiento de disparo múltiple respetando cooldown y objetivos.
+
 PENDIENTE
 
+- Separación visual de proyectiles múltiples.
 - Integrar sprites específicos para proyectiles.
 - Adaptar proyectiles según el tipo de defensa.
 - Implementar rotación de defensas hacia el objetivo.
-- Aplicar efectos reales de mejora según el nivel de cada defensa.
-- Cañón nivel 2: doble disparo.
-- Cañón nivel 3: disparo pesado.
-- Torreta nivel 2: doble disparo.
-- Torreta nivel 3: alta cadencia de fuego.
-- Lanzacohetes nivel 2: doble misil.
-- Lanzacohetes nivel 3: triple misil.
+- Implementar efectos funcionales de nivel 3 para cañón.
+- Implementar efectos funcionales de nivel 3 para torreta.
 - Reparación de defensas.
 - Implementar vida para defensas.
 - Implementar daño de enemigos contra defensas.
