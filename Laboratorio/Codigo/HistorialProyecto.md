@@ -258,18 +258,29 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Verificado comportamiento de daño contra enemigos básicos, rápidos y tanque.
 - Corregido comportamiento de disparo múltiple respetando cooldown y objetivos.
 
+
+[26] Mejoras nivel 3 y proyectiles visuales
+- Implementado disparo pesado para cañón nivel 3.
+- Implementada alta cadencia de fuego para torreta nivel 3.
+- Completadas las mejoras funcionales de los tres tipos de defensa.
+- Agregada separación visual para proyectiles múltiples.
+- Integrado sistema de proyectiles según tipo de defensa.
+- Agregados sprites específicos para proyectiles de cañón, torreta y lanzacohetes.
+- Incorporada propiedad de tipo en proyectiles.
+- Implementada rotación automática de proyectiles según dirección de movimiento.
+- Ajustado escalado individual para cada tipo de proyectil.
+- Mejorado el punto de origen de los disparos respecto a la posición de la defensa.
+- Reemplazados los proyectiles temporales de depuración por sprites definitivos.
+
 PENDIENTE
 
-- Separación visual de proyectiles múltiples.
-- Integrar sprites específicos para proyectiles.
-- Adaptar proyectiles según el tipo de defensa.
-- Implementar rotación de defensas hacia el objetivo.
-- Implementar efectos funcionales de nivel 3 para cañón.
-- Implementar efectos funcionales de nivel 3 para torreta.
-- Reparación de defensas.
+- Rotación de defensas hacia el objetivo.
+- Ajustar punto exacto de salida de proyectiles para cada defensa.
+- Integrar enemigo jefe.
 - Implementar vida para defensas.
-- Implementar daño de enemigos contra defensas.
-- Integrar enemigo tipo Jefe.
+- Implementar daño de enemigos a defensas.
+- Implementar sistema de reparación.
+- Balance general de mejoras y enemigos.
 - Mejorar diseño visual del HUD.
-- Revisar tipografía e interfaz final.
+- Revisar interfaz final.
 - Personaje jugable (pendiente de definición).
