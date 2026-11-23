@@ -88,13 +88,48 @@ namespace TowerDefense
             }
         }
 
+        private bool TeclaPresionada(
+            KeyboardState actual,
+        Keys tecla)
+        {
+            return
+                actual.IsKeyDown(tecla) &&
+                !tecladoAnterior.IsKeyDown(tecla);
+        }
+
+        private void ReiniciarJuego()
+        {
+            vidas = vidasMaximas;
+
+            dinero = 1000;
+
+            gameOver = false;
+            victoria = false;
+
+            slotSeleccionado = -1;
+
+            topos.Clear();
+            torres.Clear();
+            proyectiles.Clear();
+
+            slots = Mapa.CrearSlots();
+
+            oleadas = new Oleadas();
+        }
+
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D mapa;
         private Texture2D canion;
+        private Texture2D canion2;
+        private Texture2D canion3;
         private Texture2D torreta;
+        private Texture2D torreta2;
+        private Texture2D torreta3;
         private Texture2D lanzacohetes;
+        private Texture2D lanzacohetes2;
+        private Texture2D lanzacohetes3;
         private Texture2D debugRect;
         private Texture2D rango;
         private Texture2D topo;
@@ -104,6 +139,7 @@ namespace TowerDefense
         Texture2D texCorazonVacio;
         Texture2D texGameOver;
         Texture2D texVictoria;
+        Texture2D texReiniciar;
         Texture2D[] texOleada = new Texture2D[Oleadas.Total];
         bool victoria = false;
         Texture2D texPixel;
@@ -111,6 +147,8 @@ namespace TowerDefense
         private Vector2 posicion;
         private TipoTorre torreSeleccionada = TipoTorre.Canion;
         private int slotSeleccionado = -1;
+        private KeyboardState tecladoAnterior;
+
         private int dinero = 1000;
         const int vidasMaximas = 3;
         int vidas = vidasMaximas;
@@ -185,9 +223,21 @@ namespace TowerDefense
 
             canion = Content.Load<Texture2D>("canion");
 
+            canion2 = Content.Load<Texture2D>("canion2");
+
+            canion3 = Content.Load<Texture2D>("canion3");
+
             torreta = Content.Load<Texture2D>("torreta");
 
+            torreta2 = Content.Load<Texture2D>("torreta2");
+
+            torreta3 = Content.Load<Texture2D>("torreta3");
+
             lanzacohetes = Content.Load<Texture2D>("lanzacohetes");
+
+            lanzacohetes2 = Content.Load<Texture2D>("lanzacohetes2");
+
+            lanzacohetes3 = Content.Load<Texture2D>("lanzacohetes3");
 
             topo = Content.Load<Texture2D>("topo");
 
@@ -227,6 +277,7 @@ namespace TowerDefense
             texCorazonVacio = Content.Load<Texture2D>("corazonVacio");
             texGameOver = Content.Load<Texture2D>("gameover");
             texVictoria = Content.Load<Texture2D>("victoria");
+            texReiniciar = Content.Load<Texture2D>("reiniciar");
             for (int i = 0; i < Oleadas.Total; i++)
             {
                 texOleada[i] =
@@ -261,6 +312,21 @@ namespace TowerDefense
 
             KeyboardState teclado = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
+
+            if (gameOver || victoria)
+            {
+                if (
+                    TeclaPresionada(
+                        teclado,
+                        Keys.R)
+                   )
+                {
+                    ReiniciarJuego();
+                }
+
+                base.Update(gameTime);
+                return;
+            }
 
             float tiempo = (float)gameTime
                 .ElapsedGameTime.TotalSeconds;
@@ -300,10 +366,7 @@ namespace TowerDefense
                 torreSeleccionada = TipoTorre.Lanzacohetes;
             }
 
-            if (
-    slotSeleccionado != -1 &&
-    teclado.IsKeyDown(Keys.V)
-   )
+            if (slotSeleccionado != -1 && TeclaPresionada(teclado, Keys.V))
             {
                 TipoTorre tipo =
                     slots[slotSeleccionado].Tipo;
@@ -343,6 +406,51 @@ namespace TowerDefense
                 slotSeleccionado = -1;
             }
 
+            if (slotSeleccionado != -1 && TeclaPresionada(teclado, Keys.M))
+            {
+                Vector2 posicion =
+                    slots[slotSeleccionado]
+                    .PosicionTorre;
+
+                foreach (Torre torre in torres)
+                {
+                    if (torre.Posicion == posicion)
+                    {
+                        if (torre.Nivel < 3)
+                        {
+                            float costoBase =
+                                Economia.ObtenerCosto(
+                                    torre.Tipo,
+                                    defensas);
+
+                            int costoMejora;
+
+                            if (torre.Nivel == 1)
+                            {
+                                costoMejora =
+                                    (int)(costoBase * 0.75f);
+                            }
+                            else
+                            {
+                                costoMejora =
+                                    (int)(costoBase * 1.5f);
+                            }
+
+                            if (dinero >= costoMejora)
+                            {
+                                dinero -= costoMejora;
+
+                                torre.Nivel++;
+
+                                System.Diagnostics.Debug.WriteLine(
+                                    "Nivel: " + torre.Nivel);
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
 
 
             if (mouse.LeftButton == ButtonState.Pressed)
@@ -385,7 +493,8 @@ namespace TowerDefense
                                         Tipo = torreSeleccionada,
                                         Rango = ObtenerRango(
                                             torreSeleccionada),
-                                        Cooldown = 0
+                                        Cooldown = 0,
+                                        Nivel = 1
                                     }
                                 );
                             }
@@ -525,6 +634,7 @@ namespace TowerDefense
             Combate.ActualizarProyectiles(
                 proyectiles);
 
+            tecladoAnterior = teclado;
 
             base.Update(gameTime);
         }
@@ -683,24 +793,68 @@ namespace TowerDefense
                 {
                     Texture2D textura;
 
+                    Torre torreActual = null;
+
+                    foreach (Torre torre in torres)
+                    {
+                        if (
+                            torre.Posicion ==
+                            slots[i].PosicionTorre
+                           )
+                        {
+                            torreActual = torre;
+                            break;
+                        }
+                    }
+
+                    int nivel = 1;
+
+                    if (torreActual != null)
+                    {
+                        nivel = torreActual.Nivel;
+                    }
+
                     switch (slots[i].Tipo)
                     {
                         case TipoTorre.Canion:
-                            textura = canion;
+
+                            if (nivel == 1)
+                                textura = canion;
+                            else if (nivel == 2)
+                                textura = canion2;
+                            else
+                                textura = canion3;
+
                             break;
 
                         case TipoTorre.Torreta:
-                            textura = torreta;
+
+                            if (nivel == 1)
+                                textura = torreta;
+                            else if (nivel == 2)
+                                textura = torreta2;
+                            else
+                                textura = torreta3;
+
                             break;
 
                         case TipoTorre.Lanzacohetes:
-                            textura = lanzacohetes;
+
+                            if (nivel == 1)
+                                textura = lanzacohetes;
+                            else if (nivel == 2)
+                                textura = lanzacohetes2;
+                            else
+                                textura = lanzacohetes3;
+
                             break;
 
                         default:
+
                             textura = canion;
                             break;
                     }
+
 
                     _spriteBatch.Draw(
                         textura,
@@ -738,16 +892,68 @@ namespace TowerDefense
             }
 
             string nombreDefensa = torreSeleccionada.ToString().Replace("Canion", "Cañón");
+            int nivelDefensa = 0;
+            int costoMejora = 0;
+            int valorVenta = 0;
+
+
+            if (slotSeleccionado != -1)
+            {
+                Torre torreActual = null;
+
+                foreach (Torre torre in torres)
+                {
+                    if (
+                        torre.Posicion ==
+                        slots[slotSeleccionado]
+                        .PosicionTorre
+                       )
+                    {
+                        torreActual = torre;
+                        break;
+                    }
+                }
+
+                if (torreActual != null)
+                {
+                    nivelDefensa =
+                        torreActual.Nivel;
+
+                    float costoBase =
+                        Economia.ObtenerCosto(
+                            torreActual.Tipo,
+                            defensas);
+
+                    valorVenta =
+                        (int)(costoBase * 0.5f);
+
+                    if (torreActual.Nivel == 1)
+                    {
+                        costoMejora =
+                            (int)(costoBase * 0.75f);
+                    }
+                    else if (
+                        torreActual.Nivel == 2)
+                    {
+                        costoMejora =
+                            (int)(costoBase * 1.5f);
+                    }
+                }
+            }
 
             HUD.Dibujar(
                 _spriteBatch,
                 fuente,
                 dinero,
                 nombreDefensa,
-                Economia.ObtenerCosto(
-                        torreSeleccionada,
-                        defensas)
-                );
+                Economia.ObtenerCosto(torreSeleccionada,
+                    defensas),
+                nivelDefensa,
+                costoMejora,
+                valorVenta
+);
+
+
 
             if (gameOver)
             {
@@ -780,6 +986,14 @@ namespace TowerDefense
                     cartel,
                     Color.White
                 );
+
+                _spriteBatch.Draw(
+                    texReiniciar,
+                    new Vector2(
+                            (1600 - texReiniciar.Width) / 2,
+                            cartel.Bottom + 25),
+                    Color.White
+                );
             }
 
             if (victoria)
@@ -805,6 +1019,14 @@ namespace TowerDefense
                 _spriteBatch.Draw(
                     texVictoria,
                     cartel,
+                    Color.White
+                );
+
+                _spriteBatch.Draw(
+                    texReiniciar,
+                    new Vector2(
+                        (1600 - texReiniciar.Width) / 2,
+                        cartel.Bottom + 25),
                     Color.White
                 );
             }
