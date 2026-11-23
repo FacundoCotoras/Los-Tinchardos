@@ -52,24 +52,40 @@ namespace TowerDefense
                             defensas);
 
                     int cantidadDisparos = 1;
+                    int cooldownDisparo = 30;
 
-                    if (torre.Tipo == TipoTorre.Canion && torre.Nivel == 2)
+                    if (torre.Tipo == TipoTorre.Canion)
                     {
-                        cantidadDisparos = 2;
-                        danio *= 0.75f;
+                        if (torre.Nivel == 2)
+                        {
+                            cantidadDisparos = 2;
+                            danio *= 0.75f;
+                        }
+                        else if (torre.Nivel == 3)
+                        {
+                            cantidadDisparos = 1;
+                            danio *= 2.5f;
+                        }
                     }
 
-                    if (torre.Tipo ==TipoTorre.Torreta && torre.Nivel == 2
-   )
+                  
+                    if (torre.Tipo == TipoTorre.Torreta)
                     {
-                        cantidadDisparos = 2;
-                        danio *= 0.60f;
+                        if (torre.Nivel == 2)
+                        {
+                            cantidadDisparos = 2;
+                            danio *= 0.60f;
+                        }
+                        else if (torre.Nivel == 3)
+                        {
+                            cantidadDisparos = 1;
+                            cooldownDisparo = 10;
+                            danio *= 0.75f;
+                        }
                     }
 
-                    if (
-                        torre.Tipo ==
-                        TipoTorre.Lanzacohetes
-                       )
+
+                    if (torre.Tipo == TipoTorre.Lanzacohetes)
                     {
                         if (torre.Nivel == 2)
                         {
@@ -81,26 +97,45 @@ namespace TowerDefense
                         }
                     }
 
-                    for (int i = 0;
-                         i < cantidadDisparos;
-                         i++)
+                    for (int i = 0; i < cantidadDisparos; i++)
                     {
+                        float offsetX = 0;
+                        if (cantidadDisparos == 2)
+                        {
+                            offsetX =
+                                (i == 0)
+                                ? -10
+                                : 10;
+                        }
+                        else if (cantidadDisparos == 3)
+                        {
+                            if (i == 0)
+                                offsetX = -15;
+                            else if (i == 1)
+                                offsetX = 0;
+                            else
+                                offsetX = 15;
+                        }
                         proyectiles.Add(
                             new Proyectil
                             {
                                 Posicion =
-                                    torre.Posicion,
-
+                                    torre.Posicion +
+                                    new Vector2(
+                                        45 + offsetX,
+                                        45),
                                 Objetivo =
                                     torre.Objetivo,
 
                                 Danio =
-                                    danio
+                                    danio,
+
+                                Tipo = torre.Tipo
                             }
                         );
                     }
 
-                    torre.Cooldown = 30;
+                    torre.Cooldown = cooldownDisparo;
                 }
             }
         }
