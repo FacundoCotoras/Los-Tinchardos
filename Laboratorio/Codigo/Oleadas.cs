@@ -7,7 +7,7 @@ class Oleadas
 {
     public const int Total = 5;
 
-    private static readonly int[]   enemigosPorOleada  = { 6, 8, 10, 12, 15 };
+    private static readonly int[]   enemigosPorOleada  = { 6, 8, 10, 12, 1 };
     private static readonly int[]   framesEntreEnemigos = { 100, 85, 75, 65, 55 };
     private static readonly float[] velocidadPorOleada = { 2.0f, 2.3f, 2.6f, 2.9f, 3.2f };
 
@@ -58,7 +58,22 @@ class Oleadas
             {
                 generados++;
                 contador = 0;
-                return new Enemigo(sprite, 52, 60, velocidadPorOleada[Actual - 1], camino);
+                if (Actual == Total)
+                {
+                    return new Enemigo(
+                        sprite,
+                        90,
+                        100,
+                        velocidadPorOleada[Actual - 1],
+                        camino);
+                }
+
+                return new Enemigo(
+                    sprite,
+                    52,
+                    60,
+                    velocidadPorOleada[Actual - 1],
+                    camino);
             }
         }
 
