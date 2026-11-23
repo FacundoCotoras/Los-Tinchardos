@@ -58,19 +58,58 @@ namespace TowerDefense
             return 100f;
         }
 
+
         private string ObtenerNombreEnemigo()
         {
-            if (oleadas.Actual == 5)
+            switch (oleadas.Actual)
             {
-                return "Jefe";
-            }
+                case 1:
+                    return "Enemigo Rapido";
 
-            if (oleadas.Actual >= 3)
-            {
-                return "Enemigo Rapido";
-            }
+                case 2:
 
-            return "Enemigo Basico";
+                    if (oleadas.Generados == 0)
+                        return "Enemigo Rapido";
+
+                    return "Enemigo Basico";
+
+                case 3:
+
+                    if (oleadas.Generados == 0)
+                        return "Tanque";
+
+                    return "Enemigo Basico";
+
+                case 4:
+
+                    if (oleadas.Generados < 2)
+                        return "Enemigo Rapido";
+
+                    if (oleadas.Generados < 4)
+                        return "Enemigo Basico";
+
+                    return "Tanque";
+
+                case 5:
+
+                    if (oleadas.Generados < 3)
+                        return "Enemigo Rapido";
+
+                    if (oleadas.Generados < 6)
+                        return "Enemigo Basico";
+
+                    return "Tanque";
+
+                case 6:
+
+                    if (oleadas.Generados < 5)
+                        return "Enemigo Rapido";
+
+                    return "Jefe";
+
+                default:
+                    return "Enemigo Basico";
+            }
         }
 
         private Texture2D ObtenerSpriteEnemigo(string nombre)
@@ -163,6 +202,7 @@ namespace TowerDefense
         bool gameOver = false;
         private float velocidad = 200f;
         private Oleadas oleadas = new Oleadas();
+        private Random rnd = new Random();
 
         private List<Slot> slots = new List<Slot>();
         private List<DatosDefensa> defensas = new List<DatosDefensa>();
@@ -544,6 +584,11 @@ namespace TowerDefense
             if (nuevo != null)
             {
                 nuevo.Nombre = nombreEnemigo;
+
+                if (nuevo.Nombre == "Jefe")
+                {
+                    nuevo.CambiarTamanio(90, 100);
+                }
                 nuevo.ConfigurarVida(
                     Economia.ObtenerVida(
                         nuevo.Nombre,
@@ -566,7 +611,7 @@ namespace TowerDefense
                 {
                     topos[i].CooldownInvocacion++;
 
-                    if (topos[i].CooldownInvocacion >= 300)
+                    if (topos[i].CooldownInvocacion >= 150)
                     {
                         topos[i].CooldownInvocacion = 0;
 
