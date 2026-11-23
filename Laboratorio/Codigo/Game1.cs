@@ -130,6 +130,7 @@ namespace TowerDefense
         private Texture2D lanzacohetes;
         private Texture2D lanzacohetes2;
         private Texture2D lanzacohetes3;
+        Texture2D baseTorre;
         Texture2D proyectilCanion;
         Texture2D proyectilTorreta;
         Texture2D proyectilMisil;
@@ -241,6 +242,8 @@ namespace TowerDefense
             lanzacohetes2 = Content.Load<Texture2D>("lanzacohetes2");
 
             lanzacohetes3 = Content.Load<Texture2D>("lanzacohetes3");
+
+            baseTorre = Content.Load<Texture2D>("base");
 
             proyectilCanion = Content.Load<Texture2D>("proyectilcanion");
 
@@ -795,7 +798,6 @@ namespace TowerDefense
 
             */
 
-
             for (int i = 0; i < slots.Count; i++)
             {
                 if (slots[i].TorreColocada)
@@ -864,17 +866,70 @@ namespace TowerDefense
                             break;
                     }
 
+                    Vector2 offsetDibujo = new Vector2(43, 55);
+
+                    if (slots[i].Tipo ==
+                        TipoTorre.Lanzacohetes)
+                    {
+                        offsetDibujo =
+                            new Vector2(43, 60);
+                    }
+
+                    float rotacion = torreActual != null ? torreActual.Rotacion : 0f;
+
+                    Vector2 origenTorre =
+                        new Vector2(
+                            textura.Width / 2f,
+                            textura.Height * 0.75f);
+
+
+                    if (slots[i].Tipo == TipoTorre.Lanzacohetes)
+                    {
+                        origenTorre =
+                            new Vector2(
+                                textura.Width / 2f,
+                                textura.Height * 0.75f);
+                    }
+                    if (torreActual != null && torreActual.Objetivo != null)
+                    {
+                        Vector2 direccion =
+                            torreActual.Objetivo.Posicion -
+                            (torreActual.Posicion +
+                             new Vector2(45, 45));
+
+                        rotacion =
+                            (float)Math.Atan2(
+                                direccion.Y,
+                                direccion.X)
+                            + MathHelper.PiOver2;
+
+                        torreActual.Rotacion = rotacion;
+                    }
 
                     _spriteBatch.Draw(
-                        textura,
+                        baseTorre,
                         new Rectangle(
-                            (int)slots[i].PosicionTorre.X,
-                            (int)slots[i].PosicionTorre.Y,
-                            90,
-                            90
+                            (int)slots[i].PosicionTorre.X  + 15,
+                            (int)slots[i].PosicionTorre.Y + 25,
+                            55,
+                            55
                         ),
                         Color.White
                     );
+
+                    _spriteBatch.Draw(
+                        textura,
+                        slots[i].PosicionTorre +
+                            offsetDibujo,
+                        null,
+                        Color.White,
+                        rotacion,
+                        origenTorre,
+                        0.28f,
+                        SpriteEffects.None,
+                        0f
+                    );
+
                 }
             }
 
@@ -1081,7 +1136,7 @@ namespace TowerDefense
                     proyectil.Rotacion,
                     new Vector2(
                         textura.Width / 2f,
-                        textura.Height / 2f),
+                        textura.Height * 0.70f),
                     0.35f,
                     SpriteEffects.None,
                     0f
