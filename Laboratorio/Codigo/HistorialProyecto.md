@@ -286,15 +286,28 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Realizadas pruebas visuales de rotación en los tres tipos de defensa.
 - Estabilizada la presentación gráfica final de las defensas para entrega.
 
+[28] Implementación del Rey Topo y ajustes visuales
+- Integrado enemigo jefe exclusivo para la oleada final.
+- Agregado sprite propio para el Rey Topo.
+- Configurada la aparición de un único jefe en la oleada 5.
+- Implementada habilidad de invocación periódica de enemigos básicos por parte del jefe.
+- Aumentada la escala visual del Rey Topo para diferenciarlo del resto de enemigos.
+- Ajustado el pivote de rotación del lanzacohetes nivel 1 para mejorar el centrado visual durante el apuntado.
+- Corregidos y recortados sprites de defensas para mejorar la alineación durante la rotación.
+- Realizadas pruebas de balance preliminar del jefe frente a las defensas de nivel máximo.
+
 
 PENDIENTE
 
 - Ajustar punto exacto de salida de proyectiles para cada defensa.
-- Integrar enemigo jefe.
+- Revisar composición definitiva de las oleadas.
 - Implementar vida para defensas.
 - Implementar daño de enemigos a defensas.
 - Implementar sistema de reparación.
 - Balance general de mejoras y enemigos.
+- Mejorar habilidad de invocación del Rey Topo (cantidad y punto de aparición de esbirros).
+- Ajustar posición visual del Rey Topo en el camino.
+- Implementar animaciones del Rey Topo.
 - Mejorar diseño visual del HUD.
 - Revisar interfaz final.
 - Personaje jugable (pendiente de definición).
