@@ -60,9 +60,9 @@ namespace TowerDefense
 
         private string ObtenerNombreEnemigo()
         {
-            if (oleadas.Actual >= 5)
+            if (oleadas.Actual == 5)
             {
-                return "Tanque";
+                return "Jefe";
             }
 
             if (oleadas.Actual >= 3)
@@ -82,6 +82,9 @@ namespace TowerDefense
 
                 case "Tanque":
                     return topoBlindado;
+
+                case "Jefe":
+                    return jefe;
 
                 default:
                     return topo;
@@ -139,6 +142,7 @@ namespace TowerDefense
         private Texture2D topo;
         private Texture2D topoNinja;
         private Texture2D topoBlindado;
+        private Texture2D jefe;
         Texture2D texCorazon;
         Texture2D texCorazonVacio;
         Texture2D texGameOver;
@@ -256,6 +260,8 @@ namespace TowerDefense
             topoNinja = Content.Load<Texture2D>("topoNinja");
 
             topoBlindado = Content.Load<Texture2D>("topoBlindado");
+
+            jefe = Content.Load<Texture2D>("jefe");
 
             /*
 
@@ -555,6 +561,41 @@ namespace TowerDefense
             for (int i = topos.Count - 1; i >= 0; i--)
             {
                 topos[i].update();
+
+                if (topos[i].Nombre == "Jefe")
+                {
+                    topos[i].CooldownInvocacion++;
+
+                    if (topos[i].CooldownInvocacion >= 300)
+                    {
+                        topos[i].CooldownInvocacion = 0;
+
+                        Enemigo invocado =
+                            new Enemigo(
+                                topo,
+                                52,
+                                60,
+                                2.5f,
+                                camino);
+
+                        invocado.Nombre =
+                            "Enemigo Basico";
+
+                        invocado.ConfigurarVida(
+                            Economia.ObtenerVida(
+                                "Enemigo Basico",
+                                enemigosBD));
+
+                        invocado.ConfigurarVelocidad(
+                            Economia.ObtenerVelocidad(
+                                "Enemigo Basico",
+                                enemigosBD));
+
+                        topos.Add(invocado);
+                    }
+                }
+
+
 
                 if (topos[i].Vida <= 0)
                 {
@@ -882,13 +923,15 @@ namespace TowerDefense
                             textura.Width / 2f,
                             textura.Height * 0.75f);
 
-
-                    if (slots[i].Tipo == TipoTorre.Lanzacohetes)
+                    if (
+                        slots[i].Tipo == TipoTorre.Lanzacohetes &&
+                        nivel == 1
+                       )
                     {
                         origenTorre =
                             new Vector2(
-                                textura.Width / 2f,
-                                textura.Height * 0.75f);
+                                textura.Width * 0.47f,
+                                textura.Height * 0.68f);
                     }
                     if (torreActual != null && torreActual.Objetivo != null)
                     {
