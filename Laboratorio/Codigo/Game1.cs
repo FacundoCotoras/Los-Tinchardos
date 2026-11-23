@@ -130,6 +130,9 @@ namespace TowerDefense
         private Texture2D lanzacohetes;
         private Texture2D lanzacohetes2;
         private Texture2D lanzacohetes3;
+        Texture2D proyectilCanion;
+        Texture2D proyectilTorreta;
+        Texture2D proyectilMisil;
         private Texture2D debugRect;
         private Texture2D rango;
         private Texture2D topo;
@@ -238,6 +241,12 @@ namespace TowerDefense
             lanzacohetes2 = Content.Load<Texture2D>("lanzacohetes2");
 
             lanzacohetes3 = Content.Load<Texture2D>("lanzacohetes3");
+
+            proyectilCanion = Content.Load<Texture2D>("proyectilcanion");
+
+            proyectilTorreta = Content.Load<Texture2D>("proyectiltorreta");
+
+            proyectilMisil = Content.Load<Texture2D>("proyectilmisil");
 
             topo = Content.Load<Texture2D>("topo");
 
@@ -1034,14 +1043,48 @@ namespace TowerDefense
 
             foreach (Proyectil proyectil in proyectiles)
             {
+                Texture2D textura;
+                int ancho;
+                int alto;
+                switch (proyectil.Tipo)
+                {
+                    case TipoTorre.Canion:
+                        textura = proyectilCanion;
+                        ancho = 10;
+                        alto = 20;
+                        break;
+
+                    case TipoTorre.Torreta:
+                        textura = proyectilTorreta;
+                        ancho = 8;
+                        alto = 28;
+                        break;
+
+                    case TipoTorre.Lanzacohetes:
+                        textura = proyectilMisil;
+                        ancho = 14;
+                        alto = 25;
+                        break;
+
+                    default:
+                        textura = proyectilCanion;
+                        ancho = 10;
+                        alto = 20;
+                        break;
+                }
+
                 _spriteBatch.Draw(
-                    debugRect,
-                    new Rectangle(
-                        (int)proyectil.Posicion.X - 4,
-                        (int)proyectil.Posicion.Y - 4,
-                        8,
-                        8),
-                    Color.Yellow
+                    textura,
+                    proyectil.Posicion,
+                    null,
+                    Color.White,
+                    proyectil.Rotacion,
+                    new Vector2(
+                        textura.Width / 2f,
+                        textura.Height / 2f),
+                    0.35f,
+                    SpriteEffects.None,
+                    0f
                 );
             }
 
