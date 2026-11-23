@@ -26,6 +26,7 @@ namespace TowerDefense
         public int Vida { get; set; } = 100;
         public int VidaMaxima { get; set; } = 100;
         public string Nombre { get; set; }
+        public int CooldownInvocacion { get; set; } = 0;
         public void ConfigurarVida(int vida)
         {
             Vida = vida;
