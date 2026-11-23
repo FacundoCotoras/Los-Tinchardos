@@ -46,14 +46,59 @@ namespace TowerDefense
                     torre.Cooldown <= 0
                    )
                 {
-                    proyectiles.Add(
-                        new Proyectil
+                    float danio =
+                        Economia.ObtenerDanio(
+                            torre.Tipo,
+                            defensas);
+
+                    int cantidadDisparos = 1;
+
+                    if (torre.Tipo == TipoTorre.Canion && torre.Nivel == 2)
+                    {
+                        cantidadDisparos = 2;
+                        danio *= 0.75f;
+                    }
+
+                    if (torre.Tipo ==TipoTorre.Torreta && torre.Nivel == 2
+   )
+                    {
+                        cantidadDisparos = 2;
+                        danio *= 0.60f;
+                    }
+
+                    if (
+                        torre.Tipo ==
+                        TipoTorre.Lanzacohetes
+                       )
+                    {
+                        if (torre.Nivel == 2)
                         {
-                            Posicion = torre.Posicion,
-                            Objetivo = torre.Objetivo,
-                            Danio = Economia.ObtenerDanio(torre.Tipo, defensas)
+                            cantidadDisparos = 2;
                         }
-                    );
+                        else if (torre.Nivel == 3)
+                        {
+                            cantidadDisparos = 3;
+                        }
+                    }
+
+                    for (int i = 0;
+                         i < cantidadDisparos;
+                         i++)
+                    {
+                        proyectiles.Add(
+                            new Proyectil
+                            {
+                                Posicion =
+                                    torre.Posicion,
+
+                                Objetivo =
+                                    torre.Objetivo,
+
+                                Danio =
+                                    danio
+                            }
+                        );
+                    }
 
                     torre.Cooldown = 30;
                 }
