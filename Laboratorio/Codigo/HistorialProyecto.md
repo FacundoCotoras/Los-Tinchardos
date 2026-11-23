@@ -297,6 +297,17 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Realizadas pruebas de balance preliminar del jefe frente a las defensas de nivel máximo.
 
 
+[29] Sistema de oleadas manuales y mejoras del Rey Topo
+- Ampliado el juego a 6 oleadas.
+- Implementadas composiciones manuales de enemigos para cada oleada.
+- Agregada propiedad pública para consultar la cantidad de enemigos generados en la oleada actual.
+- Integrada oleada final con enemigos escolta previos a la aparición del Rey Topo.
+- Corregido el tamaño exclusivo del Rey Topo.
+- Restaurado el tamaño normal para enemigos estándar.
+- Implementado método para modificar dinámicamente el tamaño de enemigos.
+- Ajustada la frecuencia de invocación del Rey Topo para generar esbirros con mayor continuidad.
+
+
 PENDIENTE
 
 - Ajustar punto exacto de salida de proyectiles para cada defensa.
@@ -305,7 +316,7 @@ PENDIENTE
 - Implementar daño de enemigos a defensas.
 - Implementar sistema de reparación.
 - Balance general de mejoras y enemigos.
-- Mejorar habilidad de invocación del Rey Topo (cantidad y punto de aparición de esbirros).
+- Mejorar habilidad de invocación del Rey Topo (punto de aparición de esbirros).
 - Ajustar posición visual del Rey Topo en el camino.
 - Implementar animaciones del Rey Topo.
 - Mejorar diseño visual del HUD.
