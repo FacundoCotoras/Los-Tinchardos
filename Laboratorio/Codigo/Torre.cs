@@ -10,5 +10,6 @@ namespace TowerDefense
         public Enemigo Objetivo { get; set; }
         public int Cooldown { get; set; }
         public int Nivel { get; set; }
+        public float Rotacion { get; set; }
     }
 }
