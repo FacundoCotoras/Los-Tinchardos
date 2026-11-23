@@ -272,9 +272,23 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Mejorado el punto de origen de los disparos respecto a la posición de la defensa.
 - Reemplazados los proyectiles temporales de depuración por sprites definitivos.
 
+[27] Rotación de defensas y ajuste visual de sprites
+- Implementada rotación automática de defensas hacia el enemigo objetivo.
+- Incorporada persistencia de rotación en cada defensa.
+- Integrado sistema de apuntado visual para cañón, torreta y lanzacohetes.
+- Ajustado el origen de rotación de las defensas para mejorar el seguimiento de objetivos.
+- Agregado desplazamiento visual específico para lanzacohetes.
+- Reemplazado sistema estático de orientación por apuntado dinámico.
+- Corregida alineación visual de defensas durante la rotación.
+- Eliminados márgenes innecesarios en sprites de defensas.
+- Mejorado el centrado visual de los modelos al rotar.
+- Ajustada la posición relativa entre defensa y base de soporte.
+- Realizadas pruebas visuales de rotación en los tres tipos de defensa.
+- Estabilizada la presentación gráfica final de las defensas para entrega.
+
+
 PENDIENTE
 
-- Rotación de defensas hacia el objetivo.
 - Ajustar punto exacto de salida de proyectiles para cada defensa.
 - Integrar enemigo jefe.
 - Implementar vida para defensas.
