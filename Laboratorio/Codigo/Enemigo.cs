@@ -41,11 +41,14 @@ namespace TowerDefense
             get { return posicion; }
         }
 
-        public bool Seleccionado
-{
-    get;
-    set;
-}
+        public bool Seleccionado{ get; set;}
+
+        public void CambiarTamanio(int ancho, int alto)
+        {
+            rectangulo.Width = ancho;
+            rectangulo.Height = alto;
+            ActualizarRectangulo();
+        }
 
         /// <summary>
         /// Constructor del personaje
