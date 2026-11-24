@@ -5,11 +5,11 @@ namespace TowerDefense;
 
 class Oleadas
 {
-    public const int Total = 5;
+    public const int Total = 6;
 
-    private static readonly int[]   enemigosPorOleada  = { 6, 8, 10, 12, 1 };
-    private static readonly int[]   framesEntreEnemigos = { 100, 85, 75, 65, 55 };
-    private static readonly float[] velocidadPorOleada = { 2.0f, 2.3f, 2.6f, 2.9f, 3.2f };
+    private static readonly int[]   enemigosPorOleada  = {2, 3, 2, 6, 8, 6 };
+    private static readonly int[]   framesEntreEnemigos = { 100, 85, 75, 65, 55, 55 };
+    private static readonly float[] velocidadPorOleada = { 2.0f, 2.3f, 2.6f, 2.9f, 3.2f, 3.2f };
 
     private const int pausaInicial = 120;
     private const int pausaEntreOleadas = 180;
@@ -22,6 +22,10 @@ class Oleadas
     public int Actual { get; private set; }
 
     public bool Completadas { get; private set; }
+    public int Generados
+    {
+        get { return generados; }
+    }
 
     public Oleadas()
     {
@@ -58,16 +62,7 @@ class Oleadas
             {
                 generados++;
                 contador = 0;
-                if (Actual == Total)
-                {
-                    return new Enemigo(
-                        sprite,
-                        90,
-                        100,
-                        velocidadPorOleada[Actual - 1],
-                        camino);
-                }
-
+                
                 return new Enemigo(
                     sprite,
                     52,
