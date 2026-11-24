@@ -308,9 +308,16 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Ajustada la frecuencia de invocación del Rey Topo para generar esbirros con mayor continuidad.
 
 
+[30] Interfaz de jefe y mejoras visuales de combate
+- Incorporada barra de vida global para el Rey Topo.
+- Agregado identificador visual "REY TOPO" durante la fase de jefe final.
+- Implementada visualización numérica de vida del jefe.
+- Ajustado el punto de salida de proyectiles para acompañar la orientación de las defensas.
+
+
 PENDIENTE
 
-- Ajustar punto exacto de salida de proyectiles para cada defensa.
+- Ajustar salida exacta de proyectiles para defensas multidisparo.
 - Revisar composición definitiva de las oleadas.
 - Implementar vida para defensas.
 - Implementar daño de enemigos a defensas.
@@ -318,6 +325,7 @@ PENDIENTE
 - Balance general de mejoras y enemigos.
 - Mejorar habilidad de invocación del Rey Topo (punto de aparición de esbirros).
 - Ajustar posición visual del Rey Topo en el camino.
+- Refinar interfaz de la barra de vida del jefe.
 - Implementar animaciones del Rey Topo.
 - Mejorar diseño visual del HUD.
 - Revisar interfaz final.
