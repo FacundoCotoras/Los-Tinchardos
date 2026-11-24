@@ -68,7 +68,7 @@ namespace TowerDefense
                         }
                     }
 
-                  
+
                     if (torre.Tipo == TipoTorre.Torreta)
                     {
                         if (torre.Nivel == 2)
@@ -116,14 +116,26 @@ namespace TowerDefense
                             else
                                 offsetX = 15;
                         }
+
+                        Vector2 puntoDisparo =
+                            torre.Posicion +
+                            new Vector2(45, 45);
+
+                        Vector2 direccionCanon =
+                            new Vector2(
+                                (float)System.Math.Sin(torre.Rotacion),
+                                (float)-System.Math.Cos(torre.Rotacion));
+
+                        puntoDisparo +=
+                            direccionCanon * 35f;
+
                         proyectiles.Add(
                             new Proyectil
                             {
                                 Posicion =
-                                    torre.Posicion +
-                                    new Vector2(
-                                        45 + offsetX,
-                                        45),
+                                    puntoDisparo +
+                                    new Vector2(offsetX, 0),
+
                                 Objetivo =
                                     torre.Objetivo,
 
