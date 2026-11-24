@@ -8,8 +8,8 @@ using System.Data;
 
 namespace TowerDefense
 {
-    
-    
+
+
     public class Game1 : Game
     {
         static readonly Vector2[] camino =
@@ -19,10 +19,10 @@ namespace TowerDefense
             new Vector2(643.044f, 334.209f),
             new Vector2(1117.485f, 334.209f),
             new Vector2(1117.485f, 608.856f),
-            new Vector2(437.845f, 608.856f), 
+            new Vector2(437.845f, 608.856f),
             new Vector2(437.845f, 775.409f),
             new Vector2(1352.745f, 775.409f),
-            new Vector2(1352.745f, 641.946f), 
+            new Vector2(1352.745f, 641.946f),
             new Vector2(1516.12f, 641.946f)
         };
 
@@ -187,6 +187,7 @@ namespace TowerDefense
         Texture2D texGameOver;
         Texture2D texVictoria;
         Texture2D texReiniciar;
+        private Texture2D texReyTopo;
         Texture2D[] texOleada = new Texture2D[Oleadas.Total];
         bool victoria = false;
         Texture2D texPixel;
@@ -210,7 +211,7 @@ namespace TowerDefense
 
         private List<Enemigo> topos = new List<Enemigo>();
         private List<Torre> torres = new List<Torre>();
-        private List<Proyectil> proyectiles =  new List<Proyectil>();
+        private List<Proyectil> proyectiles = new List<Proyectil>();
 
 
         public Game1()
@@ -302,6 +303,8 @@ namespace TowerDefense
             topoBlindado = Content.Load<Texture2D>("topoBlindado");
 
             jefe = Content.Load<Texture2D>("jefe");
+
+            texReyTopo = Content.Load<Texture2D>("reytopo");
 
             /*
 
@@ -512,58 +515,58 @@ namespace TowerDefense
 
 
             if (mouse.LeftButton == ButtonState.Pressed)
+            {
+                slotSeleccionado = -1;
+
+                for (int i = 0; i < slots.Count; i++)
                 {
-                    slotSeleccionado = -1;
-
-                    for (int i = 0; i < slots.Count; i++)
+                    if (!slots[i].AreaConstruccion.Contains(
+                        mouse.X,
+                        mouse.Y))
                     {
-                        if (!slots[i].AreaConstruccion.Contains(
-                            mouse.X,
-                            mouse.Y))
-                        {
-                            continue;
-                        }
-
-                        if (slots[i].TorreColocada)
-                        {
-                            slotSeleccionado = i;
-                        }
-                        else
-                        {
-                            float costo =
-                                Economia.ObtenerCosto(
-                                    torreSeleccionada,
-                                    defensas);
-
-                            if (dinero >= costo)
-                            {
-                                dinero -= (int)costo;
-
-                                Slot temp = slots[i];
-                                temp.TorreColocada = true;
-                                temp.Tipo = torreSeleccionada;
-                                slots[i] = temp;
-
-                                torres.Add(
-                                    new Torre
-                                    {
-                                        Posicion = slots[i].PosicionTorre,
-                                        Tipo = torreSeleccionada,
-                                        Rango = ObtenerRango(
-                                            torreSeleccionada),
-                                        Cooldown = 0,
-                                        Nivel = 1
-                                    }
-                                );
-                            }
-                        }
-
-                        break;
+                        continue;
                     }
-                }
-            
 
-            
+                    if (slots[i].TorreColocada)
+                    {
+                        slotSeleccionado = i;
+                    }
+                    else
+                    {
+                        float costo =
+                            Economia.ObtenerCosto(
+                                torreSeleccionada,
+                                defensas);
+
+                        if (dinero >= costo)
+                        {
+                            dinero -= (int)costo;
+
+                            Slot temp = slots[i];
+                            temp.TorreColocada = true;
+                            temp.Tipo = torreSeleccionada;
+                            slots[i] = temp;
+
+                            torres.Add(
+                                new Torre
+                                {
+                                    Posicion = slots[i].PosicionTorre,
+                                    Tipo = torreSeleccionada,
+                                    Rango = ObtenerRango(
+                                        torreSeleccionada),
+                                    Cooldown = 0,
+                                    Nivel = 1
+                                }
+                            );
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+
+
             /*
             Enemigo nuevo =
         oleadas.GenerarEnemigo(
@@ -680,7 +683,7 @@ namespace TowerDefense
                 float rangoTorre =
                     ObtenerRango(slots[i].Tipo);
 
-            
+
 
                 foreach (Enemigo topo in topos)
                 {
@@ -758,7 +761,7 @@ namespace TowerDefense
                 Color.White
             );
 
-            
+
 
 
             foreach (Enemigo topo in topos)
@@ -799,6 +802,66 @@ namespace TowerDefense
                     Color.LimeGreen
                 );
             }
+
+            foreach (Enemigo topo in topos)
+            {
+                if (topo.Nombre != "Jefe")
+                    continue;
+
+                float porcentajeVida =
+                    (float)topo.Vida /
+                    topo.VidaMaxima;
+
+                int anchoTotal = 600;
+                int anchoActual =
+                    (int)(anchoTotal * porcentajeVida);
+
+                int x =
+                    (1600 - anchoTotal) / 2;
+
+                int y = 50;
+
+                // fondo
+                _spriteBatch.Draw(
+                    debugRect,
+                    new Rectangle(
+                        x,
+                        y,
+                        anchoTotal,
+                        20),
+                    Color.DarkRed);
+
+                // vida
+                _spriteBatch.Draw(
+                    debugRect,
+                    new Rectangle(
+                        x,
+                        y,
+                        anchoActual,
+                        20),
+                    Color.Red);
+
+                _spriteBatch.Draw(
+                    texReyTopo,
+                    new Vector2(x + 200, y + 25),
+                    Color.White);
+
+                string vidaBoss = topo.Vida + " / " + topo.VidaMaxima;
+
+                Vector2 tamTexto =
+                    fuente.MeasureString(
+                        vidaBoss);
+
+                _spriteBatch.DrawString(
+                    fuente,
+                    vidaBoss,
+                    new Vector2(
+                        x + (anchoTotal - tamTexto.X) / 2,
+                        y - 2),
+                    Color.Black);
+            }
+
+
 
             foreach (Enemigo topo in topos)
             {
@@ -997,7 +1060,7 @@ namespace TowerDefense
                     _spriteBatch.Draw(
                         baseTorre,
                         new Rectangle(
-                            (int)slots[i].PosicionTorre.X  + 15,
+                            (int)slots[i].PosicionTorre.X + 15,
                             (int)slots[i].PosicionTorre.Y + 25,
                             55,
                             55
