@@ -139,6 +139,25 @@ namespace TowerDefense
                 !tecladoAnterior.IsKeyDown(tecla);
         }
 
+        private void VolverAlMenu()
+        {
+            vidas = vidasMaximas;
+            dinero = 1000;
+            gameOver = false;
+            victoria = false;
+            menuInicio = true;
+            opcionMenuInicio = 0;
+            opcionDerrota = 0;
+            slotSeleccionado = -1;
+
+            topos.Clear();
+            torres.Clear();
+            proyectiles.Clear();
+            slots = Mapa.CrearSlots();
+            oleadas = new Oleadas();
+            victoriaRegistrada = false;
+        }
+
         private void ReiniciarJuego()
         {
             vidas = vidasMaximas;
@@ -147,6 +166,8 @@ namespace TowerDefense
 
             gameOver = false;
             victoria = false;
+            menuInicio = false;
+            opcionDerrota = 0;
 
             slotSeleccionado = -1;
 
@@ -157,6 +178,8 @@ namespace TowerDefense
             slots = Mapa.CrearSlots();
 
             oleadas = new Oleadas();
+
+            victoriaRegistrada = false;
         }
 
 
@@ -201,9 +224,11 @@ namespace TowerDefense
         const int vidasMaximas = 3;
         int vidas = vidasMaximas;
         bool gameOver = false;
+        bool menuInicio = true;
+        int opcionMenuInicio = 0;
+        int opcionDerrota = 0;
         private float velocidad = 200f;
         private Oleadas oleadas = new Oleadas();
-        private Random rnd = new Random();
 
         private List<Slot> slots = new List<Slot>();
         private List<DatosDefensa> defensas = new List<DatosDefensa>();
@@ -212,6 +237,23 @@ namespace TowerDefense
         private List<Enemigo> topos = new List<Enemigo>();
         private List<Torre> torres = new List<Torre>();
         private List<Proyectil> proyectiles = new List<Proyectil>();
+
+        private string jugadorActual = "";
+        private string textoUsuario = "";
+        private bool escribiendoUsuario = false;
+        private bool modoRegistro = false;
+        private string mensajeMenu = "";
+
+        private DatosJugador jugador;
+        private bool victoriaRegistrada = false;
+
+        private string[] opcionesInicio =
+        {
+        "JUGAR",
+        "CARGAR USUARIO",
+        "REGISTRAR USUARIO",
+        "SALIR"
+        };
 
 
         public Game1()
@@ -233,6 +275,39 @@ namespace TowerDefense
 
             defensas = BaseDatos.CargarDefensas();
             enemigosBD = BaseDatos.CargarEnemigos();
+            
+
+            if (jugador == null)
+            {
+                BaseDatos.RegistrarJugador(
+                    "Facu");
+
+                jugador =
+                    BaseDatos.BuscarJugador(
+                        "Facu");
+            }
+
+            jugadorActual =
+                jugador.Usuario;
+
+            jugador =
+    BaseDatos.BuscarJugador(
+        "Facu");
+
+            if (jugador == null)
+            {
+                BaseDatos.RegistrarJugador(
+                    "Facu");
+
+                jugador =
+                    BaseDatos.BuscarJugador(
+                        "Facu");
+            }
+
+            jugadorActual =
+                jugador.Usuario;
+
+
 
             /*
 
@@ -366,15 +441,188 @@ namespace TowerDefense
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (!escribiendoUsuario)
+            {
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                    Keyboard.GetState().IsKeyDown(Keys.Escape))
+                {
+                    Exit();
+                }
+            }
 
             // TODO: Add your update logic here
 
             KeyboardState teclado = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
 
-            if (gameOver || victoria)
+            // MENU PRINCIPAL
+            if (menuInicio)
+            {
+                if (escribiendoUsuario)
+                {
+                    foreach (Keys tecla in teclado.GetPressedKeys())
+                    {
+                        if (!tecladoAnterior.IsKeyDown(tecla))
+                        {
+                            if (tecla >= Keys.A &&
+                                tecla <= Keys.Z)
+                            {
+                                textoUsuario += tecla.ToString();
+                            }
+
+                            if (tecla == Keys.Back &&
+                                textoUsuario.Length > 0)
+                            {
+                                textoUsuario =
+                                    textoUsuario.Substring(
+                                        0,
+                                        textoUsuario.Length - 1);
+                            }
+
+                            if (tecla == Keys.Enter)
+                            {
+                                if (modoRegistro)
+                                {
+                                    DatosJugador existente =
+                                        BaseDatos.BuscarJugador(
+                                            textoUsuario);
+
+                                    if (existente == null)
+                                    {
+                                        BaseDatos.RegistrarJugador(
+                                            textoUsuario);
+
+                                        mensajeMenu =
+                                            "Usuario registrado";
+                                    }
+                                    else
+                                    {
+                                        mensajeMenu =
+                                            "Ese usuario ya existe";
+                                    }
+                                }
+                                else
+                                {
+                                    jugador =
+                                        BaseDatos.BuscarJugador(
+                                            textoUsuario);
+
+                                    if (jugador != null)
+                                    {
+                                        jugadorActual =
+                                            jugador.Usuario;
+
+                                        mensajeMenu =
+                                            "Usuario cargado";
+                                    }
+                                    else
+                                    {
+                                        mensajeMenu =
+                                            "Usuario no encontrado";
+                                    }
+                                }
+
+                                escribiendoUsuario = false;
+                            }
+
+
+                            if (tecla == Keys.Escape)
+                            {
+                                escribiendoUsuario = false;
+                            }
+                        }
+                    }
+
+                    tecladoAnterior = teclado;
+                    base.Update(gameTime);
+                    return;
+                }
+
+                if (TeclaPresionada(teclado, Keys.Up))
+                {
+                    opcionMenuInicio--;
+
+                    if (opcionMenuInicio < 0)
+                    {
+                        opcionMenuInicio =
+                            opcionesInicio.Length - 1;
+                    }
+                }
+
+                if (TeclaPresionada(teclado, Keys.Down))
+                {
+                    opcionMenuInicio++;
+
+                    if (opcionMenuInicio >=
+                        opcionesInicio.Length)
+                    {
+                        opcionMenuInicio = 0;
+                    }
+                }
+
+                if (TeclaPresionada(teclado, Keys.Enter))
+                {
+                    if (opcionMenuInicio == 0)
+                    {
+                        if (jugadorActual != "")
+                        {
+                            ReiniciarJuego();
+                        }
+                    }
+                    else if (opcionMenuInicio == 1)
+                    {
+                        escribiendoUsuario = true;
+                        modoRegistro = false;
+                        textoUsuario = "";
+                    }
+                    else if (opcionMenuInicio == 2)
+                    {
+                        escribiendoUsuario = true;
+                        modoRegistro = true;
+                        textoUsuario = "";
+                    }
+                    else if (opcionMenuInicio == 3)
+                    {
+                        Exit();
+                    }
+                }
+
+                tecladoAnterior = teclado;
+                base.Update(gameTime);
+                return;
+            }
+
+            // MENU DE DERROTA
+            if (gameOver)
+            {
+                if (TeclaPresionada(teclado, Keys.Up) ||
+                    TeclaPresionada(teclado, Keys.Down))
+                {
+                    opcionDerrota = (opcionDerrota + 1) % 3;
+                }
+
+                if (TeclaPresionada(teclado, Keys.Enter))
+                {
+                    if (opcionDerrota == 0)
+                    {
+                        ReiniciarJuego();
+                    }
+                    else if (opcionDerrota == 1)
+                    {
+                        VolverAlMenu();
+                    }
+                    else
+                    {
+                        Exit();
+                    }
+                }
+
+                tecladoAnterior = teclado;
+                base.Update(gameTime);
+                return;
+            }
+
+            if (victoria)
             {
                 if (
                     TeclaPresionada(
@@ -666,8 +914,15 @@ namespace TowerDefense
             if (oleadas.Completadas)
             {
                 victoria = true;
-            }
 
+                if (!victoriaRegistrada)
+                {
+                    BaseDatos.SumarVictoria(
+                        jugadorActual);
+
+                    victoriaRegistrada = true;
+                }
+            }
 
             foreach (Enemigo topo in topos)
             {
@@ -1165,48 +1420,84 @@ namespace TowerDefense
                     defensas),
                 nivelDefensa,
                 costoMejora,
-                valorVenta
-);
+                valorVenta );
 
+            _spriteBatch.DrawString(
+                fuente,
+                "Jugador: " +
+                jugadorActual,
+                new Vector2(
+                    15,
+                    120),
+                Color.White);
+
+            if (jugador != null)
+            {
+                _spriteBatch.DrawString(
+                    fuente,
+                    "Victorias: " +
+                    jugador.Victorias,
+                    new Vector2(
+                        15,
+                        145),
+                    Color.White);
+            }
 
 
             if (gameOver)
             {
                 _spriteBatch.Draw(
                     texPixel,
-                    new Rectangle(
-                        0,
-                        0,
+                    new Rectangle(0, 0,
                         GraphicsDevice.Viewport.Width,
                         GraphicsDevice.Viewport.Height),
-                    Color.Black * 0.6f
+                    Color.Black * 0.82f
                 );
 
-                int anchoCartel =
-                    (int)(texGameOver.Width * 1.5f);
+                int anchoCartel = (int)(texGameOver.Width * 1.5f);
+                int altoCartel = (int)(texGameOver.Height * 1.5f);
+                Rectangle cartel = new Rectangle(
+                    (1600 - anchoCartel) / 2,
+                    170,
+                    anchoCartel,
+                    altoCartel
+                );
 
-                int altoCartel =
-                    (int)(texGameOver.Height * 1.5f);
+                _spriteBatch.Draw(texGameOver, cartel, Color.White);
 
-                Rectangle cartel =
-                    new Rectangle(
-                        (1600 - anchoCartel) / 2,
-                        (900 - altoCartel) / 2,
-                        anchoCartel,
-                        altoCartel
+                string[] opcionesDerrota =
+                {
+                    "REINTENTAR",
+                    "MENU PRINCIPAL",
+                    "SALIR"
+                };
+
+                for (int i = 0; i < opcionesDerrota.Length; i++)
+                {
+                    string texto = opcionesDerrota[i];
+                    Vector2 medida = fuente.MeasureString(texto);
+                    Vector2 posicionTexto = new Vector2(
+                        (1600 - medida.X) / 2,
+                        cartel.Bottom + 45 + i * 55
                     );
 
-                _spriteBatch.Draw(
-                    texGameOver,
-                    cartel,
-                    Color.White
-                );
+                    Color color = (i == opcionDerrota)
+                        ? Color.Yellow
+                        : Color.White;
 
-                _spriteBatch.Draw(
-                    texReiniciar,
-                    new Vector2(
-                            (1600 - texReiniciar.Width) / 2,
-                            cartel.Bottom + 25),
+                    string prefijo = (i == opcionDerrota) ? "> " : "  ";
+                    _spriteBatch.DrawString(
+                        fuente,
+                        prefijo + texto,
+                        posicionTexto - new Vector2(fuente.MeasureString(prefijo).X, 0),
+                        color
+                    );
+                }
+
+                _spriteBatch.DrawString(
+                    fuente,
+                    "Usa las flechas para elegir y ENTER para confirmar",
+                    new Vector2(430, 820),
                     Color.White
                 );
             }
@@ -1292,6 +1583,105 @@ namespace TowerDefense
                     SpriteEffects.None,
                     0f
                 );
+            }
+
+            if (menuInicio)
+            {
+                
+                _spriteBatch.Draw(
+                    texPixel,
+                    new Rectangle(0, 0,
+                        GraphicsDevice.Viewport.Width,
+                        GraphicsDevice.Viewport.Height),
+                    Color.Black * 0.88f
+                );
+
+                if (escribiendoUsuario)
+                {
+                    _spriteBatch.Draw(
+                        texPixel,
+                        new Rectangle(
+                            0,
+                            0,
+                            GraphicsDevice.Viewport.Width,
+                            GraphicsDevice.Viewport.Height),
+                        Color.Black * 0.9f
+                    );
+
+                    _spriteBatch.DrawString(
+                        fuente,
+                        modoRegistro
+                        ? "REGISTRAR USUARIO"
+                        : "CARGAR USUARIO",
+                        new Vector2(500, 250),
+                        Color.White);
+
+                    _spriteBatch.DrawString(
+                        fuente,
+                        textoUsuario + "_",
+                        new Vector2(500, 330),
+                        Color.Yellow);
+
+                    _spriteBatch.DrawString(
+                        fuente,
+                        "ESC para cancelar",
+                        new Vector2(500, 430),
+                        Color.White);
+
+                    _spriteBatch.End();
+                    return;
+                }
+
+
+                string titulo = "IRON BASTION";
+                Vector2 medidaTitulo = fuente.MeasureString(titulo);
+                _spriteBatch.DrawString(
+                    fuente,
+                    titulo,
+                    new Vector2((1600 - medidaTitulo.X) / 2, 250),
+                    Color.White
+                ); 
+
+                
+                for (int i = 0; i < 4; i++)
+                {
+                    string texto = opcionesInicio[i];
+                    Vector2 medida = fuente.MeasureString(texto);
+                    Vector2 posicionTexto = new Vector2(
+                        (1600 - medida.X) / 2,
+                        430 + i * 75
+                    );
+
+                    Color color = (i == opcionMenuInicio)
+                        ? Color.Yellow
+                        : Color.White;
+
+                    string prefijo = (i == opcionMenuInicio) ? "> " : "  ";
+                    _spriteBatch.DrawString(
+                        fuente,
+                        prefijo + texto,
+                        posicionTexto - new Vector2(fuente.MeasureString(prefijo).X, 0),
+                        color
+                    );
+                }
+
+                _spriteBatch.DrawString(
+                    fuente,
+                    "Usa las flechas para elegir y ENTER para confirmar",
+                    new Vector2(430, 700),
+                    Color.White
+                );
+
+                if (mensajeMenu != "")
+                {
+                    _spriteBatch.DrawString(
+                        fuente,
+                        mensajeMenu,
+                        new Vector2(600, 760),
+                        Color.Yellow);
+                }
+
+
             }
 
             _spriteBatch.End();
