@@ -738,17 +738,36 @@ namespace TowerDefense
                                     torre.Tipo,
                                     defensas);
 
-                            int costoMejora;
+                            int costoMejora = 0;
 
-                            if (torre.Nivel == 1)
+                            switch (torre.Tipo)
                             {
-                                costoMejora =
-                                    (int)(costoBase * 0.75f);
-                            }
-                            else
-                            {
-                                costoMejora =
-                                    (int)(costoBase * 1.5f);
+                                case TipoTorre.Canion:
+
+                                    if (torre.Nivel == 1)
+                                        costoMejora = 75;
+                                    else
+                                        costoMejora = 150;
+
+                                    break;
+
+                                case TipoTorre.Torreta:
+
+                                    if (torre.Nivel == 1)
+                                        costoMejora = 100;
+                                    else
+                                        costoMejora = 200;
+
+                                    break;
+
+                                case TipoTorre.Lanzacohetes:
+
+                                    if (torre.Nivel == 1)
+                                        costoMejora = 150;
+                                    else
+                                        costoMejora = 300;
+
+                                    break;
                             }
 
                             if (dinero >= costoMejora)
@@ -1417,16 +1436,34 @@ namespace TowerDefense
                     valorVenta =
                         (int)(costoBase * 0.5f);
 
-                    if (torreActual.Nivel == 1)
+                    switch (torreActual.Tipo)
                     {
-                        costoMejora =
-                            (int)(costoBase * 0.75f);
-                    }
-                    else if (
-                        torreActual.Nivel == 2)
-                    {
-                        costoMejora =
-                            (int)(costoBase * 1.5f);
+                        case TipoTorre.Canion:
+
+                            if (torreActual.Nivel == 1)
+                                costoMejora = 75;
+                            else if (torreActual.Nivel == 2)
+                                costoMejora = 150;
+
+                            break;
+
+                        case TipoTorre.Torreta:
+
+                            if (torreActual.Nivel == 1)
+                                costoMejora = 100;
+                            else if (torreActual.Nivel == 2)
+                                costoMejora = 200;
+
+                            break;
+
+                        case TipoTorre.Lanzacohetes:
+
+                            if (torreActual.Nivel == 1)
+                                costoMejora = 150;
+                            else if (torreActual.Nivel == 2)
+                                costoMejora = 300;
+
+                            break;
                     }
                 }
             }
