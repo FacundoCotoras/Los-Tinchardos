@@ -379,11 +379,6 @@ PENDIENTE
 
 - Ajustar salida exacta de proyectiles para defensas multidisparo.
 - Revisar composición definitiva de las oleadas.
-- Implementar vida para defensas.
-- Implementar daño de enemigos a defensas.
-- Implementar sistema de reparación.
 - Refinar interfaz de la barra de vida del jefe.
-- Implementar animaciones del Rey Topo.
 - Revisar interfaz final.
 - Corregir comportamiento de ESC durante la escritura de usuario.
-- Personaje jugable (pendiente de definición).
