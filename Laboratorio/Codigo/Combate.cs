@@ -52,7 +52,11 @@ namespace TowerDefense
                             defensas);
 
                     int cantidadDisparos = 1;
-                    int cooldownDisparo = 30;
+                    int cooldownDisparo =
+                        Economia.ObtenerCooldown(
+                            torre.Tipo,
+                            defensas);
+
 
                     if (torre.Tipo == TipoTorre.Canion)
                     {
