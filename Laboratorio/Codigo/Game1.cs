@@ -1414,34 +1414,52 @@ namespace TowerDefense
             HUD.Dibujar(
                 _spriteBatch,
                 fuente,
+                texPixel,
                 dinero,
+                vidas,
+                oleadas.Actual,
                 nombreDefensa,
-                Economia.ObtenerCosto(torreSeleccionada,
+                Economia.ObtenerCosto(
+                    torreSeleccionada,
                     defensas),
                 nivelDefensa,
                 costoMejora,
-                valorVenta );
+                valorVenta
+            );
+
+            Rectangle panelJugador =
+                new Rectangle(
+                10,
+                170,
+                190,
+                75);
+
+            _spriteBatch.Draw(
+                texPixel,
+                panelJugador,
+                new Color(25, 30, 42));
+
+            _spriteBatch.Draw(
+                texPixel,
+                new Rectangle(
+                    10,
+                    170,
+                    190,
+                    4),
+                Color.Gold);
+
 
             _spriteBatch.DrawString(
                 fuente,
-                "Jugador: " +
-                jugadorActual,
-                new Vector2(
-                    15,
-                    120),
+                "Jugador: " + jugadorActual,
+                new Vector2(20, 185),
                 Color.White);
 
-            if (jugador != null)
-            {
-                _spriteBatch.DrawString(
-                    fuente,
-                    "Victorias: " +
-                    jugador.Victorias,
-                    new Vector2(
-                        15,
-                        145),
-                    Color.White);
-            }
+            _spriteBatch.DrawString(
+                fuente,
+                "Victorias: " + jugador.Victorias,
+                new Vector2(20, 215),
+                Color.White);
 
 
             if (gameOver)
