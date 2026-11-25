@@ -195,7 +195,9 @@ insert into DefenseTypes
 values
 ("Cañon", 100, 30, 100, 160, 40),
 ("Torreta", 150, 15, 100, 220, 15),
-("Lanzacohetes", 250, 40, 100, 170, 150);
+("Lanzacohetes", 250, 40, 100, 170, 120);
+
+
 
 
 /*
@@ -212,10 +214,13 @@ values
 insert into EnemyTypes
 (Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque, Recompensa)
 values
-("Enemigo Basico", 120, 10, 1, 0, "Normal", 25),
-("Enemigo Rapido", 75, 8, 2, 0, "Normal", 15),
-("Tanque", 300, 20, 0.5, 25, "Normal", 75),
-("Jefe", 1000, 50, 0.8, 50, "Especial", 300);
+("Enemigo Basico", 120, 10, 1, 0, "Normal", 30),
+("Enemigo Rapido", 75, 8, 2, 0, "Normal", 20),
+("Tanque", 300, 20, 0.5, 25, "Normal", 90),
+("Jefe", 1000, 50, 0.8, 50, "Especial", 400),
+("Topo Caballero", 50, 8, 1.8, 0, "Normal", 15);
+
+
 
 
 insert into Bosses
@@ -345,6 +350,7 @@ BEGIN
 END//
 
 DELIMITER ;
-
+/*
  SELECT Usuario, NivelActual as Victorias
 FROM Players;
+*/
