@@ -331,6 +331,18 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Incorporados mensajes de error para intentos de registro duplicados.
 - Integrada navegación completa del sistema de usuarios desde el menú principal.
 
+[32] Rediseño del HUD y panel de jugador
+- Integrado nuevo HUD lateral diseñado por Agus.
+- Incorporada visualización permanente de dinero, vidas y oleada actual.
+- Reorganizada la información de torretas seleccionadas.
+- Integrada visualización contextual de mejoras y venta de defensas.
+- Unificada la estética visual de la interfaz mediante paneles temáticos.
+- Adaptado el HUD al sistema actual de economía y selección de torres.
+- Incorporado panel independiente para información de jugador.
+- Agregada visualización de usuario activo.
+- Agregada visualización de victorias persistentes obtenidas desde la base de datos.
+- Mejorada la legibilidad general de la interfaz durante la partida.
+
 
 
 PENDIENTE
@@ -345,7 +357,6 @@ PENDIENTE
 - Ajustar posición visual del Rey Topo en el camino.
 - Refinar interfaz de la barra de vida del jefe.
 - Implementar animaciones del Rey Topo.
-- Mejorar diseño visual del HUD.
 - Revisar interfaz final.
 - Corregir comportamiento de ESC durante la escritura de usuario.
 - Personaje jugable (pendiente de definición).
