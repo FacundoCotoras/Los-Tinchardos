@@ -361,6 +361,19 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Mejorada la diferenciación entre Cañón, Torreta y Lanzacohetes.
 - Mejorada la variedad de estrategias viables durante la partida.
 
+[34] Rework de habilidad del Rey Topo y esbirros reales
+- Incorporado nuevo enemigo especial Topo Caballero.
+- Integrado sprite exclusivo para los esbirros del jefe final.
+- Agregado Topo Caballero a la base de datos de enemigos.
+- Implementada carga de atributos del Topo Caballero desde MySQL.
+- Reemplazada la invocación de enemigos básicos por guardias reales del Rey Topo.
+- Implementado sistema de invocación escalonada para evitar superposición de enemigos.
+- Ajustado el ritmo de invocación del jefe final mediante oleadas de refuerzos.
+- Mejorada la diferenciación visual entre enemigos normales y esbirros invocados.
+- Mejorada la legibilidad de la habilidad especial del Rey Topo.
+- Reforzada la identidad visual y jugable del jefe final.
+- Posición del Rey Topo corregida
+
 
 PENDIENTE
 
@@ -369,8 +382,6 @@ PENDIENTE
 - Implementar vida para defensas.
 - Implementar daño de enemigos a defensas.
 - Implementar sistema de reparación.
-- Mejorar habilidad de invocación del Rey Topo (punto de aparición de esbirros).
-- Ajustar posición visual del Rey Topo en el camino.
 - Refinar interfaz de la barra de vida del jefe.
 - Implementar animaciones del Rey Topo.
 - Revisar interfaz final.
