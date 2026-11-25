@@ -112,5 +112,38 @@ namespace TowerDefense
 
             return 25;
         }
+
+        public static int ObtenerCooldown(
+            TipoTorre tipo,
+            List<DatosDefensa> defensas)
+        {
+            string nombre = "";
+
+            switch (tipo)
+            {
+                case TipoTorre.Canion:
+                    nombre = "Cañon";
+                    break;
+
+                case TipoTorre.Torreta:
+                    nombre = "Torreta";
+                    break;
+
+                case TipoTorre.Lanzacohetes:
+                    nombre = "Lanzacohetes";
+                    break;
+            }
+
+            foreach (DatosDefensa defensa in defensas)
+            {
+                if (defensa.Nombre == nombre)
+                {
+                    return defensa.Cooldown;
+                }
+            }
+
+            return 30;
+        }
+
     }
 }
