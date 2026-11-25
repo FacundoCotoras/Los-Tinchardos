@@ -374,10 +374,21 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Reforzada la identidad visual y jugable del jefe final.
 - Posición del Rey Topo corregida
 
+[35] Pulido visual de combate y ajustes de progresión
+- Corregida la salida de proyectiles para defensas multidisparo.
+- Implementada separación lateral dinámica de disparos según la orientación de la torre.
+- Mejorada la representación visual de disparos dobles y triples.
+- Ajustada la posición gráfica del Rey Topo para mejorar su integración con el camino.
+- Rebalanceadas las recompensas obtenidas al derrotar enemigos.
+- Ajustados los costos de mejora de las defensas mediante valores redondeados.
+- Mejorada la consistencia visual de la información económica mostrada al jugador.
+- Eliminados valores poco intuitivos en los costos de mejora.
+- Refinada la progresión económica general de la partida.
+- Mejorada la claridad visual durante los enfrentamientos avanzados.
+
 
 PENDIENTE
 
-- Ajustar salida exacta de proyectiles para defensas multidisparo.
 - Revisar composición definitiva de las oleadas.
 - Refinar interfaz de la barra de vida del jefe.
 - Revisar interfaz final.
