@@ -343,6 +343,23 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Agregada visualización de victorias persistentes obtenidas desde la base de datos.
 - Mejorada la legibilidad general de la interfaz durante la partida.
 
+[33] Rebalanceo general de combate y centralización de estadísticas
+- Reducido el dinero inicial de partida de 1000 a 250.
+- Rebalanceados los atributos base de las defensas.
+- Rebalanceados los atributos base de los enemigos.
+- Ajustado el daño del Lanzacohetes para evitar estrategias dominantes.
+- Incrementado significativamente el cooldown del Lanzacohetes.
+- Incrementado el daño de la Torreta para convertirla en una opción viable.
+- Ajustado el cooldown del Cañón para reforzar su rol de defensa equilibrada.
+- Incrementada la vida del Enemigo Básico.
+- Incrementada la vida del Enemigo Rápido.
+- Incrementada la vida del Tanque.
+- Incorporado CooldownBase a la base de datos.
+- Integrada carga de cooldowns desde MySQL.
+- Eliminados valores hardcodeados de cooldown en las estadísticas base de las defensas.
+- Centralizados los parámetros principales de balance en la base de datos.
+- Mejorada la diferenciación entre Cañón, Torreta y Lanzacohetes.
+- Mejorada la variedad de estrategias viables durante la partida.
 
 
 PENDIENTE
@@ -352,7 +369,6 @@ PENDIENTE
 - Implementar vida para defensas.
 - Implementar daño de enemigos a defensas.
 - Implementar sistema de reparación.
-- Balance general de mejoras y enemigos.
 - Mejorar habilidad de invocación del Rey Topo (punto de aparición de esbirros).
 - Ajustar posición visual del Rey Topo en el camino.
 - Refinar interfaz de la barra de vida del jefe.
