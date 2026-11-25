@@ -125,6 +125,9 @@ namespace TowerDefense
                 case "Jefe":
                     return jefe;
 
+                case "Topo Caballero":
+                    return topoCaballero;
+
                 default:
                     return topo;
             }
@@ -205,6 +208,7 @@ namespace TowerDefense
         private Texture2D topoNinja;
         private Texture2D topoBlindado;
         private Texture2D jefe;
+        private Texture2D topoCaballero;
         Texture2D texCorazon;
         Texture2D texCorazonVacio;
         Texture2D texGameOver;
@@ -378,6 +382,8 @@ namespace TowerDefense
             topoBlindado = Content.Load<Texture2D>("topoBlindado");
 
             jefe = Content.Load<Texture2D>("jefe");
+            
+            topoCaballero = Content.Load<Texture2D>("topoCaballero");
 
             texReyTopo = Content.Load<Texture2D>("reytopo");
 
@@ -862,32 +868,46 @@ namespace TowerDefense
                 {
                     topos[i].CooldownInvocacion++;
 
-                    if (topos[i].CooldownInvocacion >= 150)
+                    if (topos[i].CooldownInvocacion >= 240 &&
+                        topos[i].InvocacionesPendientes == 0)
                     {
                         topos[i].CooldownInvocacion = 0;
+                        topos[i].InvocacionesPendientes = 3;
+                        topos[i].CooldownEntreInvocaciones = 0;
+                    }
 
-                        Enemigo invocado =
-                            new Enemigo(
-                                topo,
-                                52,
-                                60,
-                                2.5f,
-                                camino);
+                    if (topos[i].InvocacionesPendientes > 0)
+                    {
+                        topos[i].CooldownEntreInvocaciones++;
 
-                        invocado.Nombre =
-                            "Enemigo Basico";
+                        if (topos[i].CooldownEntreInvocaciones >= 20)
+                        {
+                            topos[i].CooldownEntreInvocaciones = 0;
+                            topos[i].InvocacionesPendientes--;
 
-                        invocado.ConfigurarVida(
-                            Economia.ObtenerVida(
-                                "Enemigo Basico",
-                                enemigosBD));
+                            Enemigo invocado =
+                                new Enemigo(
+                                    topoCaballero,
+                                    52,
+                                    60,
+                                    2.5f,
+                                    camino);
 
-                        invocado.ConfigurarVelocidad(
-                            Economia.ObtenerVelocidad(
-                                "Enemigo Basico",
-                                enemigosBD));
+                            invocado.Nombre =
+                                "Topo Caballero";
 
-                        topos.Add(invocado);
+                            invocado.ConfigurarVida(
+                                Economia.ObtenerVida(
+                                    "Topo Caballero",
+                                    enemigosBD));
+
+                            invocado.ConfigurarVelocidad(
+                                Economia.ObtenerVelocidad(
+                                    "Topo Caballero",
+                                    enemigosBD));
+
+                            topos.Add(invocado);
+                        }
                     }
                 }
 
