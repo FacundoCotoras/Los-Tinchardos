@@ -63,6 +63,11 @@ namespace TowerDefense
                         Convert.ToSingle(
                             lector["Rango"]);
 
+                    defensa.Cooldown =
+                        Convert.ToInt32(
+                            lector["CooldownBase"]);
+
+
                     defensas.Add(defensa);
                 }
             }
