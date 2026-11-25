@@ -53,7 +53,8 @@ create table DefenseTypes (
     Costo float,
     DañoBase float,
     VidaBase float,
-    Rango float
+    Rango float,
+    CooldownBase int
 );
 
 create table DefenseInstances (
@@ -190,11 +191,12 @@ values
 */
 
 insert into DefenseTypes
-(Nombre, Costo, DañoBase, VidaBase, Rango)
+(Nombre, Costo, DañoBase, VidaBase, Rango, CooldownBase)
 values
-("Cañon", 100, 30, 100, 160),
-("Torreta", 150, 10, 100, 220),
-("Lanzacohetes", 250, 70, 100, 170);
+("Cañon", 100, 30, 100, 160, 40),
+("Torreta", 150, 15, 100, 220, 15),
+("Lanzacohetes", 250, 40, 100, 170, 150);
+
 
 /*
 
@@ -210,9 +212,9 @@ values
 insert into EnemyTypes
 (Nombre, VidaBase, Daño, Velocidad, Resistencia, TipoAtaque, Recompensa)
 values
-("Enemigo Basico", 100, 10, 1, 0, "Normal", 25),
-("Enemigo Rapido", 60, 8, 2, 0, "Normal", 15),
-("Tanque", 250, 20, 0.5, 25, "Normal", 75),
+("Enemigo Basico", 120, 10, 1, 0, "Normal", 25),
+("Enemigo Rapido", 75, 8, 2, 0, "Normal", 15),
+("Tanque", 300, 20, 0.5, 25, "Normal", 75),
 ("Jefe", 1000, 50, 0.8, 50, "Especial", 300);
 
 
@@ -313,7 +315,7 @@ DROP PROCEDURE IF EXISTS Defensas;
 DELIMITER //
 CREATE PROCEDURE Defensas() 
 BEGIN
-    SELECT Nombre, Costo, DañoBase, VidaBase, Rango
+    SELECT Nombre, Costo, DañoBase, VidaBase, Rango, CooldownBase
     FROM DefenseTypes 
     ORDER BY Costo ASC;
 END//
@@ -344,4 +346,5 @@ END//
 
 DELIMITER ;
 
- 
+ SELECT Usuario, NivelActual as Victorias
+FROM Players;
