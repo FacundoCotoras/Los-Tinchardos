@@ -314,6 +314,24 @@ HISTORIAL DE COMMITS DEL PROYECTO
 - Implementada visualización numérica de vida del jefe.
 - Ajustado el punto de salida de proyectiles para acompañar la orientación de las defensas.
 
+[31] Sistema de usuarios persistente y perfiles de jugador
+- Implementado sistema de registro de usuarios conectado a MySQL.
+- Implementado sistema de carga de usuarios desde el menú principal.
+- Agregada entrada de texto para creación y selección de perfiles.
+- Incorporada validación de usuarios existentes durante el registro.
+- Incorporada validación de usuarios inexistentes durante la carga.
+- Implementada persistencia de victorias mediante la tabla Players.
+- Asociadas las victorias al usuario actualmente cargado.
+- Integrado guardado automático de victorias al completar una partida.
+- Agregada visualización del jugador activo durante la partida.
+- Agregada visualización de victorias acumuladas por usuario.
+- Incorporados mensajes informativos para registro exitoso de usuarios.
+- Incorporados mensajes informativos para carga de usuarios.
+- Incorporados mensajes de error para usuarios inexistentes.
+- Incorporados mensajes de error para intentos de registro duplicados.
+- Integrada navegación completa del sistema de usuarios desde el menú principal.
+
+
 
 PENDIENTE
 
@@ -329,4 +347,5 @@ PENDIENTE
 - Implementar animaciones del Rey Topo.
 - Mejorar diseño visual del HUD.
 - Revisar interfaz final.
+- Corregir comportamiento de ESC durante la escritura de usuario.
 - Personaje jugable (pendiente de definición).
