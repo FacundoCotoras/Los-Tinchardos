@@ -130,6 +130,11 @@ namespace TowerDefense
                                 (float)System.Math.Sin(torre.Rotacion),
                                 (float)-System.Math.Cos(torre.Rotacion));
 
+                        Vector2 lateral =
+                            new Vector2(
+                            -direccionCanon.Y,
+                            direccionCanon.X);
+
                         puntoDisparo +=
                             direccionCanon * 35f;
 
@@ -138,7 +143,7 @@ namespace TowerDefense
                             {
                                 Posicion =
                                     puntoDisparo +
-                                    new Vector2(offsetX, 0),
+                                    lateral * offsetX,
 
                                 Objetivo =
                                     torre.Objetivo,
