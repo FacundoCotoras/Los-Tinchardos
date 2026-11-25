@@ -142,7 +142,7 @@ namespace TowerDefense
         private void VolverAlMenu()
         {
             vidas = vidasMaximas;
-            dinero = 1000;
+            dinero = 250;
             gameOver = false;
             victoria = false;
             menuInicio = true;
@@ -162,7 +162,7 @@ namespace TowerDefense
         {
             vidas = vidasMaximas;
 
-            dinero = 1000;
+            dinero = 250;
 
             gameOver = false;
             victoria = false;
@@ -220,7 +220,7 @@ namespace TowerDefense
         private int slotSeleccionado = -1;
         private KeyboardState tecladoAnterior;
 
-        private int dinero = 1000;
+        private int dinero = 250;
         const int vidasMaximas = 3;
         int vidas = vidasMaximas;
         bool gameOver = false;
