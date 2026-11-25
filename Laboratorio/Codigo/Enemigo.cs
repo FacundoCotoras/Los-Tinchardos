@@ -27,6 +27,8 @@ namespace TowerDefense
         public int VidaMaxima { get; set; } = 100;
         public string Nombre { get; set; }
         public int CooldownInvocacion { get; set; } = 0;
+        public int InvocacionesPendientes { get; set; } = 0;
+        public int CooldownEntreInvocaciones { get; set; } = 0;
         public void ConfigurarVida(int vida)
         {
             Vida = vida;
@@ -41,7 +43,7 @@ namespace TowerDefense
             get { return posicion; }
         }
 
-        public bool Seleccionado{ get; set;}
+        public bool Seleccionado { get; set; }
 
         public void CambiarTamanio(int ancho, int alto)
         {
@@ -135,9 +137,16 @@ namespace TowerDefense
         {
             if (activo)
             {
+
+                Rectangle dibujo = rectangulo;
+
+                if (Nombre == "Jefe")
+                {
+                    dibujo.Y -= 8;
+                }
                 // Los topos miran a la derecha y se invierten al mirar al otro lado
                 SpriteEffects efecto = mirandoDerecha ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-                sb.Draw(textura, rectangulo, null, Color.White, 0f, Vector2.Zero, efecto, 0f);
+                sb.Draw(textura, dibujo, null, Color.White, 0f, Vector2.Zero, efecto, 0f);
             }
         }
     }
